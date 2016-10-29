@@ -1,0 +1,7 @@
+Debug
+x64
+*.aps
+*.vcxproj
+*.vcxproj.*
+*.ico
+*.lib
