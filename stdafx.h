@@ -95,4 +95,6 @@
 void		killProgram	();
 std::string	vkToStr	(int vk);
 
+extern HWND		g_hWnd;
+
 #endif

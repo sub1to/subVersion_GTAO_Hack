@@ -31,7 +31,7 @@ bool		g_bKillRender	= false;
 bool		g_bKillAttach	= false;
 
 //fuction prototypes
-LRESULT	CALLBACK	WindowProc(	HWND	hWnd,
+LRESULT	__stdcall	WindowProc(	HWND	hWnd,
 								UINT	message,
 								WPARAM	wParam,
 								LPARAM	lParam);
@@ -39,7 +39,7 @@ DWORD __stdcall		threadAttach(LPVOID lpParam);
 DWORD __stdcall		threadRender(LPVOID lpParam);
 DWORD __stdcall		threadHack	(LPVOID lpParam);
 
-int WINAPI WinMain(	HINSTANCE	hInstance,
+int __stdcall WinMain(	HINSTANCE	hInstance,
 					HINSTANCE	hPrevInstance,
 					LPSTR		lpCmdLine,
 					int			nCmdShow)
@@ -51,7 +51,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,
 
 	//LPCSTR	szWindowTitleTarget	= "Untitled - Notepad";
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCSTR	szWindowTitle		= "subVersion menu [unknowncheats.me]";
+	LPCSTR	szWindowTitle		= "subVersion [unknowncheats.me]";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 
 	g_pSettings->addFeatureCategory("Player");		//0
@@ -88,27 +88,27 @@ int WINAPI WinMain(	HINSTANCE	hInstance,
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	wc.hbrBackground = dynamic_cast<HBRUSH>(CreateSolidBrush(RGB(0, 0, 0)));//(HBRUSH)COLOR_WINDOW;
 	wc.lpszClassName = "sub1toOverlay";
 
 	RegisterClassEx(&wc);
-	g_hWnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED,
-							"sub1toOverlay",    // name of the window class
-							szWindowTitle,   // title of the window
-							WS_POPUP,    // window style
-							0,    // x-position of the window
-							0,    // y-position of the window
-							800,    // width of the window
-							600,    // height of the window
-							NULL,    // we have no parent window, NULL
-							NULL,    // we aren't using menus, NULL
-							NULL,    // application handle
-							NULL);    // used with multiple windows, NULL
+	g_hWnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED,		//dwExStyle [in]
+							"sub1toOverlay",										//lpClassName [in, optional]
+							szWindowTitle,											//lpWindowName [in, optional]
+							WS_POPUP,												//dwStyle [in]
+							0,														//x [in]
+							0,														//y [in]
+							800,													//nWidth [in]
+							600,													//nHeight [in]
+							nullptr,												//hWndParent [in, optional]
+							nullptr,												//hMenu [in, optional]
+							nullptr,												//hInstance [in, optional]		A handle to the instance of the module to be associated with the window.
+							nullptr);												//lpParam [in, optional]
 
-	SetLayeredWindowAttributes(g_hWnd, 0, 1, LWA_ALPHA);
-	SetLayeredWindowAttributes(g_hWnd, 0, RGB(0, 0, 0), LWA_COLORKEY);
+	SetLayeredWindowAttributes(g_hWnd, 0, 0, LWA_ALPHA);
+	SetLayeredWindowAttributes(g_hWnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 
-	ShowWindow(g_hWnd, SW_SHOW);
+	ShowWindow(g_hWnd, SW_SHOWNORMAL);
 
 	CreateThread(	NULL,
 					0,
@@ -131,16 +131,16 @@ int WINAPI WinMain(	HINSTANCE	hInstance,
 					0,
 					nullptr);
 
-	MSG msg;	// this struct holds Windows event messages
+	MSG msg;
 	while(true)
 	{
 		while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))	// Check to see if any messages are waiting in the queue
 		{
-			TranslateMessage(&msg);		// Translate the message and dispatch it to WindowProc()
+			TranslateMessage(&msg);		//Translate the message and dispatch it to WindowProc()
 			DispatchMessage(&msg);
 		}
 
-		if(msg.message == WM_QUIT)	// If the message is WM_QUIT, exit the while loop
+		if(msg.message == WM_QUIT)
 			break;
 
 		Sleep(100);
@@ -150,17 +150,17 @@ int WINAPI WinMain(	HINSTANCE	hInstance,
 }
 
 //main message handler
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch(message)
 	{
-		case WM_DESTROY:		// this message is read when the window is closed
+		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
 		break;
 	}
 
-	return DefWindowProc (hWnd, message, wParam, lParam);	// Handle any messages the switch statement didn't
+	return DefWindowProc (hWnd, message, wParam, lParam); //default behaviour for any unhandled messages
 }
 
 DWORD __stdcall threadAttach(LPVOID lpParam)
@@ -230,8 +230,6 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 		Sleep(1);
 	}
-	if(g_pHack->loadWeapon())
-		g_pHack->m_weapon.restoreWeapon();
 	return 0;
 }
 
@@ -240,6 +238,9 @@ void	killProgram()
 {
 	g_bKillSwitch = true;				//enable thread killswitch
 	g_pSettings->m_iniParser.write();	//save options
+
+	if(g_pHack->loadWeapon())
+		g_pHack->m_weapon.restoreWeapon();
 
 	//make sure we shut down all threads before deleting the objects
 	while(!g_bKillAttach || !g_bKillRender)

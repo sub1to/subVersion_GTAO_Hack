@@ -70,6 +70,13 @@ void hack::checkKeys()
 	if(checkKeyState(g_pSettings->m_iKeys[keyMenu], 0))
 	{
 		g_pSettings->toggleMenu();
+
+		//aero workaround
+		if(g_pSettings->isMenuActive())
+			SetWindowPos(g_hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+		else
+			SetWindowPos(g_hWnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_HIDEWINDOW);
+
 		return;
 	}
 

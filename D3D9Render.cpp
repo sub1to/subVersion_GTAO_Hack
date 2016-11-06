@@ -36,21 +36,21 @@ bool	D3D9Render::init(HWND hWnd)
 {
 	m_pD3d	= Direct3DCreate9(D3D_SDK_VERSION);		//create d3d9 interface
 
-	D3DPRESENT_PARAMETERS	d3dParam;				//d3d9 device params
-	ZeroMemory(&d3dParam, sizeof(d3dParam));		//clear the struct
+	ZeroMemory(&m_d3dParam, sizeof(m_d3dParam));		//clear the struct
 
-	d3dParam.Windowed			= true;
-	d3dParam.SwapEffect			= D3DSWAPEFFECT_DISCARD;
-	d3dParam.hDeviceWindow		= hWnd;
-	d3dParam.BackBufferHeight	= m_screen.h;
-	d3dParam.BackBufferWidth	= m_screen.w;
-	d3dParam.MultiSampleQuality	= D3DMULTISAMPLE_NONE;
+	m_d3dParam.Windowed				= true;
+	m_d3dParam.SwapEffect			= D3DSWAPEFFECT_DISCARD;
+	m_d3dParam.hDeviceWindow		= hWnd;
+	m_d3dParam.BackBufferHeight		= m_screen.h;
+	m_d3dParam.BackBufferWidth		= m_screen.w;
+	m_d3dParam.MultiSampleQuality	= D3DMULTISAMPLE_NONE;
+	m_d3dParam.BackBufferFormat		= D3DFMT_A8R8G8B8;
 
 	m_pD3d->CreateDevice(	D3DADAPTER_DEFAULT,
 							D3DDEVTYPE_HAL,
 							hWnd,
 							D3DCREATE_HARDWARE_VERTEXPROCESSING,
-							&d3dParam,
+							&m_d3dParam,
 							&m_pD3dDev);
 
 	//create vertex buffer
@@ -65,14 +65,14 @@ bool	D3D9Render::init(HWND hWnd)
 	this->createFont("Verdana", 14, false, false);
 	this->createFont("Verdana", 18, true, false);
 
-	m_pD3dDev->SetFVF(VERTEX_FORMAT);// select which vertex format we are using
+	m_pD3dDev->SetFVF(VERTEX_FORMAT);// select which vertex format to use
 
 	return true;
 }
 
 bool	D3D9Render::render()
 {
-	m_pD3dDev->Clear(0, nullptr, D3DCLEAR_TARGET, 0, 1.f, 0);
+	m_pD3dDev->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0,0,0,0), 1.f, 0);
 	m_pD3dDev->BeginScene();
 
 	if(g_pSettings->isMenuActive() && g_pMemMan->getWindow() == GetForegroundWindow())

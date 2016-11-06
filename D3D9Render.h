@@ -70,6 +70,7 @@ class D3D9Render
 		LPDIRECT3DVERTEXBUFFER9	m_pVertexBuffer; //pointer to the vertex buffer interface
 		LPD3DXFONT				m_pFont[FONT_BUFFER_SIZE];
 		int						m_nFont;
+		D3DPRESENT_PARAMETERS	m_d3dParam;				//d3d9 device params
 };
 
 extern D3D9Render*	g_pD3D9Render;
