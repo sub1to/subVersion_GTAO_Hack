@@ -43,7 +43,9 @@ class entity
 class player : public entity
 {
 	public:
-		float	m_flArmor;
+		float	m_flArmor,
+				m_flRunSpd,
+				m_flSwimSpd;
 		DWORD	m_dwWanted,
 				m_dwInVehicle;
 
@@ -56,6 +58,10 @@ class player : public entity
 				void	getWanted();
 				void	setWanted(DWORD stars);
 				void	getInVehicle();
+				void	getRunSpeed();
+				void	setRunSpeed(float value);
+				void	getSwimSpeed();
+				void	setSwimSpeed(float value);
 
 
 		DWORD_PTR	m_dwpPlayerBase,

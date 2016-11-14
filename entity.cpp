@@ -33,7 +33,11 @@ void entity::setHealth(float hp){}
 	PLAYER
 */
 player::player(){}
-player::~player(){}
+player::~player()
+{
+	this->setRunSpeed(1);
+	this->setSwimSpeed(1);
+}
 
 void player::getPos()
 {
@@ -83,6 +87,30 @@ void player::getInVehicle()
 	return;
 }
 
+void player::getRunSpeed()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_RUN_SPD, &m_flRunSpd);
+	return;
+}
+
+void player::setRunSpeed(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_RUN_SPD, &value);
+	return;
+}
+
+void player::getSwimSpeed()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_SWIM_SPD, &m_flSwimSpd);
+	return;
+}
+
+void player::setSwimSpeed(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_SWIM_SPD, &value);
+	return;
+}
+
 /*
 	VEHICLE
 */
@@ -123,7 +151,10 @@ void vehicle::setHealth(float hp)
 */
 
 weapon::weapon() : m_dwHash(0) {};
-weapon::~weapon(){};
+weapon::~weapon()
+{
+	this->restoreWeapon();
+}
 
 bool weapon::findAmmoBase()
 {
@@ -163,14 +194,14 @@ void weapon::getMaxAmmo()
 
 void weapon::restoreWeapon()
 {
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPREAD, &m_weapDataRestore.m_fSpread);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RECOIL, &m_weapDataRestore.m_fRecoil);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BULLET_DMG, &m_weapDataRestore.m_fDamage);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RELOAD_MULTIPLIER, &m_weapDataRestore.m_fReload);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RELOAD_VEHICLE, &m_weapDataRestore.m_fReloadVeh);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RANGE, &m_weapDataRestore.m_fRange);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPINUP, &m_weapDataRestore.m_fSpinUp);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPIN, &m_weapDataRestore.m_fSpin);
+	this->setSpread(m_weapDataRestore.m_fSpread);
+	this->setRecoil(m_weapDataRestore.m_fRecoil);
+	this->setBulletDamage(m_weapDataRestore.m_fDamage);
+	this->setReloadSpeed(m_weapDataRestore.m_fReload);
+	this->setReloadVehicle(m_weapDataRestore.m_fReloadVeh);
+	this->setRange(m_weapDataRestore.m_fRange);
+	this->setSpinUp(m_weapDataRestore.m_fSpinUp);
+	this->setSpin(m_weapDataRestore.m_fSpin);
 	return;
 }
 

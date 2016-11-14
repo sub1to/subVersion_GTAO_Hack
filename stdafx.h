@@ -64,6 +64,8 @@
 #define OFFSET_PLAYER_ARMOR				0x14A0			//armour
 #define OFFSET_PLAYER_INFO				0x10A8			//playerInfo struct
 #define OFFSET_PLAYER_INFO_WANTED		0x798			//wanted level; DWORD
+#define	OFFSET_PLAYER_INFO_RUN_SPD		0xE8			//run speed; def 1; float
+#define OFFSET_PLAYER_INFO_SWIM_SPD		0xE4			//swim speed; def 1; float
 #define OFFSET_PLAYER_VEHICLE			0x14E0			//ptr to last used vehicle
 #define OFFSET_PLAYER_NAME				0x7C
 
@@ -92,9 +94,27 @@
 
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
+
+//feature indexing
+#define FEATURE_P_GOD			0x00
+#define FEATURE_P_WANTED		0x01
+#define FEATURE_P_ANTINPC		0x02
+#define FEATURE_P_VEHGOD		0x03
+#define FEATURE_W_SPREAD		0x04
+#define FEATURE_W_RECOIL		0x05
+#define FEATURE_W_RELOAD		0x06
+#define FEATURE_W_DAMAGE		0x07
+#define FEATURE_W_AMMO			0x08
+#define FEATURE_W_RANGE			0x09
+#define FEATURE_W_SPINUP		0x0A
+#define FEATURE_P_RUNSPD		0x0B
+#define FEATURE_P_SWIMSPD		0x0C
+
+
 void		killProgram	();
 std::string	vkToStr	(int vk);
 
 extern HWND		g_hWnd;
+extern int		g_iFeature[MAX_MENU_FEATURES];
 
 #endif

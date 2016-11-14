@@ -80,7 +80,25 @@ void hack::checkKeys()
 		return;
 	}
 
-	if(!g_pSettings->isMenuActive())		//if menu is not active, no need to check other keys
+	//hotkeys
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotTeleport], 0))
+	{
+		g_pHack->teleportWaypoint();
+		return;
+	}
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotWanted], 0))
+	{
+		g_pHack->notWanted();
+		return;
+	}
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotHealth], 0))
+	{
+		g_pHack->restoreHealth();
+		return;
+	}
+
+	//if menu is not active, no need to check other keys
+	if(!g_pSettings->isMenuActive())
 		return;
 
 	//menu navigation
@@ -114,7 +132,7 @@ void hack::checkKeys()
 		g_pSettings->menuTabLeft();
 		return;
 	}
-	if(checkKeyState(76, 0))	// L
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSave], 0))
 	{
 		featTeleport* tp	= dynamic_cast<featTeleport*>(g_pSettings->getFeatureCur(g_pSettings->getActiveFeature()));
 		if(tp == nullptr || tp->m_tpType != tp_saved)
@@ -286,7 +304,7 @@ void	hack::quickReload(bool restore)
 		}
 		return;
 	}
-	float fValue	= m_weapon.m_weapDataRestore.m_fReload * static_cast<featSlider*>(g_pSettings->getFeature(6))->m_fValue;
+	float fValue	= m_weapon.m_weapDataRestore.m_fReload * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD]))->m_fValue;
 	if(m_weapon.m_weapDataCur.m_fReload != fValue)
 		m_weapon.setReloadSpeed(fValue);
 	if(m_weapon.m_weapDataCur.m_fReloadVeh != 0)
@@ -304,7 +322,7 @@ void	hack::bulletDamage(bool restore)
 			m_weapon.setBulletDamage(m_weapon.m_weapDataRestore.m_fDamage);
 		return;
 	}
-	float fValue	= m_weapon.m_weapDataRestore.m_fDamage * static_cast<featSlider*>(g_pSettings->getFeature(7))->m_fValue;
+	float fValue	= m_weapon.m_weapDataRestore.m_fDamage * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE]))->m_fValue;
 	if(m_weapon.m_weapDataCur.m_fDamage != fValue)
 		m_weapon.setBulletDamage(fValue);
 	return;
@@ -320,7 +338,7 @@ void	hack::weaponRange(bool restore)
 			m_weapon.setRange(m_weapon.m_weapDataRestore.m_fRange);
 		return;
 	}
-	float fValue	= m_weapon.m_weapDataRestore.m_fRange * static_cast<featSlider*>(g_pSettings->getFeature(9))->m_fValue;
+	float fValue	= m_weapon.m_weapDataRestore.m_fRange * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE]))->m_fValue;
 	if(m_weapon.m_weapDataCur.m_fRange != fValue)
 		m_weapon.setRange(fValue);
 	return;
@@ -367,4 +385,34 @@ bool	hack::loadWeapon()
 		m_weapon.m_weapDataRestore	= m_weapon.m_weapDataCur;
 	}
 	return 1;
+}
+
+void	hack::runSpeed(bool restore)
+{
+	m_player.getRunSpeed();
+	if(restore)
+	{
+		if(m_player.m_flRunSpd > 1.f)
+			m_player.setRunSpeed(1.f);
+		return;
+	}
+	float fValue	= static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]))->m_fValue;
+	if(m_player.m_flRunSpd != fValue)
+		m_player.setRunSpeed(fValue);
+	return;
+}
+
+void	hack::swimSpeed(bool restore)
+{
+	m_player.getSwimSpeed();
+	if(restore)
+	{
+		if(m_player.m_flSwimSpd > 1.f)
+			m_player.setSwimSpeed(1.f);
+		return;
+	}
+	float fValue	= static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD]))->m_fValue;
+	if(m_player.m_flSwimSpd != fValue)
+		m_player.setSwimSpeed(fValue);
+	return;
 }

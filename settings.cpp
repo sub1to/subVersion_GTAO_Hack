@@ -38,6 +38,10 @@ settings::settings()
 	m_iKeys[keyMenuSelect]		= m_iniParser.getValue<int>("keyMenuSelect");
 	m_iKeys[keyMenuTabNext]		= m_iniParser.getValue<int>("keyMenuTabNext");
 	m_iKeys[keyMenuTabPrev]		= m_iniParser.getValue<int>("keyMenuTabPrev");
+	m_iKeys[keyMenuSave]		= m_iniParser.getValue<int>("keyMenuSave");
+	m_iKeys[keyHotTeleport]		= m_iniParser.getValue<int>("keyHotTeleport");
+	m_iKeys[keyHotWanted]		= m_iniParser.getValue<int>("keyHotWanted");
+	m_iKeys[keyHotHealth]		= m_iniParser.getValue<int>("keyHotHealth");
 }
 settings::~settings()
 {

@@ -29,15 +29,19 @@
 #define NAME_BUFFER_SIZE	0x20
 
 //Required keys, loaded in settings::settings
-#define keyExit			0
-#define keyMenu			1
-#define keyMenuUp		2
-#define keyMenuDown		3
-#define keyMenuLeft		4
-#define keyMenuRight	5
-#define keyMenuSelect	6
-#define keyMenuTabNext	7
-#define keyMenuTabPrev	8
+#define keyExit			0x0
+#define keyMenu			0x1
+#define keyMenuUp		0x2
+#define keyMenuDown		0x3
+#define keyMenuLeft		0x4
+#define keyMenuRight	0x5
+#define keyMenuSelect	0x6
+#define keyMenuTabNext	0x7
+#define keyMenuTabPrev	0x8
+#define keyMenuSave		0x9
+#define keyHotTeleport	0xA
+#define keyHotWanted	0xB
+#define keyHotHealth	0xC
 
 class featCat
 {

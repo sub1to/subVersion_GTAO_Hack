@@ -25,6 +25,7 @@ hack*		g_pHack;
 settings*	g_pSettings;
 memManager*	g_pMemMan;
 D3D9Render*	g_pD3D9Render;
+int			g_iFeature[MAX_MENU_FEATURES]	= {};
 
 bool		g_bKillSwitch	= false;
 bool		g_bKillRender	= false;
@@ -58,17 +59,19 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeatureCategory("Weapon");		//1
 	g_pSettings->addFeatureCategory("Teleport");	//2
 
-	g_pSettings->addFeature(0, "Godmode", feat_toggle, "godMode");								//0
-	g_pSettings->addFeature(0, "Never Wanted", feat_toggle, "neverWanted");						//1
-	g_pSettings->addFeature(0, "Anti NPC", feat_toggle, "antiNpc");								//2
-	g_pSettings->addFeature(0, "Vehicle Godmode", feat_toggle, "vehGodMode");					//3
-	g_pSettings->addFeature(1, "No Spread", feat_toggle, "noSpread");							//4
-	g_pSettings->addFeature(1, "No Recoil", feat_toggle, "noRecoil");							//5
-	g_pSettings->addFeature(1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);			//6
-	g_pSettings->addFeature(1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);		//7
-	g_pSettings->addFeature(1, "Infinite Ammo", feat_toggle, "infAmmo");						//8
-	g_pSettings->addFeature(1, "Range", feat_slider, "weapRange", 1.f, 5.f);					//9
-	g_pSettings->addFeature(1, "No Spin-Up", feat_toggle, "weapSpin");							//10
+	g_iFeature[FEATURE_P_GOD]		= g_pSettings->addFeature(0, "Godmode", feat_toggle, "godMode");
+	g_iFeature[FEATURE_P_WANTED]	= g_pSettings->addFeature(0, "Never Wanted", feat_toggle, "neverWanted");
+	g_iFeature[FEATURE_P_ANTINPC]	= g_pSettings->addFeature(0, "Anti NPC", feat_toggle, "antiNpc");
+	g_iFeature[FEATURE_P_RUNSPD]	= g_pSettings->addFeature(0, "Run Speed", feat_slider, "runSpd", 1.f, 5.f);
+	g_iFeature[FEATURE_P_SWIMSPD]	= g_pSettings->addFeature(0, "Swim Speed", feat_slider, "swimSpd", 1.f, 5.f);
+	g_iFeature[FEATURE_P_VEHGOD]	= g_pSettings->addFeature(0, "Vehicle Godmode", feat_toggle, "vehGodMode");
+	g_iFeature[FEATURE_W_SPREAD]	= g_pSettings->addFeature(1, "No Spread", feat_toggle, "noSpread");	
+	g_iFeature[FEATURE_W_RECOIL]	= g_pSettings->addFeature(1, "No Recoil", feat_toggle, "noRecoil");	
+	g_iFeature[FEATURE_W_RELOAD]	= g_pSettings->addFeature(1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);
+	g_iFeature[FEATURE_W_DAMAGE]	= g_pSettings->addFeature(1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);
+	g_iFeature[FEATURE_W_AMMO]		= g_pSettings->addFeature(1, "Infinite Ammo", feat_toggle, "infAmmo");
+	g_iFeature[FEATURE_W_RANGE]		= g_pSettings->addFeature(1, "Range", feat_slider, "weapRange", 1.f, 5.f);
+	g_iFeature[FEATURE_W_SPINUP]	= g_pSettings->addFeature(1, "No Spin-Up", feat_toggle, "weapSpin");
 	g_pSettings->addFeature(2, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(2, "Position 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(2, "Position 2", feat_teleport, "pos1", tp_saved);
@@ -98,11 +101,11 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 							WS_POPUP,												//dwStyle [in]
 							0,														//x [in]
 							0,														//y [in]
-							800,													//nWidth [in]
-							600,													//nHeight [in]
+							300,													//nWidth [in]
+							300,													//nHeight [in]
 							nullptr,												//hWndParent [in, optional]
 							nullptr,												//hMenu [in, optional]
-							nullptr,												//hInstance [in, optional]		A handle to the instance of the module to be associated with the window.
+							hInstance,												//hInstance [in, optional]		A handle to the instance of the module to be associated with the window.
 							nullptr);												//lpParam [in, optional]
 
 	SetLayeredWindowAttributes(g_hWnd, 0, 0, LWA_ALPHA);
@@ -207,26 +210,30 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 		g_pHack->initPointers();
 		g_pHack->checkKeys();
 
-		if(g_pSettings->getFeature(0)->m_bOn)
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_GOD])->m_bOn)
 			g_pHack->restoreHealth();
-		if(g_pSettings->getFeature(1)->m_bOn)
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED])->m_bOn)
 			g_pHack->notWanted();
-		if(g_pSettings->getFeature(2)->m_bOn)
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_ANTINPC])->m_bOn)
 			g_pHack->killNpc();
-		if(g_pSettings->getFeature(3)->m_bOn)
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_VEHGOD])->m_bOn)
 			g_pHack->restoreVehicleHealth();
+
+		g_pHack->runSpeed(!g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD])->m_bOn);
+		g_pHack->swimSpeed(!g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD])->m_bOn);
 
 		if(g_pHack->loadWeapon())
 		{
-			g_pHack->noSpread(!g_pSettings->getFeature(4)->m_bOn);
-			g_pHack->noRecoil(!g_pSettings->getFeature(5)->m_bOn);
-			g_pHack->quickReload(!g_pSettings->getFeature(6)->m_bOn);
-			g_pHack->bulletDamage(!g_pSettings->getFeature(7)->m_bOn);
-			g_pHack->weaponRange(!g_pSettings->getFeature(9)->m_bOn);
-			g_pHack->weaponSpin(!g_pSettings->getFeature(10)->m_bOn);
+			g_pHack->noSpread(!g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD])->m_bOn);
+			g_pHack->noRecoil(!g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL])->m_bOn);
+			g_pHack->quickReload(!g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD])->m_bOn);
+			g_pHack->bulletDamage(!g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE])->m_bOn);
+			g_pHack->weaponRange(!g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE])->m_bOn);
+			g_pHack->weaponSpin(!g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP])->m_bOn);
+
+			if(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO])->m_bOn)
+				g_pHack->fillAmmo();
 		}
-		if(g_pSettings->getFeature(8)->m_bOn)
-			g_pHack->fillAmmo();
 
 		Sleep(1);
 	}
@@ -238,9 +245,6 @@ void	killProgram()
 {
 	g_bKillSwitch = true;				//enable thread killswitch
 	g_pSettings->m_iniParser.write();	//save options
-
-	if(g_pHack->loadWeapon())
-		g_pHack->m_weapon.restoreWeapon();
 
 	//make sure we shut down all threads before deleting the objects
 	while(!g_bKillAttach || !g_bKillRender)

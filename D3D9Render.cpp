@@ -77,18 +77,9 @@ bool	D3D9Render::render()
 
 	if(g_pSettings->isMenuActive() && g_pMemMan->getWindow() == GetForegroundWindow())
 	{
-		D3DCOLOR color_background		= D3DCOLOR_ARGB(255, 0x38, 0x78, 0xe2);//8d2222//3878e2
-		D3DCOLOR color_border			= D3DCOLOR_ARGB(255, 1, 1, 1);
-		D3DCOLOR color_text				= D3DCOLOR_ARGB(255, 1, 1, 1);
-		D3DCOLOR color_slider_bg		= D3DCOLOR_ARGB(255, 0x28, 0x28, 0x28);
-		D3DCOLOR color_slider_btn		= D3DCOLOR_ARGB(255, 0x73, 0x73, 0x73);
-		D3DCOLOR color_active_bg		= D3DCOLOR_ARGB(255, 0x85, 0xac, 0xed);	//85aced
-		D3DCOLOR color_active_border	= D3DCOLOR_ARGB(255, 1, 1, 1);
-		D3DCOLOR color_selected			= D3DCOLOR_ARGB(255, 0xff, 0xff, 0xff);
-
 		//Draw header
-		this->drawBoxBorder(0, 0, LAYOUT_ELEMENT_WIDTH, LAYOUT_ELEMENT_HEIGHT, LAYOUT_BORDER_SIZE, color_background, color_border);
-		this->drawText("subVersion menu [unknowncheats]", 5.f, 3.f, 2, color_text);
+		this->drawBoxBorder(0, 0, LAYOUT_ELEMENT_WIDTH, LAYOUT_ELEMENT_HEIGHT, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
+		this->drawText("subVersion menu [unknowncheats]", 5.f, 3.f, 2, LAYOUT_COLOR_TEXT);
 
 		//prevent race conditions
 		while(!g_pSettings->lockFeatureCur())
@@ -102,12 +93,12 @@ bool	D3D9Render::render()
 						y	= (float) LAYOUT_ELEMENT_HEIGHT * 1,
 						w	= (float) (LAYOUT_ELEMENT_WIDTH / g_pSettings->getFeatureCategoryCount()),
 						h	= (float) LAYOUT_ELEMENT_HEIGHT;
-			this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, (i == g_pSettings->getActiveCat()) ? color_active_bg : color_background, (i == g_pSettings->getActiveCat()) ? color_active_border : color_border);
-			this->drawText(tab->name, x + 5, y + 5, 0, color_text);
+			this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, (i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BG : LAYOUT_COLOR_BACKGROUND, (i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
+			this->drawText(tab->name, x + 5, y + 5, 0, LAYOUT_COLOR_TEXT);
 		}
 		//draw features
 		int n	= g_pSettings->getFeatureCurCount();
-		this->drawBoxBorder(0.f, (float) LAYOUT_ELEMENT_HEIGHT * 2, (float) LAYOUT_ELEMENT_WIDTH, (float) LAYOUT_ELEMENT_HEIGHT * n, (float) LAYOUT_BORDER_SIZE, color_background, color_border);
+		this->drawBoxBorder(0.f, (float) LAYOUT_ELEMENT_HEIGHT * 2, (float) LAYOUT_ELEMENT_WIDTH, (float) LAYOUT_ELEMENT_HEIGHT * n, (float) LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
 		for(int i = 0; i < n; i++)			//this loops through only the features in the current category
 		{
 			feat*		feature	= g_pSettings->getFeatureCur(i);
@@ -116,12 +107,12 @@ bool	D3D9Render::render()
 
 			//selected box
 			if(i == g_pSettings->getActiveFeature())
-				this->drawBoxBorder(x-3, y-3, LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2), LAYOUT_BORDER_SIZE,color_active_bg, color_selected);
+				this->drawBoxBorder(x-3, y-3, LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2), LAYOUT_BORDER_SIZE,LAYOUT_COLOR_ACTIVE_BG, LAYOUT_COLOR_SELECTED);
 			//checkbox
 			if(feature->m_type == feat_toggle || feature->m_type == feat_slider)
-				this->drawBoxBorder(x, y, LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_BORDER_SIZE, (feature->m_bOn == true) ? color_selected : color_background, (feature->m_bOn == true) ? color_active_border : color_border);
+				this->drawBoxBorder(x, y, LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_BORDER_SIZE, (feature->m_bOn == true) ? LAYOUT_COLOR_SELECTED : LAYOUT_COLOR_BACKGROUND, (feature->m_bOn == true) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
 			
-			this->drawText(feature->m_szName, x + (LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2)), y, 1, color_text);
+			this->drawText(feature->m_szName, x + (LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2)), y, 1, LAYOUT_COLOR_TEXT);
 			
 			if(feature->m_type == feat_slider)
 			{
@@ -131,8 +122,8 @@ bool	D3D9Render::render()
 						w	= (LAYOUT_ELEMENT_WIDTH * .5f) - (LAYOUT_BORDER_SIZE * 2),
 						h	= LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5);
 				float	mod	= (slider->m_fValue - slider->m_fMin)/(slider->m_fMax - slider->m_fMin);
-				this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, color_slider_bg, color_border);
-				this->drawBoxBorder(x + (mod * (w - h)), y, h, h, LAYOUT_BORDER_SIZE, color_slider_btn, color_border);
+				this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BG, LAYOUT_COLOR_BORDER);
+				this->drawBoxBorder(x + (mod * (w - h)), y, h, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BTN, LAYOUT_COLOR_BORDER);
 			}
 		}
 

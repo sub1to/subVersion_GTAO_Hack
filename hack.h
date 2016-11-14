@@ -60,6 +60,8 @@ class hack : public trainer
 		void	weaponRange(bool restore);
 		void	weaponSpin(bool restore);
 		bool	loadWeapon();
+		void	runSpeed(bool restore);
+		void	swimSpeed(bool restore);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,
