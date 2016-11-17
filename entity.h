@@ -91,7 +91,7 @@ class weapon
 					m_dwHash;		//name hash
 		struct weaponData
 		{
-			DWORD		m_dwHash;
+			DWORD		m_dwHash = 0;
 			DWORD_PTR	m_dwpWeapon	= 0;
 			float		m_fSpread,		
 						m_fRecoil,

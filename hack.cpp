@@ -380,7 +380,7 @@ bool	hack::loadWeapon()
 	m_weapon.getSpin();
 	if(m_weapon.m_weapDataCur.m_dwHash != m_weapon.m_weapDataRestore.m_dwHash)
 	{
-		if(m_weapon.m_weapDataCur.m_dwpWeapon != 0)
+		if(m_weapon.m_weapDataRestore.m_dwpWeapon != 0)
 			m_weapon.restoreWeapon();
 		m_weapon.m_weapDataRestore	= m_weapon.m_weapDataCur;
 	}

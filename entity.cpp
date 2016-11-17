@@ -194,14 +194,14 @@ void weapon::getMaxAmmo()
 
 void weapon::restoreWeapon()
 {
-	this->setSpread(m_weapDataRestore.m_fSpread);
-	this->setRecoil(m_weapDataRestore.m_fRecoil);
-	this->setBulletDamage(m_weapDataRestore.m_fDamage);
-	this->setReloadSpeed(m_weapDataRestore.m_fReload);
-	this->setReloadVehicle(m_weapDataRestore.m_fReloadVeh);
-	this->setRange(m_weapDataRestore.m_fRange);
-	this->setSpinUp(m_weapDataRestore.m_fSpinUp);
-	this->setSpin(m_weapDataRestore.m_fSpin);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPREAD, &m_weapDataRestore.m_fSpread);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RECOIL, &m_weapDataRestore.m_fRecoil);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BULLET_DMG, &m_weapDataRestore.m_fDamage);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RELOAD_MULTIPLIER, &m_weapDataRestore.m_fReload);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RELOAD_VEHICLE, &m_weapDataRestore.m_fReloadVeh);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RANGE, &m_weapDataRestore.m_fRange);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPINUP, &m_weapDataRestore.m_fSpinUp);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPIN, &m_weapDataRestore.m_fSpin);
 	return;
 }
 
