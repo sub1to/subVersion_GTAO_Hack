@@ -23,9 +23,36 @@
 	ENTITY
 */
 entity::entity(){}
-entity::~entity(){}
-void entity::getPos(){}
-void entity::setPos(v3 dest){}
+entity::~entity()
+{
+	this->setGod(0);
+}
+
+void entity::getPos()
+{
+	g_pMemMan->readMem<v3>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_POS, &m_pos);
+	return;
+}
+
+void entity::setPos(v3 dest)
+{
+	g_pMemMan->writeMem<v3>((DWORD_PTR) m_dwpPosBase + OFFSET_ENTITY_POSBASE_POS, &dest);
+	g_pMemMan->writeMem<v3>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_POS, &dest);
+	return;
+}
+
+void entity::getGod()
+{
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_GOD, &m_btGod);
+	return;
+}
+
+void entity::setGod(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_GOD, &value);
+	return;
+}
+
 void entity::getHealth(){}
 void entity::setHealth(float hp){}
 
@@ -37,34 +64,20 @@ player::~player()
 {
 	this->setRunSpeed(1);
 	this->setSwimSpeed(1);
-	this->setGod(0);
-}
-
-void player::getPos()
-{
-	g_pMemMan->readMem<v3>((DWORD_PTR) m_dwpPlayerPosBase + OFFSET_ENTITY_POSBASE_POS, &m_pos);
-	return;
-}
-
-void player::setPos(v3 dest)
-{
-	g_pMemMan->writeMem<v3>((DWORD_PTR) m_dwpPlayerPosBase + OFFSET_ENTITY_POSBASE_POS, &dest);
-	g_pMemMan->writeMem<v3>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_POS, &dest);
-	return;
 }
 
 void player::getHealth()
 {
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_HEALTH, &m_hp.cur);
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_HEALTH_MAX, &m_hp.max);
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_ARMOR, &m_flArmor);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &m_hp.cur);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &m_hp.max);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_ARMOR, &m_flArmor);
 	return;
 }
 
 void player::setHealth(float hp, float armor)
 {
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_HEALTH, &hp);
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_ARMOR, &armor);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &hp);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_ARMOR, &armor);
 	return;
 }
 
@@ -83,7 +96,7 @@ void player::setWanted(DWORD stars)
 void player::getInVehicle()
 {
 	DWORD	dwRead;
-	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_INVEHICLE, &dwRead);
+	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_INVEHICLE, &dwRead);
 	m_dwInVehicle		= (DWORD) !((dwRead >> 28) & 1);
 	return;
 }
@@ -112,18 +125,6 @@ void player::setSwimSpeed(float value)
 	return;
 }
 
-void player::getGod()
-{
-	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_GOD, &m_btGod);
-	return;
-}
-
-void player::setGod(BYTE value)
-{
-	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_GOD, &value);
-	return;
-}
-
 void player::getFrameFlags()
 {
 	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_FRAMEFLAGS, &m_dwFrameFlags);
@@ -146,28 +147,15 @@ vehicle::vehicle()
 }
 vehicle::~vehicle(){}
 
-void vehicle::getPos()
-{
-	g_pMemMan->readMem<v3>((DWORD_PTR) m_dwpVehicleBase + OFFSET_ENTITY_POS, &m_pos);
-	return;
-}
-
-void vehicle::setPos(v3 dest)
-{
-	g_pMemMan->writeMem<v3>((DWORD_PTR) m_dwpVehiclePosBase + OFFSET_ENTITY_POSBASE_POS, &dest);
-	g_pMemMan->writeMem<v3>((DWORD_PTR) m_dwpVehicleBase + OFFSET_ENTITY_POS, &dest);
-	return;
-}
-
 void vehicle::getHealth()
 {
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpVehicleBase + OFFSET_VEHICLE_HEALTH, &m_hp.cur);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &m_hp.cur);
 	return;
 }
 
 void vehicle::setHealth(float hp)
 {
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpVehicleBase + OFFSET_VEHICLE_HEALTH, &hp);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &hp);
 	return;
 }
 

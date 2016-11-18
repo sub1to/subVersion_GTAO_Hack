@@ -64,6 +64,7 @@ class hack : public trainer
 		void	swimSpeed(bool restore);
 		void	godMode(bool restore);
 		void	frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, bool bExplosiveAmmo);
+		void	vehicleGod(bool restore);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,

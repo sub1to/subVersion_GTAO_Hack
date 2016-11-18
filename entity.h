@@ -31,6 +31,7 @@ class entity
 	public:
 		health	m_hp;
 		v3		m_pos;
+		BYTE	m_btGod;
 
 						entity();
 						~entity();
@@ -38,6 +39,11 @@ class entity
 		virtual void	setPos(v3 dest);
 		virtual void	getHealth();
 		virtual void	setHealth(float hp);
+		virtual void	getGod();
+		virtual void	setGod(BYTE value);
+
+		DWORD_PTR	m_dwpBase,
+					m_dwpPosBase;
 };
 
 class player : public entity
@@ -49,12 +55,9 @@ class player : public entity
 		DWORD	m_dwWanted,
 				m_dwInVehicle,
 				m_dwFrameFlags;
-		BYTE	m_btGod;
 
 						player();
 						~player();
-		virtual	void	getPos();
-		virtual	void	setPos(v3 dest);
 		virtual	void	getHealth();
 		virtual	void	setHealth(float hp, float armor);
 				void	getWanted();
@@ -64,15 +67,10 @@ class player : public entity
 				void	setRunSpeed(float value);
 				void	getSwimSpeed();
 				void	setSwimSpeed(float value);
-				void	getGod();
-				void	setGod(BYTE value);
 				void	getFrameFlags();
 				void	setFrameFlags(DWORD value);
 
-
-		DWORD_PTR	m_dwpPlayerBase,
-					m_dwpPlayerPosBase,
-					m_dwpPlayerInfo;
+		DWORD_PTR	m_dwpPlayerInfo;
 };
 
 class vehicle : public entity
@@ -80,13 +78,8 @@ class vehicle : public entity
 	public:
 						vehicle();
 						~vehicle();
-		virtual void	getPos();
-		virtual void	setPos(v3 dest);
 		virtual void	getHealth();
 		virtual void	setHealth(float hp);
-
-		DWORD_PTR	m_dwpVehicleBase,
-					m_dwpVehiclePosBase;
 };
 
 class weapon

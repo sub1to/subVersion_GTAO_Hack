@@ -156,13 +156,13 @@ bool	hack::initPointers()
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_hModule + ADDRESS_WORLD, &m_dwpWorldBase);
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWorldBase + OFFSET_PLAYER, &m_dwpPlayerBase);
-	m_player.m_dwpPlayerBase		= m_dwpPlayerBase;
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_POSBASE, &m_player.m_dwpPlayerPosBase);
+	m_player.m_dwpBase		= m_dwpPlayerBase;
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_POSBASE, &m_player.m_dwpPosBase);
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_INFO, &m_player.m_dwpPlayerInfo);
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_VEHICLE, &m_dwpVehicleBase);
-	m_vehicle.m_dwpVehicleBase		= m_dwpVehicleBase;
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_ENTITY_POSBASE, &m_vehicle.m_dwpVehiclePosBase);
+	m_vehicle.m_dwpBase		= m_dwpVehicleBase;
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_ENTITY_POSBASE, &m_vehicle.m_dwpPosBase);
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_ATTACKER, &m_dwpAttackerBase);
 
@@ -443,5 +443,19 @@ void	hack::frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, boo
 	if(bExplosiveAmmo)
 		dwValue		|= 1 << 11;
 	m_player.setFrameFlags(dwValue);
+	return;
+}
+
+void	hack::vehicleGod(bool restore)
+{
+	m_vehicle.getGod();
+	if(restore)
+	{
+		if(m_vehicle.m_btGod > 0)
+			m_vehicle.setGod(0);
+		return;
+	}
+	if(m_vehicle.m_btGod < 1)
+		m_vehicle.setGod(1);
 	return;
 }

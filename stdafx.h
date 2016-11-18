@@ -101,7 +101,7 @@
 #define FEATURE_P_GOD				0x00
 #define FEATURE_P_WANTED			0x01
 #define FEATURE_P_ANTINPC			0x02
-#define FEATURE_P_VEHGOD			0x03
+#define FEATURE_V_GOD				0x03
 #define FEATURE_W_SPREAD			0x04
 #define FEATURE_W_RECOIL			0x05
 #define FEATURE_W_RELOAD			0x06
@@ -116,6 +116,7 @@
 #define FEATURE_P_EXPLOSIVEMELEE	0x0F
 #define FEATURE_W_EXPLOSIVEAMMO		0x10
 #define FEATURE_W_FIREAMMO			0x11
+#define FEATURE_V_TRUEGOD			0x12
 
 
 void		killProgram	();
