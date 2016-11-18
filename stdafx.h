@@ -66,8 +66,10 @@
 #define OFFSET_PLAYER_INFO_WANTED		0x798			//wanted level; DWORD
 #define	OFFSET_PLAYER_INFO_RUN_SPD		0xE8			//run speed; def 1; float
 #define OFFSET_PLAYER_INFO_SWIM_SPD		0xE4			//swim speed; def 1; float
+#define OFFSET_PLAYER_INFO_FRAMEFLAGS	0x190			//frame flags; DWORD
 #define OFFSET_PLAYER_VEHICLE			0x14E0			//ptr to last used vehicle
 #define OFFSET_PLAYER_NAME				0x7C
+#define OFFSET_PLAYER_GOD				0x189			//godmode; on = 1, off = 0; byte
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH			0x82C			//vehicle health; 0.f-1000.f
@@ -96,19 +98,24 @@
 
 
 //feature indexing
-#define FEATURE_P_GOD			0x00
-#define FEATURE_P_WANTED		0x01
-#define FEATURE_P_ANTINPC		0x02
-#define FEATURE_P_VEHGOD		0x03
-#define FEATURE_W_SPREAD		0x04
-#define FEATURE_W_RECOIL		0x05
-#define FEATURE_W_RELOAD		0x06
-#define FEATURE_W_DAMAGE		0x07
-#define FEATURE_W_AMMO			0x08
-#define FEATURE_W_RANGE			0x09
-#define FEATURE_W_SPINUP		0x0A
-#define FEATURE_P_RUNSPD		0x0B
-#define FEATURE_P_SWIMSPD		0x0C
+#define FEATURE_P_GOD				0x00
+#define FEATURE_P_WANTED			0x01
+#define FEATURE_P_ANTINPC			0x02
+#define FEATURE_P_VEHGOD			0x03
+#define FEATURE_W_SPREAD			0x04
+#define FEATURE_W_RECOIL			0x05
+#define FEATURE_W_RELOAD			0x06
+#define FEATURE_W_DAMAGE			0x07
+#define FEATURE_W_AMMO				0x08
+#define FEATURE_W_RANGE				0x09
+#define FEATURE_W_SPINUP			0x0A
+#define FEATURE_P_RUNSPD			0x0B
+#define FEATURE_P_SWIMSPD			0x0C
+#define FEATURE_P_TRUEGOD			0x0D
+#define FEATURE_P_SUPERJUMP			0x0E
+#define FEATURE_P_EXPLOSIVEMELEE	0x0F
+#define FEATURE_W_EXPLOSIVEAMMO		0x10
+#define FEATURE_W_FIREAMMO			0x11
 
 
 void		killProgram	();

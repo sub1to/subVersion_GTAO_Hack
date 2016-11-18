@@ -416,3 +416,32 @@ void	hack::swimSpeed(bool restore)
 		m_player.setSwimSpeed(fValue);
 	return;
 }
+
+void	hack::godMode(bool restore)
+{
+	m_player.getGod();
+	if(restore)
+	{
+		if(m_player.m_btGod > 0)
+			m_player.setGod(0);
+		return;
+	}
+	if(m_player.m_btGod < 1)
+		m_player.setGod(1);
+	return;
+}
+
+void	hack::frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, bool bExplosiveAmmo)
+{
+	DWORD dwValue	= 0;
+	if(bSuperJump)
+		dwValue		|= 1 << 14;
+	if(bExplosiveMelee)
+		dwValue		|= 1 << 13;
+	if(bFireAmmo)
+		dwValue		|= 1 << 12;
+	if(bExplosiveAmmo)
+		dwValue		|= 1 << 11;
+	m_player.setFrameFlags(dwValue);
+	return;
+}

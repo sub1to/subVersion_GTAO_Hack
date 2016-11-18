@@ -37,6 +37,7 @@ player::~player()
 {
 	this->setRunSpeed(1);
 	this->setSwimSpeed(1);
+	this->setGod(0);
 }
 
 void player::getPos()
@@ -108,6 +109,30 @@ void player::getSwimSpeed()
 void player::setSwimSpeed(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_SWIM_SPD, &value);
+	return;
+}
+
+void player::getGod()
+{
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_GOD, &m_btGod);
+	return;
+}
+
+void player::setGod(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_GOD, &value);
+	return;
+}
+
+void player::getFrameFlags()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_FRAMEFLAGS, &m_dwFrameFlags);
+	return;
+}
+
+void player::setFrameFlags(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_FRAMEFLAGS, &value);
 	return;
 }
 

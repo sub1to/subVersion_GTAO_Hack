@@ -59,19 +59,24 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeatureCategory("Weapon");		//1
 	g_pSettings->addFeatureCategory("Teleport");	//2
 
-	g_iFeature[FEATURE_P_GOD]		= g_pSettings->addFeature(0, "Godmode", feat_toggle, "godMode");
-	g_iFeature[FEATURE_P_WANTED]	= g_pSettings->addFeature(0, "Never Wanted", feat_toggle, "neverWanted");
-	g_iFeature[FEATURE_P_ANTINPC]	= g_pSettings->addFeature(0, "Anti NPC", feat_toggle, "antiNpc");
-	g_iFeature[FEATURE_P_RUNSPD]	= g_pSettings->addFeature(0, "Run Speed", feat_slider, "runSpd", 1.f, 5.f);
-	g_iFeature[FEATURE_P_SWIMSPD]	= g_pSettings->addFeature(0, "Swim Speed", feat_slider, "swimSpd", 1.f, 5.f);
-	g_iFeature[FEATURE_P_VEHGOD]	= g_pSettings->addFeature(0, "Vehicle Godmode", feat_toggle, "vehGodMode");
-	g_iFeature[FEATURE_W_SPREAD]	= g_pSettings->addFeature(1, "No Spread", feat_toggle, "noSpread");	
-	g_iFeature[FEATURE_W_RECOIL]	= g_pSettings->addFeature(1, "No Recoil", feat_toggle, "noRecoil");	
-	g_iFeature[FEATURE_W_RELOAD]	= g_pSettings->addFeature(1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);
-	g_iFeature[FEATURE_W_DAMAGE]	= g_pSettings->addFeature(1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);
-	g_iFeature[FEATURE_W_AMMO]		= g_pSettings->addFeature(1, "Infinite Ammo", feat_toggle, "infAmmo");
-	g_iFeature[FEATURE_W_RANGE]		= g_pSettings->addFeature(1, "Range", feat_slider, "weapRange", 1.f, 5.f);
-	g_iFeature[FEATURE_W_SPINUP]	= g_pSettings->addFeature(1, "No Spin-Up", feat_toggle, "weapSpin");
+	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, "God", feat_toggle, "trueGodMode");
+	g_iFeature[FEATURE_P_GOD]				= g_pSettings->addFeature(0, "Demi-God", feat_toggle, "godMode");
+	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, "Never Wanted", feat_toggle, "neverWanted");
+	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, "Anti NPC", feat_toggle, "antiNpc");
+	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, "Run Speed", feat_slider, "runSpd", 1.f, 5.f);
+	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, "Swim Speed", feat_slider, "swimSpd", 1.f, 5.f);
+	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, "Super Jump", feat_toggle, "superJump");
+	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, "Explosive Melee", feat_toggle, "explMelee");
+	g_iFeature[FEATURE_P_VEHGOD]			= g_pSettings->addFeature(0, "Vehicle Godmode", feat_toggle, "vehGodMode");
+	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, "No Spread", feat_toggle, "noSpread");	
+	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, "No Recoil", feat_toggle, "noRecoil");	
+	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);
+	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);
+	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, "Infinite Ammo", feat_toggle, "infAmmo");
+	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, "Range", feat_slider, "weapRange", 1.f, 5.f);
+	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, "No Spin-Up", feat_toggle, "weapSpin");
+	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, "Explosive Ammo", feat_toggle, "explAmmo");
+	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, "Fire Ammo", feat_toggle, "fireAmmo");
 	g_pSettings->addFeature(2, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(2, "Position 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(2, "Position 2", feat_teleport, "pos1", tp_saved);
@@ -221,6 +226,12 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 		g_pHack->runSpeed(!g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD])->m_bOn);
 		g_pHack->swimSpeed(!g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD])->m_bOn);
+		g_pHack->godMode(!g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD])->m_bOn);
+
+		g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP])->m_bOn,
+								g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE])->m_bOn,
+								g_pSettings->getFeature(g_iFeature[FEATURE_W_FIREAMMO])->m_bOn,
+								g_pSettings->getFeature(g_iFeature[FEATURE_W_EXPLOSIVEAMMO])->m_bOn);
 
 		if(g_pHack->loadWeapon())
 		{

@@ -47,7 +47,9 @@ class player : public entity
 				m_flRunSpd,
 				m_flSwimSpd;
 		DWORD	m_dwWanted,
-				m_dwInVehicle;
+				m_dwInVehicle,
+				m_dwFrameFlags;
+		BYTE	m_btGod;
 
 						player();
 						~player();
@@ -62,6 +64,10 @@ class player : public entity
 				void	setRunSpeed(float value);
 				void	getSwimSpeed();
 				void	setSwimSpeed(float value);
+				void	getGod();
+				void	setGod(BYTE value);
+				void	getFrameFlags();
+				void	setFrameFlags(DWORD value);
 
 
 		DWORD_PTR	m_dwpPlayerBase,
