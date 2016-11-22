@@ -45,6 +45,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 					LPSTR		lpCmdLine,
 					int			nCmdShow)
 {
+	if(FindWindow("sub1toOverlay", nullptr))	//make sure the hack is not already running
+		exit(0);
+
 	g_pMemMan		= new memManager;
 	g_pSettings		= new settings;
 	g_pD3D9Render	= new D3D9Render;

@@ -17,6 +17,9 @@
     with subVersion GTA:O SC External Hack.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define __SC_VERSION__
+//#define __STEAM_VERSION__
+
 #ifndef STDAFX_H
 #define STDAFX_H
 
@@ -45,8 +48,14 @@
 
 
 //Addresses from GTAV.exe module
+#ifdef __SC_VERSION__
 #define ADDRESS_WORLD					0x2303788		//42
 #define ADDRESS_WAYPOINT				0x1F59BB0		//wtb a (mini)map struct
+#endif
+#ifdef __STEAM_VERSION__
+#define ADDRESS_WORLD					0x2307738		//42
+#define ADDRESS_WAYPOINT				0x1F5DE50		//wtb a (mini)map struct
+#endif
 
 //offset from WORLD
 #define OFFSET_PLAYER					0x08			//playerbase

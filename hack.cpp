@@ -448,6 +448,8 @@ void	hack::frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, boo
 
 void	hack::vehicleGod(bool restore)
 {
+	if(m_dwpVehicleBase == 0)
+		return;
 	m_vehicle.getGod();
 	if(restore)
 	{
