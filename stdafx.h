@@ -51,10 +51,14 @@
 #ifdef __SC_VERSION__
 #define ADDRESS_WORLD					0x2303788		//42
 #define ADDRESS_WAYPOINT				0x1F59BB0		//wtb a (mini)map struct
+#define ADDRESS_AMMO					0x0F5BC65		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
+#define ADDRESS_MAGAZINE				0x0F5BC20		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 #endif
 #ifdef __STEAM_VERSION__
 #define ADDRESS_WORLD					0x2307738		//42
 #define ADDRESS_WAYPOINT				0x1F5DE50		//wtb a (mini)map struct
+#define ADDRESS_AMMO					0x0F5C9E1		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
+#define ADDRESS_MAGAZINE				0x0F5C99C		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 #endif
 
 //offset from WORLD
@@ -79,6 +83,8 @@
 #define OFFSET_PLAYER_VEHICLE			0x14E0			//ptr to last used vehicle
 #define OFFSET_PLAYER_NAME				0x7C
 #define OFFSET_PLAYER_GOD				0x189			//godmode; on = 1, off = 0; byte
+#define OFFSET_PLAYER_RAGDOLL			0x1098			//byte; CPed.noRagdoll: 0x20 = off; 0x01 = on
+#define OFFSET_PLAYER_SEATBELT			0x13DC			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH			0x82C			//vehicle health; 0.f-1000.f
@@ -126,6 +132,9 @@
 #define FEATURE_W_EXPLOSIVEAMMO		0x10
 #define FEATURE_W_FIREAMMO			0x11
 #define FEATURE_V_TRUEGOD			0x12
+#define FEATURE_P_NORAGDOLL			0x13
+#define FEATURE_V_SEATBELT			0x14
+#define FEATURE_W_NORELOAD			0x15
 
 
 void		killProgram	();

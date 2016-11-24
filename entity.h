@@ -55,6 +55,8 @@ class player : public entity
 		DWORD	m_dwWanted,
 				m_dwInVehicle,
 				m_dwFrameFlags;
+		BYTE	m_btRagdoll,
+				m_btSeatbelt;
 
 						player();
 						~player();
@@ -69,6 +71,10 @@ class player : public entity
 				void	setSwimSpeed(float value);
 				void	getFrameFlags();
 				void	setFrameFlags(DWORD value);
+				void	getRagdoll();
+				void	setRagdoll(BYTE value);
+				void	getSeatbelt();
+				void	setSeatbelt(BYTE value);
 
 		DWORD_PTR	m_dwpPlayerInfo;
 };

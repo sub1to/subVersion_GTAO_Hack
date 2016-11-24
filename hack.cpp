@@ -96,6 +96,11 @@ void hack::checkKeys()
 		g_pHack->restoreHealth();
 		return;
 	}
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotAmmo], 0))
+	{
+		g_pHack->fillAmmo();
+		return;
+	}
 
 	//if menu is not active, no need to check other keys
 	if(!g_pSettings->isMenuActive())
@@ -261,11 +266,11 @@ void	hack::fillAmmo()
 	return;
 }
 
-void	hack::noSpread(bool restore)
+void	hack::noSpread(bool on)
 {
 	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
 		return;
-	if(restore)
+	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fSpread != m_weapon.m_weapDataRestore.m_fSpread)
 			m_weapon.setSpread(m_weapon.m_weapDataRestore.m_fSpread);
@@ -276,11 +281,11 @@ void	hack::noSpread(bool restore)
 	return;
 }
 
-void	hack::noRecoil(bool restore)
+void	hack::noRecoil(bool on)
 {
 	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
 		return;
-	if(restore)
+	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fRecoil != m_weapon.m_weapDataRestore.m_fRecoil)
 			m_weapon.setRecoil(m_weapon.m_weapDataRestore.m_fRecoil);
@@ -291,11 +296,11 @@ void	hack::noRecoil(bool restore)
 	return;
 }
 
-void	hack::quickReload(bool restore)
+void	hack::quickReload(bool on)
 {
 	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
 		return;
-	if(restore)
+	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fReload != m_weapon.m_weapDataRestore.m_fReload || m_weapon.m_weapDataCur.m_fReloadVeh != m_weapon.m_weapDataRestore.m_fReloadVeh)
 		{
@@ -312,11 +317,11 @@ void	hack::quickReload(bool restore)
 	return;
 }
 
-void	hack::bulletDamage(bool restore)
+void	hack::bulletDamage(bool on)
 {
 	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
 		return;
-	if(restore)
+	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fDamage != m_weapon.m_weapDataRestore.m_fDamage)
 			m_weapon.setBulletDamage(m_weapon.m_weapDataRestore.m_fDamage);
@@ -328,11 +333,11 @@ void	hack::bulletDamage(bool restore)
 	return;
 }
 
-void	hack::weaponRange(bool restore)
+void	hack::weaponRange(bool on)
 {
 	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
 		return;
-	if(restore)
+	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fRange != m_weapon.m_weapDataRestore.m_fRange)
 			m_weapon.setRange(m_weapon.m_weapDataRestore.m_fRange);
@@ -344,11 +349,11 @@ void	hack::weaponRange(bool restore)
 	return;
 }
 
-void	hack::weaponSpin(bool restore)
+void	hack::weaponSpin(bool on)
 {
 	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
 		return;
-	if(restore)
+	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fSpinUp != m_weapon.m_weapDataRestore.m_fSpinUp || m_weapon.m_weapDataCur.m_fSpin != m_weapon.m_weapDataRestore.m_fSpin)
 		{
@@ -387,10 +392,10 @@ bool	hack::loadWeapon()
 	return 1;
 }
 
-void	hack::runSpeed(bool restore)
+void	hack::runSpeed(bool on)
 {
 	m_player.getRunSpeed();
-	if(restore)
+	if(!on)
 	{
 		if(m_player.m_flRunSpd > 1.f)
 			m_player.setRunSpeed(1.f);
@@ -402,10 +407,10 @@ void	hack::runSpeed(bool restore)
 	return;
 }
 
-void	hack::swimSpeed(bool restore)
+void	hack::swimSpeed(bool on)
 {
 	m_player.getSwimSpeed();
-	if(restore)
+	if(!on)
 	{
 		if(m_player.m_flSwimSpd > 1.f)
 			m_player.setSwimSpeed(1.f);
@@ -417,10 +422,10 @@ void	hack::swimSpeed(bool restore)
 	return;
 }
 
-void	hack::godMode(bool restore)
+void	hack::godMode(bool on)
 {
 	m_player.getGod();
-	if(restore)
+	if(!on)
 	{
 		if(m_player.m_btGod > 0)
 			m_player.setGod(0);
@@ -446,12 +451,12 @@ void	hack::frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, boo
 	return;
 }
 
-void	hack::vehicleGod(bool restore)
+void	hack::vehicleGod(bool on)
 {
 	if(m_dwpVehicleBase == 0)
 		return;
 	m_vehicle.getGod();
-	if(restore)
+	if(!on)
 	{
 		if(m_vehicle.m_btGod > 0)
 			m_vehicle.setGod(0);
@@ -459,5 +464,67 @@ void	hack::vehicleGod(bool restore)
 	}
 	if(m_vehicle.m_btGod < 1)
 		m_vehicle.setGod(1);
+	return;
+}
+
+void	hack::infAmmo(bool on)
+{
+	BYTE	cur[4]		= {};
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+	if(!on)
+	{
+		BYTE	value[4]	= {0x41, 0x2B, 0xD1, 0xE8};
+		if(cur != value)
+			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+		return;
+	}
+	BYTE	value[4]	= {0x90, 0x90, 0x90, 0xE8};
+	if(cur != value)
+		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+	return;
+}
+
+void	hack::noReload(bool on)
+{
+	BYTE	cur[6]		= {};
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+	if(!on)
+	{
+		BYTE	value[6]	= {0x41, 0x2B, 0xC9, 0x3B, 0xC8, 0x0F};
+		if(cur != value)
+			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+		return;
+	}
+	BYTE	value[6]	= {0x90, 0x90, 0x90, 0x3B, 0xC8, 0x0F};
+	if(cur != value)
+		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+	return;
+}
+
+void	hack::seatbelt(bool on)
+{
+	m_player.getSeatbelt();
+	if(!on)
+	{
+		if(m_player.m_btSeatbelt == 0xC9)
+			m_player.setSeatbelt(0xC8);
+		return;
+	}
+	if(m_player.m_btSeatbelt != 0xC9)
+			m_player.setSeatbelt(0xC9);
+	return;
+}
+
+void hack::noRagdoll(bool on)
+{
+	m_player.getRagdoll();
+	if(!on)
+	{
+		if(m_player.m_btRagdoll == 0x01)
+			m_player.setRagdoll(0x20);
+		return;
+	}
+	if(m_player.m_btRagdoll != 0x01)
+		m_player.setRagdoll(0x01);
 	return;
 }

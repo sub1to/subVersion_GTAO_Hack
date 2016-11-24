@@ -42,6 +42,7 @@ settings::settings()
 	m_iKeys[keyHotTeleport]		= m_iniParser.getValue<int>("keyHotTeleport");
 	m_iKeys[keyHotWanted]		= m_iniParser.getValue<int>("keyHotWanted");
 	m_iKeys[keyHotHealth]		= m_iniParser.getValue<int>("keyHotHealth");
+	m_iKeys[keyHotAmmo]			= m_iniParser.getValue<int>("keyHotAmmo");
 }
 settings::~settings()
 {

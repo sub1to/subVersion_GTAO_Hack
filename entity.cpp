@@ -64,6 +64,8 @@ player::~player()
 {
 	this->setRunSpeed(1);
 	this->setSwimSpeed(1);
+	this->setRagdoll(0x20);
+	this->setSeatbelt(0xC8);
 }
 
 void player::getHealth()
@@ -134,6 +136,30 @@ void player::getFrameFlags()
 void player::setFrameFlags(DWORD value)
 {
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_FRAMEFLAGS, &value);
+	return;
+}
+
+void player::getRagdoll()
+{
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_RAGDOLL, &m_btRagdoll);
+	return;
+}
+
+void player::setRagdoll(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_RAGDOLL, &value);
+	return;
+}
+
+void player::getSeatbelt()
+{
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_SEATBELT, &m_btSeatbelt);
+	return;
+}
+
+void player::setSeatbelt(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_SEATBELT, &value);
 	return;
 }
 

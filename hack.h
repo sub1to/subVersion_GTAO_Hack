@@ -53,18 +53,23 @@ class hack : public trainer
 		void	notWanted();
 		void	killNpc();
 		void	fillAmmo();
-		void	noSpread(bool restore);
-		void	noRecoil(bool restore);
-		void	quickReload(bool restore);
-		void	bulletDamage(bool restore);
-		void	weaponRange(bool restore);
-		void	weaponSpin(bool restore);
+		void	noSpread(bool on);
+		void	noRecoil(bool on);
+		void	quickReload(bool on);
+		void	bulletDamage(bool on);
+		void	weaponRange(bool on);
+		void	weaponSpin(bool on);
 		bool	loadWeapon();
-		void	runSpeed(bool restore);
-		void	swimSpeed(bool restore);
-		void	godMode(bool restore);
+		void	runSpeed(bool on);
+		void	swimSpeed(bool on);
+		void	godMode(bool on);
 		void	frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, bool bExplosiveAmmo);
-		void	vehicleGod(bool restore);
+		void	vehicleGod(bool on);
+		void	infAmmo(bool on);
+		void	noReload(bool on);
+		void	seatbelt(bool on);
+		void	noRagdoll(bool on);
+
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,

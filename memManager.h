@@ -34,24 +34,26 @@ class memManager
 		void	setWindowName(LPCSTR str);
 
 		template <typename rT>
-		void	readMem(DWORD_PTR address, rT* output, DWORD size = NULL)
+		void	readMem(DWORD_PTR address, rT* output, DWORD size = NULL, DWORD prot = NULL)
 		{
-			DWORD dwProt, dwProtRet;
-			size = (size == NULL) ? sizeof(rT) : size;
-			VirtualProtectEx(m_hProc, (LPVOID) address, size, PAGE_READWRITE, &dwProtRet);
+			DWORD dwProtRet;
+			size	= (size == NULL) ? sizeof(rT) : size;
+			prot	= (prot == NULL) ? PAGE_READWRITE : prot;
+			VirtualProtectEx(m_hProc, (LPVOID) address, size, prot, &dwProtRet);
 			ReadProcessMemory(m_hProc, (LPVOID) address, output, size, NULL);
-			VirtualProtectEx(m_hProc, (LPVOID) address, size, dwProtRet, &dwProt);
+			VirtualProtectEx(m_hProc, (LPVOID) address, size, dwProtRet, &prot);
 			return;
 		}
 
 		template <typename wT>
-		void	writeMem(DWORD_PTR address, wT* value, DWORD size = NULL)
+		void	writeMem(DWORD_PTR address, wT* value, DWORD size = NULL, DWORD prot = NULL)
 		{
-			DWORD dwProt, dwProtRet;
-			size = (size == NULL) ? sizeof(wT) : size;
-			VirtualProtectEx(m_hProc, (LPVOID) address, size, PAGE_READWRITE, &dwProtRet);
+			DWORD dwProtRet;
+			size	= (size == NULL) ? sizeof(wT) : size;
+			prot	= (prot == NULL) ? PAGE_READWRITE : prot;
+			VirtualProtectEx(m_hProc, (LPVOID) address, size, prot, &dwProtRet);
 			WriteProcessMemory(m_hProc, (LPVOID) address, value, size, NULL);
-			VirtualProtectEx(m_hProc, (LPVOID) address, size, dwProtRet, &dwProt);
+			VirtualProtectEx(m_hProc, (LPVOID) address, size, dwProtRet, &prot);
 			return;
 		}
 	protected:

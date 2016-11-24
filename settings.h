@@ -22,10 +22,10 @@
 #define SETTINGS_H
 
 #define MAX_SAVEDPOS		0x06		//max saved positions (to teleport to)
-#define MAX_PROPERTIES		0x40		//max iniparser properties
+#define MAX_PROPERTIES		0x60		//max iniparser properties
 #define MAX_KEYS			0x10		//max indexed keys (keybinds)
 #define MAX_MENU_TABS		0x08		//max amount of overlay menu tabs
-#define MAX_MENU_FEATURES	0x20		//max amount of features
+#define MAX_MENU_FEATURES	0x40		//max amount of features
 #define NAME_BUFFER_SIZE	0x20
 
 //Required keys, loaded in settings::settings
@@ -42,6 +42,7 @@
 #define keyHotTeleport	0xA
 #define keyHotWanted	0xB
 #define keyHotHealth	0xC
+#define keyHotAmmo		0xD
 
 class featCat
 {

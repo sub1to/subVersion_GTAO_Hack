@@ -72,8 +72,10 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, "Swim Speed", feat_slider, "swimSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, "Super Jump", feat_toggle, "superJump");
 	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, "Explosive Melee", feat_toggle, "explMelee");
+	g_iFeature[FEATURE_P_NORAGDOLL]			= g_pSettings->addFeature(0, "No Ragdoll", feat_toggle, "noRagdoll");
 	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, "No Spread", feat_toggle, "noSpread");	
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, "No Recoil", feat_toggle, "noRecoil");	
+	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, "No Reload", feat_toggle, "noReload");
 	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);
 	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);
 	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, "Infinite Ammo", feat_toggle, "infAmmo");
@@ -83,6 +85,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, "Fire Ammo", feat_toggle, "fireAmmo");
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, "God", feat_toggle, "vehTrueGodMode");
 	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, "Demi-God", feat_toggle, "vehGodMode");
+	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, "Seatbelt", feat_toggle, "seatbelt");
 	g_pSettings->addFeature(3, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, "Position 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(3, "Position 2", feat_teleport, "pos1", tp_saved);
@@ -230,10 +233,13 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 		if(g_pSettings->getFeature(g_iFeature[FEATURE_V_GOD])->m_bOn)
 			g_pHack->restoreVehicleHealth();
 
-		g_pHack->runSpeed(!g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD])->m_bOn);
-		g_pHack->swimSpeed(!g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD])->m_bOn);
-		g_pHack->godMode(!g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD])->m_bOn);
-		g_pHack->vehicleGod(!g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD])->m_bOn);
+		g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD])->m_bOn);
+		g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD])->m_bOn);
+		g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD])->m_bOn);
+		g_pHack->vehicleGod(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD])->m_bOn);
+		g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD])->m_bOn);
+		g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL])->m_bOn);
+		g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT])->m_bOn);
 
 		g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP])->m_bOn,
 								g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE])->m_bOn,
@@ -242,15 +248,17 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 		if(g_pHack->loadWeapon())
 		{
-			g_pHack->noSpread(!g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD])->m_bOn);
-			g_pHack->noRecoil(!g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL])->m_bOn);
-			g_pHack->quickReload(!g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD])->m_bOn);
-			g_pHack->bulletDamage(!g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE])->m_bOn);
-			g_pHack->weaponRange(!g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE])->m_bOn);
-			g_pHack->weaponSpin(!g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP])->m_bOn);
+			g_pHack->noSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD])->m_bOn);
+			g_pHack->noRecoil(g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL])->m_bOn);
+			g_pHack->quickReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD])->m_bOn);
+			g_pHack->bulletDamage(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE])->m_bOn);
+			g_pHack->weaponRange(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE])->m_bOn);
+			g_pHack->weaponSpin(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP])->m_bOn);
 
-			if(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO])->m_bOn)
-				g_pHack->fillAmmo();
+			g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO])->m_bOn);
+
+			//if(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO])->m_bOn)
+			//	g_pHack->fillAmmo();
 		}
 
 		Sleep(1);
@@ -267,6 +275,10 @@ void	killProgram()
 	//make sure we shut down all threads before deleting the objects
 	while(!g_bKillAttach || !g_bKillRender)
 		Sleep(1);
+
+	//restore patched code
+	g_pHack->noReload(false);
+	g_pHack->infAmmo(false);
 
 	delete	g_pHack;
 	delete	g_pD3D9Render;
