@@ -198,8 +198,8 @@ void	D3D9Render::drawBoxInline(float x, float y, float w, float h, float size, D
 
 void	D3D9Render::drawBoxBorder(float x, float y, float w, float h, float borderSize, D3DCOLOR color, D3DCOLOR borderColor)
 {
-	this->drawBox(x, y, w, h, color);
-	this->drawBoxInline(x, y, w, h, borderSize, borderColor);
+	this->drawBox(x, y, w, h, borderColor);
+	this->drawBox(x + borderSize, y + borderSize, w - (borderSize * 2), h - (borderSize * 2), color);
 }
 
 void	D3D9Render::drawText(std::string str, float x, float y, int font, D3DCOLOR color)
