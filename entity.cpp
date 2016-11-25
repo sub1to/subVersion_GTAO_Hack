@@ -43,18 +43,27 @@ void entity::setPos(v3 dest)
 
 void entity::getGod()
 {
-	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_GOD, &m_btGod);
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_GOD, &m_btGod);
 	return;
 }
 
 void entity::setGod(BYTE value)
 {
-	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_GOD, &value);
+	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_GOD, &value);
 	return;
 }
 
-void entity::getHealth(){}
-void entity::setHealth(float hp){}
+void entity::getHealth()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &m_hp.cur);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &m_hp.max);
+	return;
+}
+void entity::setHealth(float hp)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &hp);
+	return;
+}
 
 /*
 	PLAYER
@@ -70,15 +79,14 @@ player::~player()
 
 void player::getHealth()
 {
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &m_hp.cur);
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &m_hp.max);
+	entity::getHealth();
 	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_ARMOR, &m_flArmor);
 	return;
 }
 
 void player::setHealth(float hp, float armor)
 {
-	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &hp);
+	entity::setHealth(hp);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_ARMOR, &armor);
 	return;
 }
@@ -98,7 +106,7 @@ void player::setWanted(DWORD stars)
 void player::getInVehicle()
 {
 	DWORD	dwRead;
-	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_INVEHICLE, &dwRead);
+	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_INVEHICLE, &dwRead);
 	m_dwInVehicle		= (DWORD) !((dwRead >> 28) & 1);
 	return;
 }
@@ -170,17 +178,20 @@ void player::setSeatbelt(BYTE value)
 vehicle::vehicle()
 {
 	m_hp.max = 1000.f;
+	m_hpVehicle.max = 1000.f;
 }
 vehicle::~vehicle(){}
 
 void vehicle::getHealth()
 {
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &m_hp.cur);
+	entity::getHealth();
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &m_hpVehicle.cur);
 	return;
 }
 
 void vehicle::setHealth(float hp)
 {
+	entity::setHealth(hp);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &hp);
 	return;
 }

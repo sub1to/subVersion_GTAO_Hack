@@ -71,7 +71,7 @@
 #define OFFSET_ENTITY_HEALTH			0x280			//entity health (except for vehicles); float cur, float max
 #define OFFSET_ENTITY_HEALTH_MAX		0x2A0			//they moved this away from curHealth in 1.36 :(
 #define OFFSET_ENTITY_ATTACKER			0x2A8			//base to a list of the last 3 entities that attacked the current entity
-#define OFFSET_ENTITY_INVEHICLE			0x1458
+#define OFFSET_ENTITY_GOD				0x189			//godmode; on = 1, off = 0; byte
 
 //player (entity) offsets
 #define OFFSET_PLAYER_ARMOR				0x14A0			//armour
@@ -82,9 +82,9 @@
 #define OFFSET_PLAYER_INFO_FRAMEFLAGS	0x190			//frame flags; DWORD
 #define OFFSET_PLAYER_VEHICLE			0x14E0			//ptr to last used vehicle
 #define OFFSET_PLAYER_NAME				0x7C
-#define OFFSET_PLAYER_GOD				0x189			//godmode; on = 1, off = 0; byte
 #define OFFSET_PLAYER_RAGDOLL			0x1098			//byte; CPed.noRagdoll: 0x20 = off; 0x01 = on
 #define OFFSET_PLAYER_SEATBELT			0x13DC			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
+#define OFFSET_PLAYER_INVEHICLE			0x1458
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH			0x82C			//vehicle health; 0.f-1000.f

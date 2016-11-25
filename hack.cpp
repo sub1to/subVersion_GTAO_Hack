@@ -222,7 +222,8 @@ void	hack::restoreVehicleHealth()
 	if(m_dwpVehicleBase == 0)
 		return;
 	m_vehicle.getHealth();
-	if(m_vehicle.m_hp.cur < m_vehicle.m_hp.max && m_vehicle.m_hp.cur > 0.f)
+	if((m_vehicle.m_hp.cur < m_vehicle.m_hp.max && m_vehicle.m_hp.cur > 0.f) ||
+		(m_vehicle.m_hpVehicle.cur < m_vehicle.m_hpVehicle.max && m_vehicle.m_hpVehicle.cur > 0.f))
 		m_vehicle.setHealth(m_vehicle.m_hp.max);
 	return;
 }

@@ -82,6 +82,8 @@ class player : public entity
 class vehicle : public entity
 {
 	public:
+		health	m_hpVehicle;
+
 						vehicle();
 						~vehicle();
 		virtual void	getHealth();
