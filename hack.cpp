@@ -475,13 +475,13 @@ void	hack::infAmmo(bool on)
 	if(!on)
 	{
 		BYTE	value[4]	= {0x41, 0x2B, 0xD1, 0xE8};
-		if(cur != value)
-			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+		if(cur[0] != value[0])
+			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 		return;
 	}
 	BYTE	value[4]	= {0x90, 0x90, 0x90, 0xE8};
-	if(cur != value)
-		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+	if(cur[0] != value[0])
+		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 	return;
 }
 
@@ -492,13 +492,13 @@ void	hack::noReload(bool on)
 	if(!on)
 	{
 		BYTE	value[6]	= {0x41, 0x2B, 0xC9, 0x3B, 0xC8, 0x0F};
-		if(cur != value)
-			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+		if(cur[0] != value[0])
+			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 		return;
 	}
 	BYTE	value[6]	= {0x90, 0x90, 0x90, 0x3B, 0xC8, 0x0F};
-	if(cur != value)
-		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
+	if(cur[0] != value[0])
+		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 	return;
 }
 
