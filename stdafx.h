@@ -87,7 +87,10 @@
 #define OFFSET_PLAYER_INVEHICLE			0x1458
 
 //vehicle offsets
-#define OFFSET_VEHICLE_HEALTH			0x82C			//vehicle health; 0.f-1000.f
+#define OFFSET_VEHICLE_HEALTH					0x82C			//vehicle health; 0.f-1000.f
+#define OFFSET_VEHICLE_HANDLING					0x850
+#define OFFSET_VEHICLE_HANDLING_ACCELERATION	0x4C
+#define OFFSET_VEHICLE_HANDLING_BRAKEFORCE		0x6C
 
 //weapon offsets
 #define OFFSET_WEAPON_MANAGER			0x10B8			//from playerbase
@@ -135,6 +138,8 @@
 #define FEATURE_P_NORAGDOLL			0x13
 #define FEATURE_V_SEATBELT			0x14
 #define FEATURE_W_NORELOAD			0x15
+#define FEATURE_V_ACCELERATION		0x16
+#define FEATURE_V_BRAKEFORCE		0x17
 
 
 void		killProgram	();

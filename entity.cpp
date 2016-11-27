@@ -180,7 +180,10 @@ vehicle::vehicle()
 	m_hp.max = 1000.f;
 	m_hpVehicle.max = 1000.f;
 }
-vehicle::~vehicle(){}
+vehicle::~vehicle()
+{
+	this->restoreHandling();
+}
 
 void vehicle::getHealth()
 {
@@ -196,6 +199,52 @@ void vehicle::setHealth(float hp)
 	return;
 }
 
+bool vehicle::loadHandling()
+{
+	if(m_dwpBase == 0)
+		return 0;
+	this->getAcceleration();
+	this->getBrakeForce();
+	if(m_handlingCur.m_dwpHandling != m_handlingRestore.m_dwpHandling)
+	{
+		if(m_handlingRestore.m_dwpHandling != 0)
+			this->restoreHandling();
+		m_handlingRestore	= m_handlingCur;
+	}
+	return 1;
+}
+
+void vehicle::restoreHandling()
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ACCELERATION, &m_handlingRestore.m_fAcceleration);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &m_handlingRestore.m_fBrakeForce);
+	return;
+}
+
+void vehicle::getAcceleration()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ACCELERATION, &m_handlingCur.m_fAcceleration);
+	return;
+}
+
+void vehicle::setAcceleration(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ACCELERATION, &value);
+	return;
+}
+
+void vehicle::getBrakeForce()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &m_handlingCur.m_fBrakeForce);
+	return;
+}
+
+void vehicle::setBrakeForce(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &value);
+	return;
+}
+
 /*
 	WEAPON
 */
@@ -208,6 +257,9 @@ weapon::~weapon()
 
 bool weapon::findAmmoBase()
 {
+	if(m_weapDataCur.m_dwpWeapon == 0)
+		return 0;
+
 	DWORD_PTR	dwpBase	= m_dwpAmmoInfo,
 				dwpBase2;
 	DWORD		dwTmp;
@@ -240,6 +292,28 @@ void weapon::getMaxAmmo()
 {
 	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpAmmoInfo + OFFSET_WEAPON_AMMOINFO_MAX, &m_dwMaxAmmo);
 	return;
+}
+
+bool weapon::loadWeapon()
+{
+	if(m_weapDataCur.m_dwpWeapon == 0)
+		return 0;
+	this->getHash();
+	this->getBulletDamage();
+	this->getReloadSpeed();
+	this->getReloadVehicle();
+	this->getRecoil();
+	this->getSpread();
+	this->getRange();
+	this->getSpinUp();
+	this->getSpin();
+	if(m_weapDataCur.m_dwHash != m_weapDataRestore.m_dwHash)
+	{
+		if(m_weapDataRestore.m_dwpWeapon != 0)
+			this->restoreWeapon();
+		m_weapDataRestore	= m_weapDataCur;
+	}
+	return 1;
 }
 
 void weapon::restoreWeapon()

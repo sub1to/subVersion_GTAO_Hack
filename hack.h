@@ -59,7 +59,6 @@ class hack : public trainer
 		void	bulletDamage(bool on);
 		void	weaponRange(bool on);
 		void	weaponSpin(bool on);
-		bool	loadWeapon();
 		void	runSpeed(bool on);
 		void	swimSpeed(bool on);
 		void	godMode(bool on);
@@ -69,6 +68,8 @@ class hack : public trainer
 		void	noReload(bool on);
 		void	seatbelt(bool on);
 		void	noRagdoll(bool on);
+		void	vehicleAccel(bool on);
+		void	vehicleBrake(bool on);
 
 
 	private:

@@ -86,6 +86,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, "God", feat_toggle, "vehTrueGodMode");
 	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, "Demi-God", feat_toggle, "vehGodMode");
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, "Seatbelt", feat_toggle, "seatbelt");
+	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, "Acceleration", feat_slider, "vehAccel", 1.f, 10.f);
+	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, "Brake force", feat_slider, "vehBrakeForce", 1.f, 10.f);
 	g_pSettings->addFeature(3, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, "Position 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(3, "Position 2", feat_teleport, "pos1", tp_saved);
@@ -246,7 +248,13 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 								g_pSettings->getFeature(g_iFeature[FEATURE_W_FIREAMMO])->m_bOn,
 								g_pSettings->getFeature(g_iFeature[FEATURE_W_EXPLOSIVEAMMO])->m_bOn);
 
-		if(g_pHack->loadWeapon())
+		if(g_pHack->m_vehicle.loadHandling())
+		{
+			g_pHack->vehicleAccel(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION])->m_bOn);
+			g_pHack->vehicleBrake(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE])->m_bOn);
+		}
+
+		if(g_pHack->m_weapon.loadWeapon())
 		{
 			g_pHack->noSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD])->m_bOn);
 			g_pHack->noRecoil(g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL])->m_bOn);

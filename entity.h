@@ -84,10 +84,26 @@ class vehicle : public entity
 	public:
 		health	m_hpVehicle;
 
+		struct vehicleHandling
+		{
+			DWORD_PTR	m_dwpHandling = 0;
+			float		m_fAcceleration,
+						m_fBrakeForce;
+		};
+
+		vehicleHandling	m_handlingRestore,
+						m_handlingCur;
+
 						vehicle();
 						~vehicle();
-		virtual void	getHealth();
-		virtual void	setHealth(float hp);
+		void	getHealth();
+		void	setHealth(float hp);
+		bool	loadHandling();
+		void	restoreHandling();
+		void	getAcceleration();
+		void	setAcceleration(float value);
+		void	getBrakeForce();
+		void	setBrakeForce(float value);
 };
 
 class weapon
@@ -115,6 +131,7 @@ class weapon
 				
 				weapon();
 				~weapon();
+		bool	loadWeapon();
 		void	restoreWeapon();
 		void	getReloadSpeed();
 		void	setReloadSpeed(float value);

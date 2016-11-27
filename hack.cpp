@@ -168,6 +168,7 @@ bool	hack::initPointers()
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_VEHICLE, &m_dwpVehicleBase);
 	m_vehicle.m_dwpBase		= m_dwpVehicleBase;
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_ENTITY_POSBASE, &m_vehicle.m_dwpPosBase);
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_VEHICLE_HANDLING, &m_vehicle.m_handlingCur.m_dwpHandling);
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_ATTACKER, &m_dwpAttackerBase);
 
@@ -258,7 +259,7 @@ void	hack::killNpc()
 
 void	hack::fillAmmo()
 {
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0 || m_dwpAmmoInfo == 0 || !m_weapon.findAmmoBase())
+	if(!m_weapon.findAmmoBase())
 		return;
 	m_weapon.getCurAmmo();
 	m_weapon.getMaxAmmo();
@@ -269,8 +270,6 @@ void	hack::fillAmmo()
 
 void	hack::noSpread(bool on)
 {
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
-		return;
 	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fSpread != m_weapon.m_weapDataRestore.m_fSpread)
@@ -284,8 +283,6 @@ void	hack::noSpread(bool on)
 
 void	hack::noRecoil(bool on)
 {
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
-		return;
 	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fRecoil != m_weapon.m_weapDataRestore.m_fRecoil)
@@ -299,8 +296,6 @@ void	hack::noRecoil(bool on)
 
 void	hack::quickReload(bool on)
 {
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
-		return;
 	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fReload != m_weapon.m_weapDataRestore.m_fReload || m_weapon.m_weapDataCur.m_fReloadVeh != m_weapon.m_weapDataRestore.m_fReloadVeh)
@@ -320,8 +315,6 @@ void	hack::quickReload(bool on)
 
 void	hack::bulletDamage(bool on)
 {
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
-		return;
 	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fDamage != m_weapon.m_weapDataRestore.m_fDamage)
@@ -336,8 +329,6 @@ void	hack::bulletDamage(bool on)
 
 void	hack::weaponRange(bool on)
 {
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
-		return;
 	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fRange != m_weapon.m_weapDataRestore.m_fRange)
@@ -352,8 +343,6 @@ void	hack::weaponRange(bool on)
 
 void	hack::weaponSpin(bool on)
 {
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
-		return;
 	if(!on)
 	{
 		if(m_weapon.m_weapDataCur.m_fSpinUp != m_weapon.m_weapDataRestore.m_fSpinUp || m_weapon.m_weapDataCur.m_fSpin != m_weapon.m_weapDataRestore.m_fSpin)
@@ -369,28 +358,6 @@ void	hack::weaponSpin(bool on)
 		m_weapon.setSpinUp(0);
 	}
 	return;
-}
-
-bool	hack::loadWeapon()
-{
-	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
-		return 0;
-	m_weapon.getHash();
-	m_weapon.getBulletDamage();
-	m_weapon.getReloadSpeed();
-	m_weapon.getReloadVehicle();
-	m_weapon.getRecoil();
-	m_weapon.getSpread();
-	m_weapon.getRange();
-	m_weapon.getSpinUp();
-	m_weapon.getSpin();
-	if(m_weapon.m_weapDataCur.m_dwHash != m_weapon.m_weapDataRestore.m_dwHash)
-	{
-		if(m_weapon.m_weapDataRestore.m_dwpWeapon != 0)
-			m_weapon.restoreWeapon();
-		m_weapon.m_weapDataRestore	= m_weapon.m_weapDataCur;
-	}
-	return 1;
 }
 
 void	hack::runSpeed(bool on)
@@ -527,5 +494,33 @@ void hack::noRagdoll(bool on)
 	}
 	if(m_player.m_btRagdoll != 0x01)
 		m_player.setRagdoll(0x01);
+	return;
+}
+
+void hack::vehicleAccel(bool on)
+{
+	if(!on)
+	{
+		if(m_vehicle.m_handlingCur.m_fAcceleration != m_vehicle.m_handlingRestore.m_fAcceleration)
+			m_vehicle.setAcceleration(m_vehicle.m_handlingRestore.m_fAcceleration);
+		return;
+	}
+	float fValue	= m_vehicle.m_handlingRestore.m_fAcceleration * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION]))->m_fValue;
+	if(m_vehicle.m_handlingCur.m_fAcceleration != fValue)
+		m_vehicle.setAcceleration(fValue);
+	return;
+}
+
+void hack::vehicleBrake(bool on)
+{
+	if(!on)
+	{
+		if(m_vehicle.m_handlingCur.m_fBrakeForce != m_vehicle.m_handlingRestore.m_fBrakeForce)
+			m_vehicle.setBrakeForce(m_vehicle.m_handlingRestore.m_fBrakeForce);
+		return;
+	}
+	float fValue	= m_vehicle.m_handlingRestore.m_fBrakeForce * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]))->m_fValue;
+	if(m_vehicle.m_handlingCur.m_fBrakeForce != fValue)
+		m_vehicle.setBrakeForce(fValue);
 	return;
 }
