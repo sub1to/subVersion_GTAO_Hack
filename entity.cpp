@@ -75,6 +75,7 @@ player::~player()
 	this->setSwimSpeed(1);
 	this->setRagdoll(0x20);
 	this->setSeatbelt(0xC8);
+	this->setWantedCanChange(1.f);
 }
 
 void player::getHealth()
@@ -100,6 +101,18 @@ void player::getWanted()
 void player::setWanted(DWORD stars)
 {
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_WANTED, &stars);
+	return;
+}
+
+void player::getWantedCanChange()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE, &m_flWantedCanChange);
+	return;
+}
+
+void player::setWantedCanChange(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE, &value);
 	return;
 }
 

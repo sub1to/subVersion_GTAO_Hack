@@ -51,7 +51,8 @@ class player : public entity
 	public:
 		float	m_flArmor,
 				m_flRunSpd,
-				m_flSwimSpd;
+				m_flSwimSpd,
+				m_flWantedCanChange;
 		DWORD	m_dwWanted,
 				m_dwInVehicle,
 				m_dwFrameFlags;
@@ -64,6 +65,8 @@ class player : public entity
 		virtual	void	setHealth(float hp, float armor);
 				void	getWanted();
 				void	setWanted(DWORD stars);
+				void	getWantedCanChange();
+				void	setWantedCanChange(float value);
 				void	getInVehicle();
 				void	getRunSpeed();
 				void	setRunSpeed(float value);

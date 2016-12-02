@@ -524,3 +524,17 @@ void hack::vehicleBrake(bool on)
 		m_vehicle.setBrakeForce(fValue);
 	return;
 }
+
+void hack::neverWanted(bool on)
+{
+	m_player.getWantedCanChange();
+	if(!on)
+	{
+		if(m_player.m_flWantedCanChange != 1.f)
+			m_player.setWantedCanChange(1.f);
+		return;
+	}
+	if(m_player.m_flWantedCanChange != 0.f)
+		m_player.setWantedCanChange(0.f);
+	return;
+}

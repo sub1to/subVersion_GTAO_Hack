@@ -228,12 +228,14 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_GOD])->m_bOn)
 			g_pHack->restoreHealth();
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED])->m_bOn)
-			g_pHack->notWanted();
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_ANTINPC])->m_bOn)
-			g_pHack->killNpc();
 		if(g_pSettings->getFeature(g_iFeature[FEATURE_V_GOD])->m_bOn)
 			g_pHack->restoreVehicleHealth();
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_ANTINPC])->m_bOn)
+			g_pHack->killNpc();
+
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED])->m_bOn)
+			g_pHack->notWanted();
+		g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED])->m_bOn);
 
 		g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD])->m_bOn);
 		g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD])->m_bOn);

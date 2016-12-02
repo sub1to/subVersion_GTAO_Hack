@@ -70,6 +70,7 @@ class hack : public trainer
 		void	noRagdoll(bool on);
 		void	vehicleAccel(bool on);
 		void	vehicleBrake(bool on);
+		void	neverWanted(bool on);
 
 
 	private:
