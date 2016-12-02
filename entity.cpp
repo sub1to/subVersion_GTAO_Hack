@@ -73,8 +73,8 @@ player::~player()
 {
 	this->setRunSpeed(1);
 	this->setSwimSpeed(1);
-	this->setRagdoll(0x20);
-	this->setSeatbelt(0xC8);
+	this->setRagdoll(m_btRagdoll | 0x20);
+	this->setSeatbelt((m_btSeatbelt & 0x01) ? m_btSeatbelt ^ 0x01 : m_btSeatbelt);
 	this->setWantedCanChange(1.f);
 }
 

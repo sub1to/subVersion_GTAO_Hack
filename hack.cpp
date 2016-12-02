@@ -526,14 +526,14 @@ void	hack::seatbelt(feat* feature)
 	{
 		if(!feature->m_bRestored)
 		{
-			if(m_player.m_btSeatbelt == 0xC9)
-				m_player.setSeatbelt(0xC8);
+			if(m_player.m_btSeatbelt & 0x01)
+				m_player.setSeatbelt(m_player.m_btSeatbelt ^ 0x01);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if(m_player.m_btSeatbelt != 0xC9)
-			m_player.setSeatbelt(0xC9);
+	if(!(m_player.m_btSeatbelt & 0x01))
+			m_player.setSeatbelt(m_player.m_btSeatbelt | 0x01);
 	return;
 }
 
@@ -544,14 +544,14 @@ void hack::noRagdoll(feat* feature)
 	{
 		if(!feature->m_bRestored)
 		{
-			if(m_player.m_btRagdoll == 0x01)
-				m_player.setRagdoll(0x20);
+			if(!(m_player.m_btRagdoll & 0x20))
+				m_player.setRagdoll(m_player.m_btRagdoll | 0x20);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	if(m_player.m_btRagdoll != 0x01)
-		m_player.setRagdoll(0x01);
+	if(m_player.m_btRagdoll & 0x20)
+		m_player.setRagdoll(m_player.m_btRagdoll ^ 0x20);
 	return;
 }
 
