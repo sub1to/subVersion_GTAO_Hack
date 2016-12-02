@@ -190,7 +190,7 @@ void	hack::getWaypoint()
 void	hack::teleport(v3 v)
 {
 	m_player.getInVehicle();
-	if(m_player.m_dwInVehicle > 0)
+	if(m_player.m_bIsInVehicle)
 	{
 		m_vehicle.setPos(v);
 		return;

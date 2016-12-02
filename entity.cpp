@@ -118,9 +118,9 @@ void player::setWantedCanChange(float value)
 
 void player::getInVehicle()
 {
-	DWORD	dwRead;
-	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_INVEHICLE, &dwRead);
-	m_dwInVehicle		= (DWORD) !((dwRead >> 28) & 1);
+	BYTE	btRead;
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_PLAYER_INVEHICLE, &btRead);
+	m_bIsInVehicle		= !((btRead >> 4) & 1);
 	return;
 }
 

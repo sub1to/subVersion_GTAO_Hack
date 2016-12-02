@@ -85,7 +85,7 @@
 #define OFFSET_PLAYER_NAME						0x7C
 #define OFFSET_PLAYER_RAGDOLL					0x1098			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
 #define OFFSET_PLAYER_SEATBELT					0x13DC			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
-#define OFFSET_PLAYER_INVEHICLE					0x1458
+#define OFFSET_PLAYER_INVEHICLE					0x145B
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH						0x82C			//vehicle health; 0.f-1000.f

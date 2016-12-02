@@ -54,10 +54,10 @@ class player : public entity
 				m_flSwimSpd,
 				m_flWantedCanChange;
 		DWORD	m_dwWanted,
-				m_dwInVehicle,
 				m_dwFrameFlags;
 		BYTE	m_btRagdoll,
 				m_btSeatbelt;
+		bool	m_bIsInVehicle;
 
 						player();
 						~player();
