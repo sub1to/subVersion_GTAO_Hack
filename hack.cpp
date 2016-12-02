@@ -567,7 +567,7 @@ void hack::vehicleAccel(feat* feature)
 		}
 		return;
 	}
-	float fValue	= m_vehicle.m_handlingRestore.m_fAcceleration * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION]))->m_fValue;
+	float fValue	= m_vehicle.m_handlingRestore.m_fAcceleration * static_cast<featSlider*>(feature)->m_fValue;
 	if(m_vehicle.m_handlingCur.m_fAcceleration != fValue)
 		m_vehicle.setAcceleration(fValue);
 	return;
@@ -585,7 +585,7 @@ void hack::vehicleBrake(feat* feature)
 		}
 		return;
 	}
-	float fValue	= m_vehicle.m_handlingRestore.m_fBrakeForce * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]))->m_fValue;
+	float fValue	= m_vehicle.m_handlingRestore.m_fBrakeForce * static_cast<featSlider*>(feature)->m_fValue;
 	if(m_vehicle.m_handlingCur.m_fBrakeForce != fValue)
 		m_vehicle.setBrakeForce(fValue);
 	return;
@@ -606,5 +606,23 @@ void hack::neverWanted(feat* feature)
 	}
 	if(m_player.m_flWantedCanChange != 0.f)
 		m_player.setWantedCanChange(0.f);
+	return;
+}
+
+void hack::vehicleTraction(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_handlingCur.m_fTractionCurveMin != m_vehicle.m_handlingRestore.m_fTractionCurveMin)
+				m_vehicle.setTractionCurveMin(m_vehicle.m_handlingRestore.m_fTractionCurveMin);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= m_vehicle.m_handlingRestore.m_fTractionCurveMin * static_cast<featSlider*>(feature)->m_fValue;
+	if(m_vehicle.m_handlingCur.m_fTractionCurveMin != fValue)
+		m_vehicle.setTractionCurveMin(fValue);
 	return;
 }

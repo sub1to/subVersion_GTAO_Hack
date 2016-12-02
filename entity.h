@@ -91,7 +91,8 @@ class vehicle : public entity
 		{
 			DWORD_PTR	m_dwpHandling = 0;
 			float		m_fAcceleration,
-						m_fBrakeForce;
+						m_fBrakeForce,
+						m_fTractionCurveMin;
 		};
 
 		vehicleHandling	m_handlingRestore,
@@ -107,6 +108,8 @@ class vehicle : public entity
 		void	setAcceleration(float value);
 		void	getBrakeForce();
 		void	setBrakeForce(float value);
+		void	getTractionCurveMin();
+		void	setTractionCurveMin(float value);
 };
 
 class weapon

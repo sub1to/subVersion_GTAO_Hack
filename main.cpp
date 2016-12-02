@@ -88,6 +88,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, "Seatbelt", feat_toggle, "seatbelt");
 	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, "Acceleration", feat_slider, "vehAccel", 1.f, 10.f);
 	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, "Brake force", feat_slider, "vehBrakeForce", 1.f, 10.f);
+	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, "Traction", feat_slider, "vehTraction", 1.f, 2.f);
 	g_pSettings->addFeature(3, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, "Position 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(3, "Position 2", feat_teleport, "pos1", tp_saved);
@@ -254,6 +255,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 		{
 			g_pHack->vehicleAccel(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION]));
 			g_pHack->vehicleBrake(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]));
+			g_pHack->vehicleTraction(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRACTION]));
 		}
 
 		if(g_pHack->m_weapon.loadWeapon())

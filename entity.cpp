@@ -218,6 +218,7 @@ bool vehicle::loadHandling()
 		return 0;
 	this->getAcceleration();
 	this->getBrakeForce();
+	this->getTractionCurveMin();
 	if(m_handlingCur.m_dwpHandling != m_handlingRestore.m_dwpHandling)
 	{
 		if(m_handlingRestore.m_dwpHandling != 0)
@@ -231,6 +232,7 @@ void vehicle::restoreHandling()
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ACCELERATION, &m_handlingRestore.m_fAcceleration);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &m_handlingRestore.m_fBrakeForce);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingRestore.m_fTractionCurveMin);
 	return;
 }
 
@@ -255,6 +257,18 @@ void vehicle::getBrakeForce()
 void vehicle::setBrakeForce(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &value);
+	return;
+}
+
+void vehicle::getTractionCurveMin()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingCur.m_fTractionCurveMin);
+	return;
+}
+
+void vehicle::setTractionCurveMin(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &value);
 	return;
 }
 
