@@ -62,7 +62,8 @@ class feat
 		featType	m_type;
 		std::string	m_szName;
 		std::string	m_szIniKey;
-		bool		m_bOn	= false;
+		bool		m_bOn		= false,
+					m_bRestored	= true;
 
 						feat();
 		virtual			~feat();

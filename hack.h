@@ -53,24 +53,24 @@ class hack : public trainer
 		void	notWanted();
 		void	killNpc();
 		void	fillAmmo();
-		void	noSpread(bool on);
-		void	noRecoil(bool on);
-		void	quickReload(bool on);
-		void	bulletDamage(bool on);
-		void	weaponRange(bool on);
-		void	weaponSpin(bool on);
-		void	runSpeed(bool on);
-		void	swimSpeed(bool on);
-		void	godMode(bool on);
-		void	frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, bool bExplosiveAmmo);
-		void	vehicleGod(bool on);
-		void	infAmmo(bool on);
-		void	noReload(bool on);
-		void	seatbelt(bool on);
-		void	noRagdoll(bool on);
-		void	vehicleAccel(bool on);
-		void	vehicleBrake(bool on);
-		void	neverWanted(bool on);
+		void	noSpread(feat* feature);
+		void	noRecoil(feat* feature);
+		void	quickReload(feat* feature);
+		void	bulletDamage(feat* feature);
+		void	weaponRange(feat* feature);
+		void	weaponSpin(feat* feature);
+		void	runSpeed(feat* feature);
+		void	swimSpeed(feat* feature);
+		void	godMode(feat* feature);
+		void	frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo);
+		void	vehicleGod(feat* feature);
+		void	infAmmo(feat* feature);
+		void	noReload(feat* feature);
+		void	seatbelt(feat* feature);
+		void	noRagdoll(feat* feature);
+		void	vehicleAccel(feat* feature);
+		void	vehicleBrake(feat* feature);
+		void	neverWanted(feat* feature);
 
 
 	private:

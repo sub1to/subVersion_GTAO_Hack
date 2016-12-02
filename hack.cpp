@@ -268,12 +268,16 @@ void	hack::fillAmmo()
 	return;
 }
 
-void	hack::noSpread(bool on)
+void	hack::noSpread(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_weapon.m_weapDataCur.m_fSpread != m_weapon.m_weapDataRestore.m_fSpread)
-			m_weapon.setSpread(m_weapon.m_weapDataRestore.m_fSpread);
+		if(!feature->m_bRestored)
+		{
+			if(m_weapon.m_weapDataCur.m_fSpread != m_weapon.m_weapDataRestore.m_fSpread)
+				m_weapon.setSpread(m_weapon.m_weapDataRestore.m_fSpread);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	if(m_weapon.m_weapDataCur.m_fSpread != 0)
@@ -281,12 +285,16 @@ void	hack::noSpread(bool on)
 	return;
 }
 
-void	hack::noRecoil(bool on)
+void	hack::noRecoil(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_weapon.m_weapDataCur.m_fRecoil != m_weapon.m_weapDataRestore.m_fRecoil)
-			m_weapon.setRecoil(m_weapon.m_weapDataRestore.m_fRecoil);
+		if(!feature->m_bRestored)
+		{
+			if(m_weapon.m_weapDataCur.m_fRecoil != m_weapon.m_weapDataRestore.m_fRecoil)
+				m_weapon.setRecoil(m_weapon.m_weapDataRestore.m_fRecoil);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	if(m_weapon.m_weapDataCur.m_fRecoil != 0)
@@ -294,18 +302,22 @@ void	hack::noRecoil(bool on)
 	return;
 }
 
-void	hack::quickReload(bool on)
+void	hack::quickReload(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_weapon.m_weapDataCur.m_fReload != m_weapon.m_weapDataRestore.m_fReload || m_weapon.m_weapDataCur.m_fReloadVeh != m_weapon.m_weapDataRestore.m_fReloadVeh)
+		if(!feature->m_bRestored)
 		{
-			m_weapon.setReloadSpeed(m_weapon.m_weapDataRestore.m_fReload);
-			m_weapon.setReloadVehicle(m_weapon.m_weapDataRestore.m_fReloadVeh);
+			if(m_weapon.m_weapDataCur.m_fReload != m_weapon.m_weapDataRestore.m_fReload || m_weapon.m_weapDataCur.m_fReloadVeh != m_weapon.m_weapDataRestore.m_fReloadVeh)
+			{
+				m_weapon.setReloadSpeed(m_weapon.m_weapDataRestore.m_fReload);
+				m_weapon.setReloadVehicle(m_weapon.m_weapDataRestore.m_fReloadVeh);
+			}
+			feature->m_bRestored = true;
 		}
 		return;
 	}
-	float fValue	= m_weapon.m_weapDataRestore.m_fReload * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD]))->m_fValue;
+	float fValue	= m_weapon.m_weapDataRestore.m_fReload * static_cast<featSlider*>(feature)->m_fValue;
 	if(m_weapon.m_weapDataCur.m_fReload != fValue)
 		m_weapon.setReloadSpeed(fValue);
 	if(m_weapon.m_weapDataCur.m_fReloadVeh != 0)
@@ -313,42 +325,54 @@ void	hack::quickReload(bool on)
 	return;
 }
 
-void	hack::bulletDamage(bool on)
+void	hack::bulletDamage(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_weapon.m_weapDataCur.m_fDamage != m_weapon.m_weapDataRestore.m_fDamage)
-			m_weapon.setBulletDamage(m_weapon.m_weapDataRestore.m_fDamage);
+		if(!feature->m_bRestored)
+		{
+			if(m_weapon.m_weapDataCur.m_fDamage != m_weapon.m_weapDataRestore.m_fDamage)
+				m_weapon.setBulletDamage(m_weapon.m_weapDataRestore.m_fDamage);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
-	float fValue	= m_weapon.m_weapDataRestore.m_fDamage * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE]))->m_fValue;
+	float fValue	= m_weapon.m_weapDataRestore.m_fDamage * static_cast<featSlider*>(feature)->m_fValue;
 	if(m_weapon.m_weapDataCur.m_fDamage != fValue)
 		m_weapon.setBulletDamage(fValue);
 	return;
 }
 
-void	hack::weaponRange(bool on)
+void	hack::weaponRange(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_weapon.m_weapDataCur.m_fRange != m_weapon.m_weapDataRestore.m_fRange)
-			m_weapon.setRange(m_weapon.m_weapDataRestore.m_fRange);
+		if(!feature->m_bRestored)
+		{
+			if(m_weapon.m_weapDataCur.m_fRange != m_weapon.m_weapDataRestore.m_fRange)
+				m_weapon.setRange(m_weapon.m_weapDataRestore.m_fRange);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
-	float fValue	= m_weapon.m_weapDataRestore.m_fRange * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE]))->m_fValue;
+	float fValue	= m_weapon.m_weapDataRestore.m_fRange * static_cast<featSlider*>(feature)->m_fValue;
 	if(m_weapon.m_weapDataCur.m_fRange != fValue)
 		m_weapon.setRange(fValue);
 	return;
 }
 
-void	hack::weaponSpin(bool on)
+void	hack::weaponSpin(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_weapon.m_weapDataCur.m_fSpinUp != m_weapon.m_weapDataRestore.m_fSpinUp || m_weapon.m_weapDataCur.m_fSpin != m_weapon.m_weapDataRestore.m_fSpin)
+		if(!feature->m_bRestored)
 		{
-			m_weapon.setSpinUp(m_weapon.m_weapDataRestore.m_fSpinUp);
-			m_weapon.setSpin(m_weapon.m_weapDataRestore.m_fSpin);
+			if(m_weapon.m_weapDataCur.m_fSpinUp != m_weapon.m_weapDataRestore.m_fSpinUp || m_weapon.m_weapDataCur.m_fSpin != m_weapon.m_weapDataRestore.m_fSpin)
+			{
+				m_weapon.setSpinUp(m_weapon.m_weapDataRestore.m_fSpinUp);
+				m_weapon.setSpin(m_weapon.m_weapDataRestore.m_fSpin);
+			}
+			feature->m_bRestored = true;
 		}
 		return;
 	}
@@ -360,43 +384,55 @@ void	hack::weaponSpin(bool on)
 	return;
 }
 
-void	hack::runSpeed(bool on)
+void	hack::runSpeed(feat* feature)
 {
 	m_player.getRunSpeed();
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_player.m_flRunSpd > 1.f)
-			m_player.setRunSpeed(1.f);
+		if(!feature->m_bRestored)
+		{
+			if(m_player.m_flRunSpd > 1.f)
+				m_player.setRunSpeed(1.f);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
-	float fValue	= static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]))->m_fValue;
+	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
 	if(m_player.m_flRunSpd != fValue)
 		m_player.setRunSpeed(fValue);
 	return;
 }
 
-void	hack::swimSpeed(bool on)
+void	hack::swimSpeed(feat* feature)
 {
 	m_player.getSwimSpeed();
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_player.m_flSwimSpd > 1.f)
-			m_player.setSwimSpeed(1.f);
+		if(!feature->m_bRestored)
+		{
+			if(m_player.m_flSwimSpd > 1.f)
+				m_player.setSwimSpeed(1.f);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
-	float fValue	= static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD]))->m_fValue;
+	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
 	if(m_player.m_flSwimSpd != fValue)
 		m_player.setSwimSpeed(fValue);
 	return;
 }
 
-void	hack::godMode(bool on)
+void	hack::godMode(feat* feature)
 {
 	m_player.getGod();
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_player.m_btGod > 0)
-			m_player.setGod(0);
+		if(!feature->m_bRestored)
+		{
+			if(m_player.m_btGod > 0)
+				m_player.setGod(0);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	if(m_player.m_btGod < 1)
@@ -404,30 +440,36 @@ void	hack::godMode(bool on)
 	return;
 }
 
-void	hack::frameFlags(bool bSuperJump, bool bExplosiveMelee, bool bFireAmmo, bool bExplosiveAmmo)
+void	hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featFireAmmo, feat* featExplosiveAmmo)
 {
 	DWORD dwValue	= 0;
-	if(bSuperJump)
+	m_player.getFrameFlags();
+	if(featSuperJump->m_bOn)
 		dwValue		|= 1 << 14;
-	if(bExplosiveMelee)
+	if(featExplosiveMelee->m_bOn)
 		dwValue		|= 1 << 13;
-	if(bFireAmmo)
+	if(featFireAmmo->m_bOn)
 		dwValue		|= 1 << 12;
-	if(bExplosiveAmmo)
+	if(featExplosiveAmmo->m_bOn)
 		dwValue		|= 1 << 11;
-	m_player.setFrameFlags(dwValue);
+	if(m_player.m_dwFrameFlags != dwValue)
+		m_player.setFrameFlags(dwValue);
 	return;
 }
 
-void	hack::vehicleGod(bool on)
+void	hack::vehicleGod(feat* feature)
 {
 	if(m_dwpVehicleBase == 0)
 		return;
 	m_vehicle.getGod();
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_vehicle.m_btGod > 0)
-			m_vehicle.setGod(0);
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_btGod > 0)
+				m_vehicle.setGod(0);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	if(m_vehicle.m_btGod < 1)
@@ -435,15 +477,19 @@ void	hack::vehicleGod(bool on)
 	return;
 }
 
-void	hack::infAmmo(bool on)
+void	hack::infAmmo(feat* feature)
 {
 	BYTE	cur[4]		= {};
 	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		BYTE	value[4]	= {0x41, 0x2B, 0xD1, 0xE8};
-		if(cur[0] != value[0])
-			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+		if(!feature->m_bRestored)
+		{
+			BYTE	value[4]	= {0x41, 0x2B, 0xD1, 0xE8};
+			if(cur[0] != value[0])
+				g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	BYTE	value[4]	= {0x90, 0x90, 0x90, 0xE8};
@@ -452,15 +498,19 @@ void	hack::infAmmo(bool on)
 	return;
 }
 
-void	hack::noReload(bool on)
+void	hack::noReload(feat* feature)
 {
 	BYTE	cur[6]		= {};
 	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		BYTE	value[6]	= {0x41, 0x2B, 0xC9, 0x3B, 0xC8, 0x0F};
-		if(cur[0] != value[0])
-			g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+		if(!feature->m_bRestored)
+		{
+			BYTE	value[6]	= {0x41, 0x2B, 0xC9, 0x3B, 0xC8, 0x0F};
+			if(cur[0] != value[0])
+				g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	BYTE	value[6]	= {0x90, 0x90, 0x90, 0x3B, 0xC8, 0x0F};
@@ -469,13 +519,17 @@ void	hack::noReload(bool on)
 	return;
 }
 
-void	hack::seatbelt(bool on)
+void	hack::seatbelt(feat* feature)
 {
 	m_player.getSeatbelt();
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_player.m_btSeatbelt == 0xC9)
-			m_player.setSeatbelt(0xC8);
+		if(!feature->m_bRestored)
+		{
+			if(m_player.m_btSeatbelt == 0xC9)
+				m_player.setSeatbelt(0xC8);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	if(m_player.m_btSeatbelt != 0xC9)
@@ -483,13 +537,17 @@ void	hack::seatbelt(bool on)
 	return;
 }
 
-void hack::noRagdoll(bool on)
+void hack::noRagdoll(feat* feature)
 {
 	m_player.getRagdoll();
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_player.m_btRagdoll == 0x01)
-			m_player.setRagdoll(0x20);
+		if(!feature->m_bRestored)
+		{
+			if(m_player.m_btRagdoll == 0x01)
+				m_player.setRagdoll(0x20);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	if(m_player.m_btRagdoll != 0x01)
@@ -497,12 +555,16 @@ void hack::noRagdoll(bool on)
 	return;
 }
 
-void hack::vehicleAccel(bool on)
+void hack::vehicleAccel(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_vehicle.m_handlingCur.m_fAcceleration != m_vehicle.m_handlingRestore.m_fAcceleration)
-			m_vehicle.setAcceleration(m_vehicle.m_handlingRestore.m_fAcceleration);
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_handlingCur.m_fAcceleration != m_vehicle.m_handlingRestore.m_fAcceleration)
+				m_vehicle.setAcceleration(m_vehicle.m_handlingRestore.m_fAcceleration);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	float fValue	= m_vehicle.m_handlingRestore.m_fAcceleration * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION]))->m_fValue;
@@ -511,12 +573,16 @@ void hack::vehicleAccel(bool on)
 	return;
 }
 
-void hack::vehicleBrake(bool on)
+void hack::vehicleBrake(feat* feature)
 {
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_vehicle.m_handlingCur.m_fBrakeForce != m_vehicle.m_handlingRestore.m_fBrakeForce)
-			m_vehicle.setBrakeForce(m_vehicle.m_handlingRestore.m_fBrakeForce);
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_handlingCur.m_fBrakeForce != m_vehicle.m_handlingRestore.m_fBrakeForce)
+				m_vehicle.setBrakeForce(m_vehicle.m_handlingRestore.m_fBrakeForce);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	float fValue	= m_vehicle.m_handlingRestore.m_fBrakeForce * static_cast<featSlider*>(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]))->m_fValue;
@@ -525,13 +591,17 @@ void hack::vehicleBrake(bool on)
 	return;
 }
 
-void hack::neverWanted(bool on)
+void hack::neverWanted(feat* feature)
 {
 	m_player.getWantedCanChange();
-	if(!on)
+	if(!feature->m_bOn)
 	{
-		if(m_player.m_flWantedCanChange != 1.f)
-			m_player.setWantedCanChange(1.f);
+		if(!feature->m_bRestored)
+		{
+			if(m_player.m_flWantedCanChange != 1.f)
+				m_player.setWantedCanChange(1.f);
+			feature->m_bRestored = true;
+		}
 		return;
 	}
 	if(m_player.m_flWantedCanChange != 0.f)

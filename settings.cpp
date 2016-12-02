@@ -167,6 +167,7 @@ int		settings::addFeature(int parent, std::string name, featType type, std::stri
 		return id;
 	m_feature[id]->m_szIniKey	= iniKey;
 	m_feature[id]->m_bOn		= (bool) m_iniParser.getValue<bool>(iniKey + "_on");
+	m_feature[id]->m_bRestored	= (m_feature[id]->m_bOn) ? false : true;
 	return id;
 }
 
@@ -321,6 +322,8 @@ feat::~feat() {}
 void	feat::toggle()
 {
 	m_bOn = !m_bOn;
+	if(m_bOn)
+		m_bRestored = false;
 	if(m_szIniKey != "")
 		g_pSettings->m_iniParser.setValue<bool>((std::string) m_szIniKey + "_on", (int) m_bOn);
 	return;

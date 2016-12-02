@@ -235,40 +235,37 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED])->m_bOn)
 			g_pHack->notWanted();
-		g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED])->m_bOn);
+		g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]));
 
-		g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD])->m_bOn);
-		g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD])->m_bOn);
-		g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD])->m_bOn);
-		g_pHack->vehicleGod(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD])->m_bOn);
-		g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD])->m_bOn);
-		g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL])->m_bOn);
-		g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT])->m_bOn);
+		g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]));
+		g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD]));
+		g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));
+		g_pHack->vehicleGod(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD]));
+		g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD]));
+		g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
+		g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));
 
-		g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP])->m_bOn,
-								g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE])->m_bOn,
-								g_pSettings->getFeature(g_iFeature[FEATURE_W_FIREAMMO])->m_bOn,
-								g_pSettings->getFeature(g_iFeature[FEATURE_W_EXPLOSIVEAMMO])->m_bOn);
+		g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP]),
+								g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE]),
+								g_pSettings->getFeature(g_iFeature[FEATURE_W_FIREAMMO]),
+								g_pSettings->getFeature(g_iFeature[FEATURE_W_EXPLOSIVEAMMO]));
 
 		if(g_pHack->m_vehicle.loadHandling())
 		{
-			g_pHack->vehicleAccel(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION])->m_bOn);
-			g_pHack->vehicleBrake(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE])->m_bOn);
+			g_pHack->vehicleAccel(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION]));
+			g_pHack->vehicleBrake(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]));
 		}
 
 		if(g_pHack->m_weapon.loadWeapon())
 		{
-			g_pHack->noSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD])->m_bOn);
-			g_pHack->noRecoil(g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL])->m_bOn);
-			g_pHack->quickReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD])->m_bOn);
-			g_pHack->bulletDamage(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE])->m_bOn);
-			g_pHack->weaponRange(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE])->m_bOn);
-			g_pHack->weaponSpin(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP])->m_bOn);
+			g_pHack->noSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD]));
+			g_pHack->noRecoil(g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL]));
+			g_pHack->quickReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD]));
+			g_pHack->bulletDamage(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE]));
+			g_pHack->weaponRange(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE]));
+			g_pHack->weaponSpin(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP]));
 
-			g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO])->m_bOn);
-
-			//if(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO])->m_bOn)
-			//	g_pHack->fillAmmo();
+			g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO]));
 		}
 
 		Sleep(1);
@@ -287,8 +284,9 @@ void	killProgram()
 		Sleep(1);
 
 	//restore patched code
-	g_pHack->noReload(false);
-	g_pHack->infAmmo(false);
+	feat dummyFeat;
+	g_pHack->noReload(&dummyFeat);
+	g_pHack->infAmmo(&dummyFeat);
 
 	delete	g_pHack;
 	delete	g_pD3D9Render;
