@@ -89,6 +89,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, "Acceleration", feat_slider, "vehAccel", 1.f, 10.f);
 	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, "Brake force", feat_slider, "vehBrakeForce", 1.f, 10.f);
 	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, "Traction", feat_slider, "vehTraction", 1.f, 2.f);
+	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, "Gravity", feat_slider, "vehGravity", 0.f, 25.f);
+	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, "Bulletproof Tires", feat_toggle, "vehBulletproofTires");
 	g_pSettings->addFeature(3, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, "Position 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(3, "Position 2", feat_teleport, "pos1", tp_saved);
@@ -245,6 +247,8 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 		g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD]));
 		g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
 		g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));
+		g_pHack->vehicleGravity(g_pSettings->getFeature(g_iFeature[FEATURE_V_GRAVITY]));
+		g_pHack->vehicleBulletproofTires(g_pSettings->getFeature(g_iFeature[FEATURE_V_BULLETPROOFTIRES]));
 
 		g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP]),
 								g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE]),

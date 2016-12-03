@@ -89,6 +89,8 @@
 
 //vehicle offsets
 #define OFFSET_VEHICLE_HEALTH						0x82C			//vehicle health; 0.f-1000.f
+#define OFFSET_VEHICLE_GRAVITY						0xB4C			//fGravity
+#define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x85B			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
 #define OFFSET_VEHICLE_HANDLING						0x850
 #define OFFSET_VEHICLE_HANDLING_ACCELERATION		0x4C
 #define OFFSET_VEHICLE_HANDLING_BRAKEFORCE			0x6C
@@ -143,6 +145,8 @@
 #define FEATURE_V_ACCELERATION		0x16
 #define FEATURE_V_BRAKEFORCE		0x17
 #define FEATURE_V_TRACTION			0x18
+#define FEATURE_V_GRAVITY			0x19
+#define FEATURE_V_BULLETPROOFTIRES	0x1A
 
 
 void		killProgram	();

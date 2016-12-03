@@ -72,6 +72,8 @@ class hack : public trainer
 		void	vehicleBrake(feat* feature);
 		void	neverWanted(feat* feature);
 		void	vehicleTraction(feat* feature);
+		void	vehicleGravity(feat* feature);
+		void	vehicleBulletproofTires(feat* feature);
 
 
 	private:

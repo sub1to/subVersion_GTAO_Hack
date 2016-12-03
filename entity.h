@@ -86,6 +86,8 @@ class vehicle : public entity
 {
 	public:
 		health	m_hpVehicle;
+		float	m_fGravity;
+		BYTE	m_btBulletproofTires;
 
 		struct vehicleHandling
 		{
@@ -98,8 +100,8 @@ class vehicle : public entity
 		vehicleHandling	m_handlingRestore,
 						m_handlingCur;
 
-						vehicle();
-						~vehicle();
+				vehicle();
+				~vehicle();
 		void	getHealth();
 		void	setHealth(float hp);
 		bool	loadHandling();
@@ -110,6 +112,10 @@ class vehicle : public entity
 		void	setBrakeForce(float value);
 		void	getTractionCurveMin();
 		void	setTractionCurveMin(float value);
+		void	getGravity();
+		void	setGravity(float value);
+		void	getBulletproofTires();
+		void	setBulletproofTires(BYTE value);
 };
 
 class weapon

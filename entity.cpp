@@ -196,6 +196,7 @@ vehicle::vehicle()
 vehicle::~vehicle()
 {
 	this->restoreHandling();
+	this->setGravity(9.8f);
 }
 
 void vehicle::getHealth()
@@ -269,6 +270,30 @@ void vehicle::getTractionCurveMin()
 void vehicle::setTractionCurveMin(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &value);
+	return;
+}
+
+void vehicle::getGravity()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_GRAVITY, &m_fGravity);
+	return;
+}
+
+void vehicle::setGravity(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_GRAVITY, &value);
+	return;
+}
+
+void vehicle::getBulletproofTires()
+{
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_BULLETPROOF_TIRES, &m_btBulletproofTires);
+	return;
+}
+
+void vehicle::setBulletproofTires(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_BULLETPROOF_TIRES, &value);
 	return;
 }
 

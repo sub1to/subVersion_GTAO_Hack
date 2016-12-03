@@ -626,3 +626,41 @@ void hack::vehicleTraction(feat* feature)
 		m_vehicle.setTractionCurveMin(fValue);
 	return;
 }
+
+void hack::vehicleGravity(feat* feature)
+{
+	m_vehicle.getGravity();
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_fGravity != 9.8f)
+				m_vehicle.setGravity(9.8f);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
+	if(m_vehicle.m_fGravity != fValue)
+		m_vehicle.setGravity(fValue);
+	return;
+}
+
+//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
+void hack::vehicleBulletproofTires(feat* feature)
+{
+	m_vehicle.getBulletproofTires();
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_btBulletproofTires & 0x20)
+				m_vehicle.setBulletproofTires(m_vehicle.m_btBulletproofTires ^ 0x20);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	if(!(m_vehicle.m_btBulletproofTires & 0x20))
+		m_vehicle.setBulletproofTires(m_vehicle.m_btBulletproofTires | 0x20);
+	return;
+}
