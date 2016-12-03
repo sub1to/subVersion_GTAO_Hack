@@ -97,7 +97,8 @@ bool	D3D9Render::render()
 			this->drawText(tab->name, x + 5, y + 5, 0, LAYOUT_COLOR_TEXT);
 		}
 		//draw features
-		int n	= g_pSettings->getFeatureCurCount();
+		int	n		= g_pSettings->getFeatureCurCount(),
+			active	= g_pSettings->getActiveFeature();
 		this->drawBoxBorder(0.f, (float) LAYOUT_ELEMENT_HEIGHT * 2, (float) LAYOUT_ELEMENT_WIDTH, (n > MAX_MENU_FEATURES_DISPLAYED) ? (float) MAX_MENU_FEATURES_DISPLAYED * LAYOUT_ELEMENT_HEIGHT : (float) LAYOUT_ELEMENT_HEIGHT * n, (float) LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
 		for(int i = 0, j = g_pSettings->getDisplayOffset(); i < n && i < MAX_MENU_FEATURES_DISPLAYED; i++, j++)
 		{
@@ -106,7 +107,7 @@ bool	D3D9Render::render()
 						y	= 5.f + (LAYOUT_ELEMENT_HEIGHT * (i + 2));
 
 			//selected box
-			if(j == g_pSettings->getActiveFeature())
+			if(j == active)
 				this->drawBoxBorder(x-3, y-3, LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2), LAYOUT_BORDER_SIZE,LAYOUT_COLOR_ACTIVE_BG, LAYOUT_COLOR_SELECTED);
 			//checkbox
 			if(feature->m_type == feat_toggle || feature->m_type == feat_slider)
