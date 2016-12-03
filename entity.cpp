@@ -359,6 +359,7 @@ bool weapon::loadWeapon()
 	this->getRange();
 	this->getSpinUp();
 	this->getSpin();
+	this->getBulletBatch();
 	if(m_weapDataCur.m_dwHash != m_weapDataRestore.m_dwHash)
 	{
 		if(m_weapDataRestore.m_dwpWeapon != 0)
@@ -378,6 +379,7 @@ void weapon::restoreWeapon()
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_RANGE, &m_weapDataRestore.m_fRange);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPINUP, &m_weapDataRestore.m_fSpinUp);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPIN, &m_weapDataRestore.m_fSpin);
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BULLET_BATCH, &m_weapDataRestore.m_dwBulletBatch);
 	return;
 }
 
@@ -480,5 +482,17 @@ void weapon::setSpin(float value)
 void weapon::getHash()
 {
 	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_weapDataCur.m_dwpWeapon	+ OFFSET_WEAPON_NAME_HASH, &m_weapDataCur.m_dwHash);
+	return;
+}
+
+void weapon::getBulletBatch()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BULLET_BATCH, &m_weapDataCur.m_dwBulletBatch);
+	return;
+}
+
+void weapon::setBulletBatch(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BULLET_BATCH, &value);
 	return;
 }

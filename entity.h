@@ -126,7 +126,8 @@ class weapon
 					m_dwHash;		//name hash
 		struct weaponData
 		{
-			DWORD		m_dwHash = 0;
+			DWORD		m_dwHash = 0,
+						m_dwBulletBatch;
 			DWORD_PTR	m_dwpWeapon	= 0;
 			float		m_fSpread,		
 						m_fRecoil,
@@ -166,6 +167,8 @@ class weapon
 		void	getCurAmmo();
 		void	setCurAmmo(DWORD ammo);
 		void	getMaxAmmo();
+		void	getBulletBatch();
+		void	setBulletBatch(DWORD value);
 
 		DWORD_PTR	m_dwpAmmoInfo,
 					m_dwpCurAmmoBase;

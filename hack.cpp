@@ -675,3 +675,22 @@ void hack::wanted(feat* feature)
 		m_player.setWanted((DWORD) fValue);
 	return;
 }
+
+void	hack::bulletBatch(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_weapon.m_weapDataCur.m_dwBulletBatch != m_weapon.m_weapDataRestore.m_dwBulletBatch)
+				m_weapon.setBulletBatch(m_weapon.m_weapDataRestore.m_dwBulletBatch);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= m_weapon.m_weapDataRestore.m_dwBulletBatch * static_cast<featSlider*>(feature)->m_fValue;
+	fValue	= (fValue > 25.f) ? 25.f : fValue;
+	if(m_weapon.m_weapDataCur.m_dwBulletBatch != fValue)
+		m_weapon.setBulletBatch((DWORD) fValue);
+	return;
+}
