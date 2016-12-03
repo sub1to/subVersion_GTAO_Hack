@@ -21,12 +21,14 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#define MAX_SAVEDPOS		0x06		//max saved positions (to teleport to)
-#define MAX_PROPERTIES		0x60		//max iniparser properties
-#define MAX_KEYS			0x10		//max indexed keys (keybinds)
-#define MAX_MENU_TABS		0x08		//max amount of overlay menu tabs
-#define MAX_MENU_FEATURES	0x40		//max amount of features
-#define NAME_BUFFER_SIZE	0x20
+#define MAX_SAVEDPOS					0x06		//max saved positions (to teleport to)
+#define MAX_PROPERTIES					0x60		//max iniparser properties
+#define MAX_KEYS						0x10		//max indexed keys (keybinds)
+#define MAX_MENU_TABS					0x08		//max amount of overlay menu tabs
+#define MAX_MENU_FEATURES				0x40		//max amount of features
+#define MAX_MENU_FEATURES_DISPLAYED		0x0A		//max features displayed
+#define MENU_FEATURE_SCROLL_PADDING		0x02
+#define NAME_BUFFER_SIZE				0x20
 
 //Required keys, loaded in settings::settings
 #define keyExit			0x0
@@ -175,6 +177,7 @@ class settings
 		int			getFeatureCount();
 		feat*		getFeature(int id);
 		int			getActiveFeature();
+		int			getDisplayOffset();
 
 		bool		getFeatureCurLock();
 		bool		lockFeatureCur();
@@ -191,6 +194,7 @@ class settings
 		bool		m_bFeatureCurLock = false;
 		int			m_nFeatureCur	= 0;			//amount of features in current tab
 		bool		m_bMenuActive = false;
+		int			m_iFeatureCurDisplayOffset = 0;
 };
 
 extern settings*		g_pSettings;

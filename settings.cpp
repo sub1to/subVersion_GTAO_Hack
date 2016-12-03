@@ -73,18 +73,46 @@ bool settings::isMenuActive()
 void settings::menuDown()
 {
 	if(m_iActiveFeature + 1 < m_nFeatureCur)
+	{
 		m_iActiveFeature++;
+		if (m_iActiveFeature == m_iFeatureCurDisplayOffset + MAX_MENU_FEATURES_DISPLAYED - MENU_FEATURE_SCROLL_PADDING)
+		{
+			int displayOffset	= m_iActiveFeature - (MAX_MENU_FEATURES_DISPLAYED - 1 - MENU_FEATURE_SCROLL_PADDING);
+			displayOffset	= (displayOffset > m_nFeatureCur - MAX_MENU_FEATURES_DISPLAYED) ? m_nFeatureCur - MAX_MENU_FEATURES_DISPLAYED : displayOffset;
+			displayOffset	= (displayOffset < 0) ? 0 : displayOffset;
+			m_iFeatureCurDisplayOffset = displayOffset;
+		}
+	}
 	else
+	{
 		m_iActiveFeature = 0;
+		m_iFeatureCurDisplayOffset = 0;
+	}
+
 	return;
 }
 
 void settings::menuUp()
 {
 	if(m_iActiveFeature - 1 >= 0)
+	{
 		m_iActiveFeature--;
+		if (m_iActiveFeature == m_iFeatureCurDisplayOffset + MENU_FEATURE_SCROLL_PADDING - 1)
+		{
+			int displayOffset	= m_iActiveFeature - MENU_FEATURE_SCROLL_PADDING;
+				displayOffset	= (displayOffset > m_nFeatureCur - MAX_MENU_FEATURES_DISPLAYED) ? m_nFeatureCur - MAX_MENU_FEATURES_DISPLAYED : displayOffset;
+				displayOffset	= (displayOffset < 0) ? 0 : displayOffset;
+			m_iFeatureCurDisplayOffset = displayOffset;
+		}
+	}
 	else
+	{
 		m_iActiveFeature = m_nFeatureCur - 1;
+		int displayOffset	= m_nFeatureCur - MAX_MENU_FEATURES_DISPLAYED;
+			displayOffset	= (displayOffset < 0) ? 0 : displayOffset;
+		m_iFeatureCurDisplayOffset = displayOffset;
+	}
+
 	return;
 }
 
@@ -100,6 +128,7 @@ void settings::menuLeft()
 
 void settings::menuTabRight()
 {
+	m_iFeatureCurDisplayOffset = 0;
 	if(m_iActiveCat + 1 < m_nFeatureParent)
 		this->setActiveCat(m_iActiveCat + 1);
 	else
@@ -109,6 +138,7 @@ void settings::menuTabRight()
 
 void settings::menuTabLeft()
 {
+	m_iFeatureCurDisplayOffset = 0;
 	if(m_iActiveCat - 1 >= 0)
 		this->setActiveCat(m_iActiveCat - 1);
 	else
@@ -308,6 +338,11 @@ bool	settings::unlockFeatureCur()
 {
 	m_bFeatureCurLock = false;
 	return true;
+}
+
+int		settings::getDisplayOffset()
+{
+	return m_iFeatureCurDisplayOffset;
 }
 
 

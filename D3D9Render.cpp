@@ -98,15 +98,15 @@ bool	D3D9Render::render()
 		}
 		//draw features
 		int n	= g_pSettings->getFeatureCurCount();
-		this->drawBoxBorder(0.f, (float) LAYOUT_ELEMENT_HEIGHT * 2, (float) LAYOUT_ELEMENT_WIDTH, (float) LAYOUT_ELEMENT_HEIGHT * n, (float) LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
-		for(int i = 0; i < n; i++)			//this loops through only the features in the current category
+		this->drawBoxBorder(0.f, (float) LAYOUT_ELEMENT_HEIGHT * 2, (float) LAYOUT_ELEMENT_WIDTH, (n > MAX_MENU_FEATURES_DISPLAYED) ? (float) MAX_MENU_FEATURES_DISPLAYED * LAYOUT_ELEMENT_HEIGHT : (float) LAYOUT_ELEMENT_HEIGHT * n, (float) LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
+		for(int i = 0, j = g_pSettings->getDisplayOffset(); i < n && i < MAX_MENU_FEATURES_DISPLAYED; i++, j++)
 		{
-			feat*		feature	= g_pSettings->getFeatureCur(i);
+			feat*		feature	= g_pSettings->getFeatureCur(j);
 			float		x	= 5.f,
 						y	= 5.f + (LAYOUT_ELEMENT_HEIGHT * (i + 2));
 
 			//selected box
-			if(i == g_pSettings->getActiveFeature())
+			if(j == g_pSettings->getActiveFeature())
 				this->drawBoxBorder(x-3, y-3, LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2), LAYOUT_BORDER_SIZE,LAYOUT_COLOR_ACTIVE_BG, LAYOUT_COLOR_SELECTED);
 			//checkbox
 			if(feature->m_type == feat_toggle || feature->m_type == feat_slider)
@@ -125,6 +125,17 @@ bool	D3D9Render::render()
 				this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BG, LAYOUT_COLOR_BORDER);
 				this->drawBoxBorder(x + (mod * (w - h)), y, h, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BTN, LAYOUT_COLOR_BORDER);
 			}
+		}
+		//draw scrollbar
+		//width = total space / max
+		float	max = (float) (n - MAX_MENU_FEATURES_DISPLAYED);
+		if(max > 0)
+		{
+			float	space = ((LAYOUT_ELEMENT_HEIGHT * (MAX_MENU_FEATURES_DISPLAYED + 2)));
+			float	height = (space / max <= space / 2) ? space / max : space / 2;
+			space -= height;
+			float	pos = (max <= 0) ? 0.f : space * (g_pSettings->getDisplayOffset() / max);
+			this->drawBoxBorder(LAYOUT_ELEMENT_WIDTH + LAYOUT_BORDER_SIZE , pos, LAYOUT_SCROLLBAR_WIDTH, height, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
 		}
 
 		g_pSettings->unlockFeatureCur();
@@ -157,7 +168,7 @@ bool	D3D9Render::getViewport()
 {
 	RECT rectWnd;
 	GetWindowRect(g_pMemMan->getWindow(), &rectWnd);
-	m_screen.w = LAYOUT_ELEMENT_WIDTH;//rectWnd.right - rectWnd.left;
+	m_screen.w = LAYOUT_ELEMENT_WIDTH + LAYOUT_SCROLLBAR_WIDTH + LAYOUT_BORDER_SIZE ;//rectWnd.right - rectWnd.left;
 	m_screen.h = 300;//rectWnd.bottom - rectWnd.top;
 	m_screen.x = rectWnd.left	+ LAYOUT_PADDING_LEFT;
 	m_screen.y = rectWnd.top	+ LAYOUT_PADDING_TOP;

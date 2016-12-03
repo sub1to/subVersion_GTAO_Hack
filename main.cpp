@@ -79,10 +79,13 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);
 	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);
 	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, "Infinite Ammo", feat_toggle, "infAmmo");
-	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, "Range", feat_slider, "weapRange", 1.f, 5.f);
+	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, "Range", feat_slider, "weapRange", 1.f, 10.f);
 	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, "No Spin-Up", feat_toggle, "weapSpin");
 	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, "Explosive Ammo", feat_toggle, "explAmmo");
 	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, "Fire Ammo", feat_toggle, "fireAmmo");
+	g_pSettings->addFeature(1, "Dummy Feature", feat_toggle);
+	g_pSettings->addFeature(1, "Dummy Feature2", feat_toggle);
+	g_pSettings->addFeature(1, "Dummy Feature3", feat_toggle);
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, "God", feat_toggle, "vehTrueGodMode");
 	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, "Demi-God", feat_toggle, "vehGodMode");
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, "Seatbelt", feat_toggle, "seatbelt");
