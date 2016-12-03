@@ -297,7 +297,9 @@ void	killProgram()
 
 	//restore patched code
 	feat dummyFeat;
+	dummyFeat.m_bRestored = false;
 	g_pHack->noReload(&dummyFeat);
+	dummyFeat.m_bRestored = false;
 	g_pHack->infAmmo(&dummyFeat);
 
 	delete	g_pHack;
