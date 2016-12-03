@@ -31,17 +31,12 @@ trainer::trainer()
 trainer::~trainer(){}
 void	trainer::checkKeys(){}
 
-bool	trainer::checkKeyState(int key, int mod)
+bool	trainer::checkKeyState(int key)
 {
 	if
 	(
-		clock() - m_keyTmr > 300	&&
-		(
-			//(GetAsyncKeyState(key) && mod == 0) ||
-			//(GetAsyncKeyState(key) && (GetAsyncKeyState(mod) & 0x8001) == 0x8001)
-			((GetAsyncKeyState(key) & 0x8001) == 0x8001 && mod == 0)// ||
-			//((GetAsyncKeyState(key) & 0x8001) == 0x8001 && (GetAsyncKeyState(mod) & 0x8001) == 0x8001)
-		)
+		clock() - m_keyTmr > 100	&&
+		(GetAsyncKeyState(key) & 0x8001) == 0x8001
 	)
 	{
 		m_keyTmr = clock();
@@ -62,12 +57,12 @@ hack::~hack(){}
 
 void hack::checkKeys()
 {
-	if(checkKeyState(g_pSettings->m_iKeys[keyExit], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyExit]))
 	{
 		killProgram();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenu], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenu]))
 	{
 		g_pSettings->toggleMenu();
 
@@ -81,22 +76,22 @@ void hack::checkKeys()
 	}
 
 	//hotkeys
-	if(checkKeyState(g_pSettings->m_iKeys[keyHotTeleport], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotTeleport]))
 	{
 		g_pHack->teleportWaypoint();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyHotWanted], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotWanted]))
 	{
 		g_pHack->notWanted();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyHotHealth], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotHealth]))
 	{
 		g_pHack->restoreHealth();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyHotAmmo], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyHotAmmo]))
 	{
 		g_pHack->fillAmmo();
 		return;
@@ -107,37 +102,37 @@ void hack::checkKeys()
 		return;
 
 	//menu navigation
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuDown], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuDown]))
 	{
 		g_pSettings->menuDown();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuUp], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuUp]))
 	{
 		g_pSettings->menuUp();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuRight], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuRight]))
 	{
 		g_pSettings->menuRight();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuLeft], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuLeft]))
 	{
 		g_pSettings->menuLeft();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuTabNext], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuTabNext]))
 	{
 		g_pSettings->menuTabRight();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuTabPrev], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuTabPrev]))
 	{
 		g_pSettings->menuTabLeft();
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSave], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSave]))
 	{
 		featTeleport* tp	= dynamic_cast<featTeleport*>(g_pSettings->getFeatureCur(g_pSettings->getActiveFeature()));
 		if(tp == nullptr || tp->m_tpType != tp_saved)
@@ -149,7 +144,7 @@ void hack::checkKeys()
 		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_pos.y);
 		return;
 	}
-	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSelect], 0))
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSelect]))
 	{
 		g_pSettings->menuSelect();
 		return;

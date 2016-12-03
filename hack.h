@@ -28,7 +28,7 @@ class trainer
 
 						trainer();
 						~trainer();
-		bool			checkKeyState(int key, int mod);
+		bool			checkKeyState(int key);
 		virtual void	checkKeys();
 };
 
