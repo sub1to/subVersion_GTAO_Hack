@@ -220,6 +220,7 @@ bool vehicle::loadHandling()
 	this->getAcceleration();
 	this->getBrakeForce();
 	this->getTractionCurveMin();
+	this->getDeformationDamageMult();
 	if(m_handlingCur.m_dwpHandling != m_handlingRestore.m_dwpHandling)
 	{
 		if(m_handlingRestore.m_dwpHandling != 0)
@@ -234,6 +235,7 @@ void vehicle::restoreHandling()
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_ACCELERATION, &m_handlingRestore.m_fAcceleration);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &m_handlingRestore.m_fBrakeForce);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingRestore.m_fTractionCurveMin);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &m_handlingRestore.m_fDeformationDamageMult);
 	return;
 }
 
@@ -294,6 +296,18 @@ void vehicle::getBulletproofTires()
 void vehicle::setBulletproofTires(BYTE value)
 {
 	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_BULLETPROOF_TIRES, &value);
+	return;
+}
+
+void vehicle::getDeformationDamageMult()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &m_handlingCur.m_fDeformationDamageMult);
+	return;
+}
+
+void vehicle::setDeformationDamageMult(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &value);
 	return;
 }
 

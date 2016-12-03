@@ -707,3 +707,21 @@ void	hack::muzzleVelocity(feat* feature)
 		m_weapon.setMuzzleVelocity(fValue);
 	return;
 }
+
+void	hack::vehicleDeformation(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_handlingCur.m_fDeformationDamageMult != m_vehicle.m_handlingRestore.m_fDeformationDamageMult)
+				m_vehicle.setDeformationDamageMult(m_vehicle.m_handlingRestore.m_fDeformationDamageMult);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
+	if(m_vehicle.m_handlingCur.m_fDeformationDamageMult != fValue)
+		m_vehicle.setDeformationDamageMult(fValue);
+	return;
+}
