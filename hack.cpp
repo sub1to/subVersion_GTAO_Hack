@@ -664,3 +664,14 @@ void hack::vehicleBulletproofTires(feat* feature)
 		m_vehicle.setBulletproofTires(m_vehicle.m_btBulletproofTires | 0x20);
 	return;
 }
+
+void hack::wanted(feat* feature)
+{
+	if(!feature->m_bOn)
+		return;
+	m_player.getWanted();
+	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
+	if(m_player.m_dwWanted != (DWORD) fValue)
+		m_player.setWanted((DWORD) fValue);
+	return;
+}

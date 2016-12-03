@@ -66,7 +66,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, "God", feat_toggle, "trueGodMode");
 	g_iFeature[FEATURE_P_GOD]				= g_pSettings->addFeature(0, "Demi-God", feat_toggle, "godMode");
-	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, "Never Wanted", feat_toggle, "neverWanted");
+	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, "Wanted", feat_slider, "wanted", 0.f, 5.f, .2f);
+	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, "Never Wanted", feat_toggle, "neverWanted");
 	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, "Anti NPC", feat_toggle, "antiNpc");
 	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, "Run Speed", feat_slider, "runSpd", 1.f, 5.f);
 	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, "Swim Speed", feat_slider, "swimSpd", 1.f, 5.f);
@@ -238,11 +239,10 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->restoreVehicleHealth();
 		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_ANTINPC])->m_bOn)
 			g_pHack->killNpc();
-
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED])->m_bOn)
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED])->m_bOn)
 			g_pHack->notWanted();
-		g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]));
-
+		g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED]));
+		g_pHack->wanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]));
 		g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]));
 		g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD]));
 		g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));

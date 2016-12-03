@@ -79,7 +79,8 @@ class featSlider : public feat
 	public:
 		float		m_fValue,
 					m_fMin,
-					m_fMax;
+					m_fMax,
+					m_fMod = .10f;
 
 				featSlider();
 				~featSlider();
@@ -170,6 +171,7 @@ class settings
 		int			addFeature(int parent, std::string name, featType type);
 		int			addFeature(int parent, std::string name, featType type, std::string iniKey);
 		int			addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max);
+		int			addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod);
 		int			addFeature(int parent, std::string name, featType type, std::string iniKey, teleType tpType);
 		int			addFeature(int parent, std::string name, featType type, teleType tpType);
 		int			getFeatureCurCount();

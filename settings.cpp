@@ -219,6 +219,15 @@ int		settings::addFeature(int parent, std::string name, featType type, std::stri
 	return id;
 }
 
+int		settings::addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod)
+{
+	int id = this->addFeature(parent, name, type, iniKey, min, max);
+	if(id < 0)
+		return id;
+	dynamic_cast<featSlider*>(m_feature[id])->m_fMod		= mod;
+	return id;
+}
+
 int		settings::addFeature(int parent, std::string name, featType type, std::string iniKey, teleType tpType)
 {
 	if(tpType == tp_waypoint)
@@ -373,7 +382,7 @@ featSlider::~featSlider() {}
 
 void	featSlider::inc()
 {
-	float v		= (m_fValue + ( (m_fMax - m_fMin) * 0.10f) );
+	float v		= (m_fValue + ( (m_fMax - m_fMin) * m_fMod) );
 	if(v <= m_fMax)
 		m_fValue = v;
 	else
@@ -384,7 +393,7 @@ void	featSlider::inc()
 
 void	featSlider::dec()
 {
-	float v		= (m_fValue - ( (m_fMax - m_fMin) * 0.10f) );
+	float v		= (m_fValue - ( (m_fMax - m_fMin) * m_fMod) );
 	if(v >= m_fMin)
 		m_fValue = v;
 	else

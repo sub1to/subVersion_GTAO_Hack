@@ -121,7 +121,7 @@
 
 //feature indexing
 #define FEATURE_P_GOD				0x00
-#define FEATURE_P_WANTED			0x01
+#define FEATURE_P_NEVERWANTED		0x01
 #define FEATURE_P_ANTINPC			0x02
 #define FEATURE_V_GOD				0x03
 #define FEATURE_W_SPREAD			0x04
@@ -147,6 +147,7 @@
 #define FEATURE_V_TRACTION			0x18
 #define FEATURE_V_GRAVITY			0x19
 #define FEATURE_V_BULLETPROOFTIRES	0x1A
+#define FEATURE_P_WANTED			0x1B
 
 
 void		killProgram	();
