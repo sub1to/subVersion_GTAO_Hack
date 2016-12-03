@@ -116,6 +116,7 @@
 #define OFFSET_WEAPON_SPINUP			0x124
 #define OFFSET_WEAPON_SPIN				0x128
 #define OFFSET_WEAPON_BULLET_BATCH		0x100			//dwBulletInBatch
+#define OFFSET_WEAPON_MUZZLE_VELOCITY	0xFC			//fMuzzleVelocity
 
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
@@ -150,6 +151,7 @@
 #define FEATURE_V_BULLETPROOFTIRES	0x1A
 #define FEATURE_P_WANTED			0x1B
 #define FEATURE_W_BULLET_BATCH		0x1C
+#define FEATURE_W_MUZZLE_VELOCITY	0x1D
 
 
 void		killProgram	();

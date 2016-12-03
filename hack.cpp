@@ -689,3 +689,21 @@ void	hack::bulletBatch(feat* feature)
 		m_weapon.setBulletBatch((DWORD) fValue);
 	return;
 }
+
+void	hack::muzzleVelocity(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_weapon.m_weapDataCur.m_fMuzzleVelocity != m_weapon.m_weapDataRestore.m_fMuzzleVelocity)
+				m_weapon.setMuzzleVelocity(m_weapon.m_weapDataRestore.m_fMuzzleVelocity);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= m_weapon.m_weapDataRestore.m_fMuzzleVelocity * static_cast<featSlider*>(feature)->m_fValue;
+	if(m_weapon.m_weapDataCur.m_fMuzzleVelocity != fValue)
+		m_weapon.setMuzzleVelocity(fValue);
+	return;
+}

@@ -136,7 +136,8 @@ class weapon
 						m_fReloadVeh,
 						m_fRange,
 						m_fSpinUp,
-						m_fSpin;
+						m_fSpin,
+						m_fMuzzleVelocity;
 		};
 
 		weaponData	m_weapDataRestore,//the original values will be stored here.
@@ -169,6 +170,8 @@ class weapon
 		void	getMaxAmmo();
 		void	getBulletBatch();
 		void	setBulletBatch(DWORD value);
+		void	getMuzzleVelocity();
+		void	setMuzzleVelocity(float value);
 
 		DWORD_PTR	m_dwpAmmoInfo,
 					m_dwpCurAmmoBase;
