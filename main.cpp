@@ -134,6 +134,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	SetLayeredWindowAttributes(g_hWnd, 0, 0, LWA_ALPHA);
 	SetLayeredWindowAttributes(g_hWnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 
+	MARGINS margins {1, 1, 1, 1};
+	DwmExtendFrameIntoClientArea(g_hWnd, &margins);			//aero fix
+
 	ShowWindow(g_hWnd, SW_SHOWNORMAL);
 
 	CreateThread(	NULL,

@@ -32,6 +32,9 @@
 #include <ctime>
 #include <psapi.h>
 
+#include <Dwmapi.h>
+#pragma comment(lib,"Dwmapi.lib")
+
 #include "d3d9/d3d9.h"
 #include "d3d9/d3dx9.h"
 #pragma comment(lib,"d3d9/d3dx9.lib")

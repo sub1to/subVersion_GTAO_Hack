@@ -79,7 +79,7 @@ bool	D3D9Render::render()
 	{
 		//Draw header
 		this->drawBoxBorder(0, 0, LAYOUT_ELEMENT_WIDTH, LAYOUT_ELEMENT_HEIGHT, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
-		this->drawText("subVersion menu [unknowncheats]", 5.f, 3.f, 2, LAYOUT_COLOR_TEXT);
+		this->drawText("subVersion 1.1.0 [unknowncheats]", 5.f, 3.f, 2, LAYOUT_COLOR_TEXT);
 
 		//prevent race conditions
 		while(!g_pSettings->lockFeatureCur())
@@ -103,21 +103,23 @@ bool	D3D9Render::render()
 		for(int i = 0, j = g_pSettings->getDisplayOffset(); i < n && i < MAX_MENU_FEATURES_DISPLAYED; i++, j++)
 		{
 			feat*		feature	= g_pSettings->getFeatureCur(j);
-			float		x	= 5.f,
+			float		x	= 8.f,
 						y	= 5.f + (LAYOUT_ELEMENT_HEIGHT * (i + 2));
 
 			//selected box
 			if(j == active)
-				this->drawBoxBorder(x-3, y-3, LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2), LAYOUT_BORDER_SIZE,LAYOUT_COLOR_ACTIVE_BG, LAYOUT_COLOR_SELECTED);
+				this->drawBoxBorder(x-6, y-3, LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2), LAYOUT_BORDER_SIZE,LAYOUT_COLOR_ACTIVE_BG, LAYOUT_COLOR_SELECTED);
 			//checkbox
 			if(feature->m_type == feat_toggle || feature->m_type == feat_slider)
-				this->drawBoxBorder(x, y, LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_BORDER_SIZE, (feature->m_bOn == true) ? LAYOUT_COLOR_SELECTED : LAYOUT_COLOR_BACKGROUND, (feature->m_bOn == true) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
-			
-			this->drawText(feature->m_szName, x + (LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2)), y, 1, LAYOUT_COLOR_TEXT);
+			{
+				this->drawBoxBorder(x-2, y, LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_BORDER_SIZE, (feature->m_bOn == true) ? LAYOUT_COLOR_SELECTED : LAYOUT_COLOR_BACKGROUND, (feature->m_bOn == true) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
+				x += (LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 3));
+			}
+			this->drawText(feature->m_szName, x, y, 1, LAYOUT_COLOR_TEXT);
 			
 			if(feature->m_type == feat_slider)
 			{
-				featSlider* slider = dynamic_cast<featSlider*>(feature);
+				featSlider* slider = static_cast<featSlider*>(feature);
 				float	x	= LAYOUT_ELEMENT_WIDTH * .5f,
 						y	= (LAYOUT_ELEMENT_HEIGHT * (i + 2)) + 5.f,
 						w	= (LAYOUT_ELEMENT_WIDTH * .5f) - (LAYOUT_BORDER_SIZE * 2),
@@ -128,7 +130,6 @@ bool	D3D9Render::render()
 			}
 		}
 		//draw scrollbar
-		//width = total space / max
 		float	max = (float) (n - MAX_MENU_FEATURES_DISPLAYED);
 		if(max > 0)
 		{
@@ -149,7 +150,7 @@ bool	D3D9Render::render()
 
 bool	D3D9Render::createFont(char *name, int size, bool bold, bool italic)
 {
-	if(m_nFont >= FONT_BUFFER_SIZE - 1)
+	if(m_nFont >= FONT_BUFFER_SIZE)
 		return false;
 	D3DXCreateFont(m_pD3dDev, size, 0, (bold) ? FW_BOLD : FW_NORMAL, 0, (italic) ? 1 : 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH, name, &m_pFont[m_nFont]);
 	m_nFont++;
@@ -169,8 +170,8 @@ bool	D3D9Render::getViewport()
 {
 	RECT rectWnd;
 	GetWindowRect(g_pMemMan->getWindow(), &rectWnd);
-	m_screen.w = LAYOUT_ELEMENT_WIDTH + LAYOUT_SCROLLBAR_WIDTH + LAYOUT_BORDER_SIZE ;//rectWnd.right - rectWnd.left;
-	m_screen.h = 300;//rectWnd.bottom - rectWnd.top;
+	m_screen.w = LAYOUT_ELEMENT_WIDTH + LAYOUT_SCROLLBAR_WIDTH + LAYOUT_BORDER_SIZE;
+	m_screen.h = LAYOUT_ELEMENT_HEIGHT * (MAX_MENU_FEATURES_DISPLAYED + 2); //300
 	m_screen.x = rectWnd.left	+ LAYOUT_PADDING_LEFT;
 	m_screen.y = rectWnd.top	+ LAYOUT_PADDING_TOP;
 	return 1;
