@@ -54,7 +54,7 @@ class featCat
 };
 
 enum featType	{ feat_toggle, feat_slider, feat_teleport };
-enum teleType	{ tp_saved, tp_waypoint };
+enum teleType	{ tp_saved, tp_waypoint, tp_static };
 
 class feat
 {
@@ -174,6 +174,7 @@ class settings
 		int			addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod);
 		int			addFeature(int parent, std::string name, featType type, std::string iniKey, teleType tpType);
 		int			addFeature(int parent, std::string name, featType type, teleType tpType);
+		int			addFeature(int parent, std::string name, featType type, teleType tpType, float x, float y, float z);
 		int			getFeatureCurCount();
 		feat*		getFeatureCur(int i);
 		int			getFeatureCount();

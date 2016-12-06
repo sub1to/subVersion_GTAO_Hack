@@ -230,7 +230,7 @@ int		settings::addFeature(int parent, std::string name, featType type, std::stri
 
 int		settings::addFeature(int parent, std::string name, featType type, std::string iniKey, teleType tpType)
 {
-	if(tpType == tp_waypoint)
+	if(tpType != tp_saved)
 		return -1;
 	int id = this->addFeature(parent, name, type, iniKey);
 	if(id < 0)
@@ -239,6 +239,7 @@ int		settings::addFeature(int parent, std::string name, featType type, std::stri
 	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.x		= m_iniParser.getValue<float>(iniKey + "_x");
 	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.y		= m_iniParser.getValue<float>(iniKey + "_y");
 	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.z		= -225.f;
+	dynamic_cast<featTeleport*>(m_feature[id])->m_szName		+= " | " + m_iniParser.getValue<std::string>(iniKey + "_name");
 	return id;
 }
 
@@ -250,6 +251,19 @@ int		settings::addFeature(int parent, std::string name, featType type, teleType 
 	if(id < 0)
 		return id;
 	dynamic_cast<featTeleport*>(m_feature[id])->m_tpType	= tpType;
+	return id;
+}
+
+int		settings::addFeature(int parent, std::string name, featType type, teleType tpType, float x, float y, float z)
+{
+	if(tpType == tp_saved)
+		return -1;
+	int id = this->addFeature(parent, name, type, tpType);
+	if(id < 0)
+		return id;
+	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.x	= x;
+	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.y	= y;
+	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.z	= z;
 	return id;
 }
 
@@ -414,6 +428,7 @@ void	featTeleport::toggle()
 			g_pHack->teleportWaypoint();
 		break;
 		case tp_saved:
+		case tp_static:
 			g_pHack->teleport(m_v3Pos);
 		break;
 	}

@@ -97,14 +97,31 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, "Gravity", feat_slider, "vehGravity", 0.f, 25.f);
 	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, "Bulletproof Tires", feat_toggle, "vehBulletproofTires");
 	g_pSettings->addFeature(3, "Waypoint", feat_teleport, tp_waypoint);
-	g_pSettings->addFeature(3, "Position 1", feat_teleport, "pos0", tp_saved);
-	g_pSettings->addFeature(3, "Position 2", feat_teleport, "pos1", tp_saved);
-	g_pSettings->addFeature(3, "Position 3", feat_teleport, "pos2", tp_saved);
-	g_pSettings->addFeature(3, "Position 4", feat_teleport, "pos3", tp_saved);
-	g_pSettings->addFeature(3, "Position 5", feat_teleport, "pos4", tp_saved);
-	g_pSettings->addFeature(3, "Position 6", feat_teleport, "pos5", tp_saved);
+	g_pSettings->addFeature(3, "Saved 1", feat_teleport, "pos0", tp_saved);
+	g_pSettings->addFeature(3, "Saved 2", feat_teleport, "pos1", tp_saved);
+	g_pSettings->addFeature(3, "Saved 3", feat_teleport, "pos2", tp_saved);
+	g_pSettings->addFeature(3, "Saved 4", feat_teleport, "pos3", tp_saved);
+	g_pSettings->addFeature(3, "Saved 5", feat_teleport, "pos4", tp_saved);
+	g_pSettings->addFeature(3, "Saved 6", feat_teleport, "pos5", tp_saved);
+	g_pSettings->addFeature(3, "LS Customs", feat_teleport, tp_static, -365.425f, -131.809f, 38.9f);
+	g_pSettings->addFeature(3, "LSIA Runway", feat_teleport, tp_static, -1336.f, -3044.f, 14.15f);
+	g_pSettings->addFeature(3, "Sandy Shores Airfield", feat_teleport, tp_static, 1747.f, 3273.f, 41.35f);
+	g_pSettings->addFeature(3, "Mount Chiliad", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
+	g_pSettings->addFeature(3, "[Interior] FIB Building", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
+	g_pSettings->addFeature(3, "[Interior] Garment Factory", feat_teleport, tp_static, 712.716f, -962.906f, 30.6f);
+	g_pSettings->addFeature(3, "[Interior] Franklin's House", feat_teleport, tp_static, 7.119f, 536.615f, 176.2f);
+	g_pSettings->addFeature(3, "[Interior] Michael's House", feat_teleport, tp_static, -813.603f, 179.474f, 72.5f);
+	g_pSettings->addFeature(3, "[Interior] Trevor's House", feat_teleport, tp_static, 1972.610f, 3817.040f, 33.65f);
+	g_pSettings->addFeature(3, "[Interior] Aunt Denise's House", feat_teleport, tp_static, -14.380f, -1438.510f, 31.3f);
+	g_pSettings->addFeature(3, "[Interior] Floyd's House", feat_teleport, tp_static, -1151.770f, -1518.138f, 10.85f);
+	g_pSettings->addFeature(3, "[Interior] Lester's House", feat_teleport, tp_static, 1273.898f, -1719.304f, 54.8f);
+	g_pSettings->addFeature(3, "[Interior] Vanilla Unicorn Office", feat_teleport, tp_static, 97.271f, -1290.994f, 29.45f);
+	g_pSettings->addFeature(3, "[Interior] Comedy Club", feat_teleport, tp_static, 378.100f, -999.964f, -98.6f);
+	g_pSettings->addFeature(3, "[Interior] Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
+	g_pSettings->addFeature(3, "[Interior] Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
+	g_pSettings->addFeature(3, "[Interior] Humane Labs", feat_teleport, tp_static, 3614.394f, 3744.803f, 28.9f);
 
-	g_pSettings->setActiveCat(0);			//this needs to be called so we can full the current feature buffer
+	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
 
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
@@ -199,13 +216,23 @@ DWORD __stdcall threadAttach(LPVOID lpParam)
 	{
 		if(g_pMemMan->attach() && g_pMemMan->findWindow())
 		{
+			HWND	fgWnd	= GetForegroundWindow(),
+					tgWnd	= g_pMemMan->getWindow();
 			if(g_pD3D9Render->getViewport())
 				MoveWindow(g_hWnd, g_pD3D9Render->m_screen.x, g_pD3D9Render->m_screen.y, g_pD3D9Render->m_screen.w, g_pD3D9Render->m_screen.h, true);
 
-			if(g_hWnd == GetForegroundWindow())
+			if(fgWnd != tgWnd && fgWnd != g_hWnd)
 			{
-				ShowWindow(g_pMemMan->getWindow(), SW_SHOW);
-				SetForegroundWindow(g_pMemMan->getWindow());
+				SetWindowPos(g_hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+			}
+			else if(g_hWnd == fgWnd)
+			{
+				ShowWindow(tgWnd, SW_SHOW);
+				SetForegroundWindow(tgWnd);
+			}
+			else if(tgWnd == fgWnd && !(GetWindowLong(g_hWnd, GWL_EXSTYLE) & WS_EX_TOPMOST))
+			{
+				SetWindowPos(g_hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 			}
 		}
 		else
