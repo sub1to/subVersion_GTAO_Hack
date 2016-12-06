@@ -221,6 +221,7 @@ bool vehicle::loadHandling()
 	this->getBrakeForce();
 	this->getTractionCurveMin();
 	this->getDeformationDamageMult();
+	this->getUpShift();
 	if(m_handlingCur.m_dwpHandling != m_handlingRestore.m_dwpHandling)
 	{
 		if(m_handlingRestore.m_dwpHandling != 0)
@@ -236,6 +237,7 @@ void vehicle::restoreHandling()
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_BRAKEFORCE, &m_handlingRestore.m_fBrakeForce);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingRestore.m_fTractionCurveMin);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &m_handlingRestore.m_fDeformationDamageMult);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_UPSHIFT, &m_handlingRestore.m_fUpShift);
 	return;
 }
 
@@ -308,6 +310,18 @@ void vehicle::getDeformationDamageMult()
 void vehicle::setDeformationDamageMult(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &value);
+	return;
+}
+
+void vehicle::getUpShift()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_UPSHIFT, &m_handlingCur.m_fUpShift);
+	return;
+}
+
+void vehicle::setUpShift(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_UPSHIFT, &value);
 	return;
 }
 

@@ -95,7 +95,8 @@ class vehicle : public entity
 			float		m_fAcceleration,
 						m_fBrakeForce,
 						m_fTractionCurveMin,
-						m_fDeformationDamageMult;
+						m_fDeformationDamageMult,
+						m_fUpShift;
 		};
 
 		vehicleHandling	m_handlingRestore,
@@ -119,6 +120,8 @@ class vehicle : public entity
 		void	setBulletproofTires(BYTE value);
 		void	getDeformationDamageMult();
 		void	setDeformationDamageMult(float value);
+		void	getUpShift();
+		void	setUpShift(float value);
 };
 
 class weapon

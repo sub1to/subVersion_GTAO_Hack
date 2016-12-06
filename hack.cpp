@@ -718,3 +718,21 @@ void	hack::vehicleDeformation(feat* feature)
 		m_vehicle.setDeformationDamageMult(fValue);
 	return;
 }
+
+void	hack::vehicleUpShift(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_handlingCur.m_fUpShift != m_vehicle.m_handlingRestore.m_fUpShift)
+				m_vehicle.setUpShift(m_vehicle.m_handlingRestore.m_fUpShift);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
+	if(m_vehicle.m_handlingCur.m_fUpShift != fValue)
+		m_vehicle.setUpShift(fValue);
+	return;
+}

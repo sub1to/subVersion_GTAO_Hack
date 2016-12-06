@@ -91,6 +91,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, "Seatbelt", feat_toggle, "seatbelt");
 	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(2, "Deformation", feat_slider, "vehDeform", 0.f, 1.f);
 	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, "Acceleration", feat_slider, "vehAccel", 1.f, 10.f);
+	g_iFeature[FEATURE_V_UPSHIFT]			= g_pSettings->addFeature(2, "Up-Shift Rate", feat_slider, "vehUpShift", 1.f, 25.f);
 	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, "Brake force", feat_slider, "vehBrakeForce", 1.f, 10.f);
 	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, "Traction", feat_slider, "vehTraction", 1.f, 2.f);
 	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, "Gravity", feat_slider, "vehGravity", 0.f, 25.f);
@@ -267,6 +268,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->vehicleBrake(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]));
 			g_pHack->vehicleTraction(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRACTION]));
 			g_pHack->vehicleDeformation(g_pSettings->getFeature(g_iFeature[FEATURE_V_DEFORMATION]));
+			g_pHack->vehicleUpShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_UPSHIFT]));
 		}
 
 		if(g_pHack->m_weapon.loadWeapon())
