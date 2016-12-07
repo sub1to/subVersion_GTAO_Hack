@@ -96,7 +96,8 @@ class vehicle : public entity
 						m_fBrakeForce,
 						m_fTractionCurveMin,
 						m_fDeformationDamageMult,
-						m_fUpShift;
+						m_fUpShift,
+						m_fSuspensionForce;
 		};
 
 		vehicleHandling	m_handlingRestore,
@@ -122,6 +123,8 @@ class vehicle : public entity
 		void	setDeformationDamageMult(float value);
 		void	getUpShift();
 		void	setUpShift(float value);
+		void	getSuspensionForce();
+		void	setSuspensionForce(float value);
 };
 
 class weapon
@@ -143,7 +146,8 @@ class weapon
 						m_fRange,
 						m_fSpinUp,
 						m_fSpin,
-						m_fMuzzleVelocity;
+						m_fMuzzleVelocity,
+						m_fBatchSpread;
 		};
 
 		weaponData	m_weapDataRestore,//the original values will be stored here.
@@ -178,6 +182,8 @@ class weapon
 		void	setBulletBatch(DWORD value);
 		void	getMuzzleVelocity();
 		void	setMuzzleVelocity(float value);
+		void	getBatchSpread();
+		void	setBatchSpread(float value);
 
 		DWORD_PTR	m_dwpAmmoInfo,
 					m_dwpCurAmmoBase;

@@ -736,3 +736,39 @@ void	hack::vehicleUpShift(feat* feature)
 		m_vehicle.setUpShift(fValue);
 	return;
 }
+
+void	hack::batchSpread(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_weapon.m_weapDataCur.m_fBatchSpread != m_weapon.m_weapDataRestore.m_fBatchSpread)
+				m_weapon.setBatchSpread(m_weapon.m_weapDataRestore.m_fBatchSpread);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
+	if(m_weapon.m_weapDataCur.m_fBatchSpread != fValue)
+		m_weapon.setBatchSpread(fValue);
+	return;
+}
+
+void	hack::vehicleSuspensionForce(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			if(m_vehicle.m_handlingCur.m_fSuspensionForce != m_vehicle.m_handlingRestore.m_fSuspensionForce)
+				m_vehicle.setSuspensionForce(m_vehicle.m_handlingRestore.m_fSuspensionForce);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	float fValue	= m_vehicle.m_handlingRestore.m_fSuspensionForce * static_cast<featSlider*>(feature)->m_fValue;
+	if(m_vehicle.m_handlingCur.m_fSuspensionForce != fValue)
+		m_vehicle.setSuspensionForce(fValue);
+	return;
+}

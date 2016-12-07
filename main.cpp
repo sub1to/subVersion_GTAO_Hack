@@ -84,10 +84,12 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, "No Spin-Up", feat_toggle, "weapSpin");
 	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, "Explosive Ammo", feat_toggle, "explAmmo");
 	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, "Fire Ammo", feat_toggle, "fireAmmo");
-	g_iFeature[FEATURE_W_BULLET_BATCH]		= g_pSettings->addFeature(1, "Bullets per Shot", feat_slider, "bulletBatch", 1.f, 10.f, (float) 1.f / 9.f);
+	g_iFeature[FEATURE_W_BULLET_BATCH]		= g_pSettings->addFeature(1, "Bullet Batch", feat_slider, "bulletBatch", 1.f, 10.f, (float) 1.f / 9.f);
+	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, "Batch Spread", feat_slider, "batchSpread", 0.f, 0.2f);
 	g_iFeature[FEATURE_W_MUZZLE_VELOCITY]	= g_pSettings->addFeature(1, "Muzzle Velocity", feat_slider, "muzzleVelo", 1.f, 10.f);
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, "God", feat_toggle, "vehTrueGodMode");
 	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, "Demi-God", feat_toggle, "vehGodMode");
+	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, "Bulletproof Tires", feat_toggle, "vehBulletproofTires");
 	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, "Seatbelt", feat_toggle, "seatbelt");
 	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(2, "Deformation", feat_slider, "vehDeform", 0.f, 1.f);
 	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, "Acceleration", feat_slider, "vehAccel", 1.f, 10.f);
@@ -95,7 +97,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, "Brake force", feat_slider, "vehBrakeForce", 1.f, 10.f);
 	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, "Traction", feat_slider, "vehTraction", 1.f, 2.f);
 	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, "Gravity", feat_slider, "vehGravity", 0.f, 25.f);
-	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, "Bulletproof Tires", feat_toggle, "vehBulletproofTires");
+	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(2, "Suspension Force", feat_slider, "vehSuspensionForce", 0.f, 2.f);
 	g_pSettings->addFeature(3, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, "Saved 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(3, "Saved 2", feat_teleport, "pos1", tp_saved);
@@ -296,6 +298,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->vehicleTraction(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRACTION]));
 			g_pHack->vehicleDeformation(g_pSettings->getFeature(g_iFeature[FEATURE_V_DEFORMATION]));
 			g_pHack->vehicleUpShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_UPSHIFT]));
+			g_pHack->vehicleSuspensionForce(g_pSettings->getFeature(g_iFeature[FEATURE_V_SUSPENSION_FORCE]));
 		}
 
 		if(g_pHack->m_weapon.loadWeapon())
@@ -307,6 +310,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->weaponRange(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE]));
 			g_pHack->weaponSpin(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP]));
 			g_pHack->bulletBatch(g_pSettings->getFeature(g_iFeature[FEATURE_W_BULLET_BATCH]));
+			g_pHack->batchSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_BATCH_SPREAD]));
 			g_pHack->muzzleVelocity(g_pSettings->getFeature(g_iFeature[FEATURE_W_MUZZLE_VELOCITY]));
 
 			g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO]));

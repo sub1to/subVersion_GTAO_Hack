@@ -222,6 +222,7 @@ bool vehicle::loadHandling()
 	this->getTractionCurveMin();
 	this->getDeformationDamageMult();
 	this->getUpShift();
+	this->getSuspensionForce();
 	if(m_handlingCur.m_dwpHandling != m_handlingRestore.m_dwpHandling)
 	{
 		if(m_handlingRestore.m_dwpHandling != 0)
@@ -238,6 +239,7 @@ void vehicle::restoreHandling()
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN, &m_handlingRestore.m_fTractionCurveMin);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER, &m_handlingRestore.m_fDeformationDamageMult);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_UPSHIFT, &m_handlingRestore.m_fUpShift);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingRestore.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE, &m_handlingRestore.m_fSuspensionForce);
 	return;
 }
 
@@ -325,6 +327,18 @@ void vehicle::setUpShift(float value)
 	return;
 }
 
+void vehicle::getSuspensionForce()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE, &m_handlingCur.m_fSuspensionForce);
+	return;
+}
+
+void vehicle::setSuspensionForce(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE, &value);
+	return;
+}
+
 /*
 	WEAPON
 */
@@ -389,6 +403,7 @@ bool weapon::loadWeapon()
 	this->getSpin();
 	this->getBulletBatch();
 	this->getMuzzleVelocity();
+	this->getBatchSpread();
 	if(m_weapDataCur.m_dwHash != m_weapDataRestore.m_dwHash)
 	{
 		if(m_weapDataRestore.m_dwpWeapon != 0)
@@ -410,6 +425,7 @@ void weapon::restoreWeapon()
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_SPIN, &m_weapDataRestore.m_fSpin);
 	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BULLET_BATCH, &m_weapDataRestore.m_dwBulletBatch);
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_MUZZLE_VELOCITY, &m_weapDataRestore.m_fMuzzleVelocity);
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataRestore.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &m_weapDataRestore.m_fBatchSpread);
 	return;
 }
 
@@ -536,5 +552,17 @@ void weapon::getMuzzleVelocity()
 void weapon::setMuzzleVelocity(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_MUZZLE_VELOCITY, &value);
+	return;
+}
+
+void weapon::getBatchSpread()
+{
+	g_pMemMan->readMem<float>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &m_weapDataCur.m_fBatchSpread);
+	return;
+}
+
+void weapon::setBatchSpread(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_weapDataCur.m_dwpWeapon + OFFSET_WEAPON_BATCH_SPREAD, &value);
 	return;
 }

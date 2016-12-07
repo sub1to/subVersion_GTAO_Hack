@@ -100,6 +100,7 @@
 #define OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN	0x90			//fTractionCurveMin
 #define OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER	0xF8			//fDeformationDamageMult
 #define OFFSET_VEHICLE_HANDLING_UPSHIFT				0x58
+#define OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE	0xBC			//fSuspensionForce 
 
 //weapon offsets
 #define OFFSET_WEAPON_MANAGER			0x10B8			//from playerbase
@@ -122,6 +123,8 @@
 #define OFFSET_WEAPON_SPIN				0x128
 #define OFFSET_WEAPON_BULLET_BATCH		0x100			//dwBulletInBatch
 #define OFFSET_WEAPON_MUZZLE_VELOCITY	0xFC			//fMuzzleVelocity
+#define OFFSET_WEAPON_BATCH_SPREAD		0x104			//fBatchSpread
+
 
 #define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
 
@@ -159,6 +162,8 @@
 #define FEATURE_W_MUZZLE_VELOCITY	0x1D
 #define FEATURE_V_DEFORMATION		0x1E
 #define FEATURE_V_UPSHIFT			0x1F
+#define FEATURE_W_BATCH_SPREAD		0x20
+#define FEATURE_V_SUSPENSION_FORCE	0x21
 
 
 void		killProgram	();

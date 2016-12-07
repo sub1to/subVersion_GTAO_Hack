@@ -79,6 +79,8 @@ class hack : public trainer
 		void	muzzleVelocity(feat* feature);
 		void	vehicleDeformation(feat* feature);
 		void	vehicleUpShift(feat* feature);
+		void	batchSpread(feat* feature);
+		void	vehicleSuspensionForce(feat* feature);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,
