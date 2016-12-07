@@ -55,8 +55,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	//LPCSTR	szWindowTitleTarget	= "Untitled - Notepad";
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCSTR	szWindowTitle		= "subVersion [unknowncheats.me]";
+	LPCSTR	szWindowTitle		= "subVersion 1.1.0 [unknowncheats]";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
+	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
 	g_pSettings->addFeatureCategory("Player");		//0
 	g_pSettings->addFeatureCategory("Weapon");		//1

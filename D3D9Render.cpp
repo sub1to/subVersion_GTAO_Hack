@@ -79,7 +79,7 @@ bool	D3D9Render::render()
 	{
 		//Draw header
 		this->drawBoxBorder(0, 0, LAYOUT_ELEMENT_WIDTH, LAYOUT_ELEMENT_HEIGHT, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
-		this->drawText("subVersion 1.1.0 [unknowncheats]", 5.f, 3.f, 2, LAYOUT_COLOR_TEXT);
+		this->drawText(m_szWindowTitle, 0, 0, LAYOUT_ELEMENT_WIDTH, LAYOUT_ELEMENT_HEIGHT, 2, LAYOUT_COLOR_TEXT, DT_CENTER | DT_VCENTER);
 
 		//prevent race conditions
 		while(!g_pSettings->lockFeatureCur())
@@ -89,55 +89,81 @@ bool	D3D9Render::render()
 		for(int i = 0; i < g_pSettings->getFeatureCategoryCount(); i++)
 		{
 			featCat*	tab	= g_pSettings->getFeatureCategory(i);
-			float		x	= (float) ((LAYOUT_ELEMENT_WIDTH / g_pSettings->getFeatureCategoryCount()) * i),
-						y	= (float) LAYOUT_ELEMENT_HEIGHT * 1,
-						w	= (float) (LAYOUT_ELEMENT_WIDTH / g_pSettings->getFeatureCategoryCount()),
-						h	= (float) LAYOUT_ELEMENT_HEIGHT;
-			this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, (i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BG : LAYOUT_COLOR_BACKGROUND, (i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
-			this->drawText(tab->name, x + 5, y + 5, 0, LAYOUT_COLOR_TEXT);
+			int			x	= (LAYOUT_ELEMENT_WIDTH / g_pSettings->getFeatureCategoryCount()) * i,
+						y	= LAYOUT_ELEMENT_HEIGHT * 1,
+						w	= LAYOUT_ELEMENT_WIDTH / g_pSettings->getFeatureCategoryCount(),
+						h	= LAYOUT_ELEMENT_HEIGHT;
+
+			this->drawBoxBorder(	x, y, w, h, LAYOUT_BORDER_SIZE,
+									(i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BG : LAYOUT_COLOR_BACKGROUND,
+									(i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
+			this->drawText(tab->name, x, y, w - 1, h, 0, LAYOUT_COLOR_TEXT, DT_CENTER | DT_VCENTER);
 		}
 		//draw features
 		int	n		= g_pSettings->getFeatureCurCount(),
 			active	= g_pSettings->getActiveFeature();
-		this->drawBoxBorder(0.f, (float) LAYOUT_ELEMENT_HEIGHT * 2, (float) LAYOUT_ELEMENT_WIDTH, (n > MAX_MENU_FEATURES_DISPLAYED) ? (float) MAX_MENU_FEATURES_DISPLAYED * LAYOUT_ELEMENT_HEIGHT : (float) LAYOUT_ELEMENT_HEIGHT * n, (float) LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
+
+		this->drawBoxBorder(	0,									//draw bg for all features
+								LAYOUT_ELEMENT_HEIGHT * 2,
+								LAYOUT_ELEMENT_WIDTH,
+								(n > MAX_MENU_FEATURES_DISPLAYED) ? MAX_MENU_FEATURES_DISPLAYED * LAYOUT_ELEMENT_HEIGHT : LAYOUT_ELEMENT_HEIGHT * n,
+								LAYOUT_BORDER_SIZE,
+								LAYOUT_COLOR_BACKGROUND,
+								LAYOUT_COLOR_BORDER);
+		
 		for(int i = 0, j = g_pSettings->getDisplayOffset(); i < n && i < MAX_MENU_FEATURES_DISPLAYED; i++, j++)
 		{
-			feat*		feature	= g_pSettings->getFeatureCur(j);
-			float		x	= 8.f,
-						y	= 5.f + (LAYOUT_ELEMENT_HEIGHT * (i + 2));
+			feat*	feature	= g_pSettings->getFeatureCur(j);
+			int		x	= 8,
+					y	= LAYOUT_ELEMENT_HEIGHT * (i + 2);
 
 			//selected box
 			if(j == active)
-				this->drawBoxBorder(x-6, y-3, LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2), LAYOUT_BORDER_SIZE,LAYOUT_COLOR_ACTIVE_BG, LAYOUT_COLOR_SELECTED);
+				this->drawBoxBorder(	x - 6,
+										y + 2,
+										LAYOUT_ELEMENT_WIDTH - (LAYOUT_BORDER_SIZE * 2),
+										LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 2),
+										LAYOUT_BORDER_SIZE,
+										LAYOUT_COLOR_ACTIVE_BG,
+										LAYOUT_COLOR_SELECTED);
+
 			//checkbox
 			if(feature->m_type == feat_toggle || feature->m_type == feat_slider)
 			{
-				this->drawBoxBorder(x-2, y, LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5), LAYOUT_BORDER_SIZE, (feature->m_bOn == true) ? LAYOUT_COLOR_SELECTED : LAYOUT_COLOR_BACKGROUND, (feature->m_bOn == true) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
-				x += (LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 3));
+				this->drawBoxBorder(	x - 2,
+										y + 5,
+										LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5),
+										LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5),
+										LAYOUT_BORDER_SIZE,
+										(feature->m_bOn == true) ? LAYOUT_COLOR_SELECTED : LAYOUT_COLOR_BACKGROUND,
+										(feature->m_bOn == true) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
+				x	+= (LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 3));
 			}
-			this->drawText(feature->m_szName, x, y, 1, LAYOUT_COLOR_TEXT);
+			this->drawText(feature->m_szName, x, y, 0, LAYOUT_ELEMENT_HEIGHT, 1, LAYOUT_COLOR_TEXT, DT_VCENTER);
 			
+			//slider
 			if(feature->m_type == feat_slider)
 			{
-				featSlider* slider = static_cast<featSlider*>(feature);
-				float	x	= LAYOUT_ELEMENT_WIDTH * .5f,
-						y	= (LAYOUT_ELEMENT_HEIGHT * (i + 2)) + 5.f,
-						w	= (LAYOUT_ELEMENT_WIDTH * .5f) - (LAYOUT_BORDER_SIZE * 2),
-						h	= LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5);
-				float	mod	= (slider->m_fValue - slider->m_fMin)/(slider->m_fMax - slider->m_fMin);
+				featSlider*	slider = static_cast<featSlider*>(feature);
+				int			x	= (int) (LAYOUT_ELEMENT_WIDTH * .5f),
+							y	= (LAYOUT_ELEMENT_HEIGHT * (i + 2)) + 5,
+							w	= (int) ((LAYOUT_ELEMENT_WIDTH * .5f) - (LAYOUT_BORDER_SIZE * 2)),
+							h	= LAYOUT_ELEMENT_HEIGHT - (LAYOUT_BORDER_SIZE * 5);
+				float		mod	= (slider->m_fValue - slider->m_fMin) / (slider->m_fMax - slider->m_fMin);
 				this->drawBoxBorder(x, y, w, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BG, LAYOUT_COLOR_BORDER);
-				this->drawBoxBorder(x + (mod * (w - h)), y, h, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BTN, LAYOUT_COLOR_BORDER);
+				this->drawBoxBorder(x + (int) (mod * (w - h)), y, h, h, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_SLIDER_BTN, LAYOUT_COLOR_BORDER);
 			}
 		}
+
 		//draw scrollbar
-		float	max = (float) (n - MAX_MENU_FEATURES_DISPLAYED);
+		int	max = n - MAX_MENU_FEATURES_DISPLAYED;	//number of features that are not displayed
 		if(max > 0)
 		{
-			float	space = ((LAYOUT_ELEMENT_HEIGHT * (MAX_MENU_FEATURES_DISPLAYED + 2)));
-			float	height = (space / max <= space / 2) ? space / max : space / 2;
-			space -= height;
-			float	pos = (max <= 0) ? 0.f : space * (g_pSettings->getDisplayOffset() / max);
-			this->drawBoxBorder(LAYOUT_ELEMENT_WIDTH + LAYOUT_BORDER_SIZE , pos, LAYOUT_SCROLLBAR_WIDTH, height, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
+			int		space = LAYOUT_ELEMENT_HEIGHT * (MAX_MENU_FEATURES_DISPLAYED + 2),
+					height = (space / max <= space / 2) ? space / max : space / 2;
+					space -= height;
+			float	mod	= (g_pSettings->getDisplayOffset() / (float) max);
+			this->drawBoxBorder(LAYOUT_ELEMENT_WIDTH + LAYOUT_BORDER_SIZE , (int) (space * mod), LAYOUT_SCROLLBAR_WIDTH, height, LAYOUT_BORDER_SIZE, LAYOUT_COLOR_BACKGROUND, LAYOUT_COLOR_BORDER);
 		}
 
 		g_pSettings->unlockFeatureCur();
@@ -177,14 +203,14 @@ bool	D3D9Render::getViewport()
 	return 1;
 }
 
-void	D3D9Render::drawBox(float x, float y, float w, float h, D3DCOLOR color)
+void	D3D9Render::drawBox(int x, int y, int w, int h, D3DCOLOR color)
 {
 	Vertex vertex[] =
 	{
-		{x,		y + h,	1.0f, 1.0f, color},
-		{x,		y,		1.0f, 1.0f, color},
-		{x + w,	y + h,	1.0f, 1.0f, color},
-		{x + w,	y,		1.0f, 1.0f, color}
+		{(float) x,		(float) y + h,	1.0f, 1.0f, color},
+		{(float) x,		(float) y,		1.0f, 1.0f, color},
+		{(float) x + w,	(float) y + h,	1.0f, 1.0f, color},
+		{(float) x + w,	(float) y,		1.0f, 1.0f, color}
 	};
 	void*	pvBuffer;		//pointer to the buffer
 	m_pVertexBuffer->Lock(0, 0, (void**) &pvBuffer, 0);
@@ -200,7 +226,7 @@ void	D3D9Render::drawBox(float x, float y, float w, float h, D3DCOLOR color)
 	return;
 }
 
-void	D3D9Render::drawBoxInline(float x, float y, float w, float h, float size, D3DCOLOR color)
+void	D3D9Render::drawBoxInline(int x, int y, int w, int h, int size, D3DCOLOR color)
 {
 	this->drawBox(x,			y,				w,		size,	color);	//top
 	this->drawBox(x + w - size,	y,				size,	h,		color);	//right
@@ -209,17 +235,29 @@ void	D3D9Render::drawBoxInline(float x, float y, float w, float h, float size, D
 	return;
 }
 
-void	D3D9Render::drawBoxBorder(float x, float y, float w, float h, float borderSize, D3DCOLOR color, D3DCOLOR borderColor)
+void	D3D9Render::drawBoxBorder(int x, int y, int w, int h, int borderSize, D3DCOLOR color, D3DCOLOR borderColor)
 {
 	this->drawBox(x, y, w, h, borderColor);
 	this->drawBox(x + borderSize, y + borderSize, w - (borderSize * 2), h - (borderSize * 2), color);
 }
 
-void	D3D9Render::drawText(std::string str, float x, float y, int font, D3DCOLOR color)
+void	D3D9Render::drawText(std::string str, int x, int y, int font, D3DCOLOR color)
 {
 	LPCSTR	pszStr	= str.c_str();
 	RECT	pos;
-	pos.left	= (int) x;
-	pos.top		= (int) y;
+	pos.left	= x;
+	pos.top		= y;
 	m_pFont[font]->DrawTextA(nullptr, pszStr, (int) strlen(pszStr), &pos, DT_NOCLIP, color);
+}
+
+//void	drawText		(std::string str, float x, float y, float w, float h, int font, D3DCOLOR color, DWORD flags = NULL)
+void	D3D9Render::drawText(std::string str, int x, int y, int w, int h, int font, D3DCOLOR color, DWORD flags)
+{
+	LPCSTR	pszStr	= str.c_str();
+	RECT	pos;
+	pos.left	= x;
+	pos.right	= x + w;
+	pos.top		= y;
+	pos.bottom	= y + h;
+	m_pFont[font]->DrawTextA(nullptr, pszStr, (int) strlen(pszStr), &pos, flags | DT_NOCLIP, color);
 }

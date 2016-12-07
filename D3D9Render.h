@@ -35,14 +35,14 @@
 #define LAYOUT_SCROLLBAR_WIDTH	0x08
 #define LAYOUT_SCROLLBAR_HEIGHT	0x40
 
-#define LAYOUT_COLOR_BACKGROUND		D3DCOLOR_ARGB(255, 0x38, 0x78, 0xe2)
-#define LAYOUT_COLOR_BORDER			D3DCOLOR_ARGB(255, 1, 1, 1)
-#define LAYOUT_COLOR_TEXT			D3DCOLOR_ARGB(255, 1, 1, 1)
-#define LAYOUT_COLOR_SLIDER_BG		D3DCOLOR_ARGB(255, 0x28, 0x28, 0x28)
-#define LAYOUT_COLOR_SLIDER_BTN		D3DCOLOR_ARGB(255, 0x73, 0x73, 0x73)
-#define LAYOUT_COLOR_ACTIVE_BG		D3DCOLOR_ARGB(255, 0x85, 0xac, 0xed)
-#define LAYOUT_COLOR_ACTIVE_BORDER	D3DCOLOR_ARGB(255, 1, 1, 1)
-#define LAYOUT_COLOR_SELECTED		D3DCOLOR_ARGB(255, 0xff, 0xff, 0xff)
+#define LAYOUT_COLOR_BACKGROUND		D3DCOLOR_ARGB(0xff, 0x38, 0x78, 0xe2)
+#define LAYOUT_COLOR_BORDER			D3DCOLOR_ARGB(0xff, 1, 1, 1)
+#define LAYOUT_COLOR_TEXT			D3DCOLOR_ARGB(0xff, 1, 1, 1)
+#define LAYOUT_COLOR_SLIDER_BG		D3DCOLOR_ARGB(0xff, 0x28, 0x28, 0x28)
+#define LAYOUT_COLOR_SLIDER_BTN		D3DCOLOR_ARGB(0xff, 0x73, 0x73, 0x73)
+#define LAYOUT_COLOR_ACTIVE_BG		D3DCOLOR_ARGB(0xff, 0x85, 0xac, 0xed)
+#define LAYOUT_COLOR_ACTIVE_BORDER	D3DCOLOR_ARGB(0xff, 1, 1, 1)
+#define LAYOUT_COLOR_SELECTED		D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff)
 
 
 struct Vertex
@@ -62,6 +62,8 @@ class D3D9Render
 					y = 0;		//screen height
 		} m_screen;
 
+		std::string		m_szWindowTitle;
+
 				D3D9Render	();
 				~D3D9Render	();
 
@@ -71,10 +73,11 @@ class D3D9Render
 		void	releaseFont	();
 		bool	getViewport	();
 
-		void	drawBox			(float x, float y, float w, float h, D3DCOLOR color);
-		void	drawBoxInline	(float x, float y, float w, float h, float size, D3DCOLOR color);
-		void	drawBoxBorder	(float x, float y, float w, float h, float borderSize, D3DCOLOR color, D3DCOLOR borderColor);
-		void	drawText		(std::string str, float x, float y, int font, D3DCOLOR color);
+		void	drawBox			(int x, int y, int w, int h, D3DCOLOR color);
+		void	drawBoxInline	(int x, int y, int w, int h, int size, D3DCOLOR color);
+		void	drawBoxBorder	(int x, int y, int w, int h, int borderSize, D3DCOLOR color, D3DCOLOR borderColor);
+		void	drawText		(std::string str, int x, int y, int font, D3DCOLOR color);
+		void	drawText		(std::string str, int x, int y, int w, int h, int font, D3DCOLOR color, DWORD flags = NULL);
 	protected:
 
 		LPDIRECT3D9				m_pD3d;			// the pointer to Direct3D interface

@@ -25,7 +25,6 @@
 
 #include <windows.h>
 #include <windowsx.h>
-//#include <algorithm>
 #include <string>
 #include <sstream>
 #include <fstream>
