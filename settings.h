@@ -53,8 +53,10 @@
 class featCat
 {
 	public:
-		int		id;
-		char	name[NAME_BUFFER_SIZE];
+		int			m_iId,
+					m_iActiveFeatureRet = 0,
+					m_iDisplayOffsetRet = 0;
+		std::string	m_szName;
 };
 
 enum featType	{ feat_toggle, feat_slider, feat_teleport, feat_parent };

@@ -129,19 +129,34 @@ void settings::menuLeft()
 
 void settings::menuTabRight()
 {
+	while(m_pFeatureCur[0]->m_iCat < 0)
+		this->menuBack();
+	m_pFeatureCat[m_iActiveCat]->m_iDisplayOffsetRet	= m_iFeatureCurDisplayOffset;
+	m_pFeatureCat[m_iActiveCat]->m_iActiveFeatureRet	= m_iActiveFeature;
+
 	if(m_iActiveCat + 1 < m_nFeatureCat)
 		this->setActiveCat(m_iActiveCat + 1);
 	else
 		this->setActiveCat(0);
+
+	m_iFeatureCurDisplayOffset	= m_pFeatureCat[m_iActiveCat]->m_iDisplayOffsetRet;
+	m_iActiveFeature			= m_pFeatureCat[m_iActiveCat]->m_iActiveFeatureRet;
 	return;
 }
 
 void settings::menuTabLeft()
 {
+	while(m_pFeatureCur[0]->m_iCat < 0)
+		this->menuBack();
+	m_pFeatureCat[m_iActiveCat]->m_iDisplayOffsetRet	= m_iFeatureCurDisplayOffset;
+	m_pFeatureCat[m_iActiveCat]->m_iActiveFeatureRet	= m_iActiveFeature;
+
 	if(m_iActiveCat - 1 >= 0)
 		this->setActiveCat(m_iActiveCat - 1);
 	else
 		this->setActiveCat(m_nFeatureCat - 1);
+	m_iFeatureCurDisplayOffset	= m_pFeatureCat[m_iActiveCat]->m_iDisplayOffsetRet;
+	m_iActiveFeature			= m_pFeatureCat[m_iActiveCat]->m_iActiveFeatureRet;
 	return;
 }
 
@@ -174,9 +189,9 @@ int	settings::addFeatureCategory(std::string name)
 {
 	if(m_nFeatureCat >= MAX_MENU_TABS)		//prevent buffer overflow
 		return -1;
-	m_pFeatureCat[m_nFeatureCat]		= new featCat;
-	m_pFeatureCat[m_nFeatureCat]->id	= m_nFeatureCat;
-	strcpy_s(m_pFeatureCat[m_nFeatureCat]->name, NAME_BUFFER_SIZE, name.c_str());
+	m_pFeatureCat[m_nFeatureCat]			= new featCat;
+	m_pFeatureCat[m_nFeatureCat]->m_iId		= m_nFeatureCat;
+	m_pFeatureCat[m_nFeatureCat]->m_szName	= name;
 	m_nFeatureCat++;
 	return m_nFeatureCat - 1;
 }

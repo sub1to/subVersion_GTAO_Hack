@@ -97,7 +97,7 @@ bool	D3D9Render::render()
 			this->drawBoxBorder(	x, y, w, h, LAYOUT_BORDER_SIZE,
 									(i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BG : LAYOUT_COLOR_BACKGROUND,
 									(i == g_pSettings->getActiveCat()) ? LAYOUT_COLOR_ACTIVE_BORDER : LAYOUT_COLOR_BORDER);
-			this->drawText(tab->name, x, y, w - 1, h, 0, LAYOUT_COLOR_TEXT, DT_CENTER | DT_VCENTER);
+			this->drawText(tab->m_szName, x, y, w - 1, h, 0, LAYOUT_COLOR_TEXT, DT_CENTER | DT_VCENTER);
 		}
 		//draw features
 		int	n		= g_pSettings->getFeatureCurCount(),
