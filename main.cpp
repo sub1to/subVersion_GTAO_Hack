@@ -65,64 +65,70 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeatureCategory("Teleport");	//3
 	
 
-	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, "God", feat_toggle, "trueGodMode");
-	g_iFeature[FEATURE_P_GOD]				= g_pSettings->addFeature(0, "Demi-God", feat_toggle, "godMode");
-	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, "Wanted", feat_slider, "wanted", 0.f, 5.f, .2f);
-	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, "Never Wanted", feat_toggle, "neverWanted");
-	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, "Anti NPC", feat_toggle, "antiNpc");
-	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, "Run Speed", feat_slider, "runSpd", 1.f, 5.f);
-	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, "Swim Speed", feat_slider, "swimSpd", 1.f, 5.f);
-	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, "Super Jump", feat_toggle, "superJump");
-	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, "Explosive Melee", feat_toggle, "explMelee");
-	g_iFeature[FEATURE_P_NORAGDOLL]			= g_pSettings->addFeature(0, "No Ragdoll", feat_toggle, "noRagdoll");
-	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, "No Spread", feat_toggle, "noSpread");	
-	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, "No Recoil", feat_toggle, "noRecoil");	
-	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, "No Reload", feat_toggle, "noReload");
-	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);
-	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);
-	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, "Infinite Ammo", feat_toggle, "infAmmo");
-	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, "Range", feat_slider, "weapRange", 1.f, 10.f);
-	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, "No Spin-Up", feat_toggle, "weapSpin");
-	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, "Explosive Ammo", feat_toggle, "explAmmo");
-	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, "Fire Ammo", feat_toggle, "fireAmmo");
-	g_iFeature[FEATURE_W_BULLET_BATCH]		= g_pSettings->addFeature(1, "Bullet Batch", feat_slider, "bulletBatch", 1.f, 10.f, (float) 1.f / 9.f);
-	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, "Batch Spread", feat_slider, "batchSpread", 0.f, 0.2f);
-	g_iFeature[FEATURE_W_MUZZLE_VELOCITY]	= g_pSettings->addFeature(1, "Muzzle Velocity", feat_slider, "muzzleVelo", 1.f, 10.f);
-	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, "God", feat_toggle, "vehTrueGodMode");
-	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, "Demi-God", feat_toggle, "vehGodMode");
-	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, "Bulletproof Tires", feat_toggle, "vehBulletproofTires");
-	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, "Seatbelt", feat_toggle, "seatbelt");
-	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(2, "Deformation", feat_slider, "vehDeform", 0.f, 1.f);
-	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, "Acceleration", feat_slider, "vehAccel", 1.f, 10.f);
-	g_iFeature[FEATURE_V_UPSHIFT]			= g_pSettings->addFeature(2, "Up-Shift Rate", feat_slider, "vehUpShift", 1.f, 25.f);
-	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, "Brake force", feat_slider, "vehBrakeForce", 1.f, 10.f);
-	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, "Traction", feat_slider, "vehTraction", 1.f, 2.f);
-	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, "Gravity", feat_slider, "vehGravity", 0.f, 25.f);
-	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(2, "Suspension Force", feat_slider, "vehSuspensionForce", 0.f, 2.f);
-	g_pSettings->addFeature(3, "Waypoint", feat_teleport, tp_waypoint);
-	g_pSettings->addFeature(3, "Saved 1", feat_teleport, "pos0", tp_saved);
-	g_pSettings->addFeature(3, "Saved 2", feat_teleport, "pos1", tp_saved);
-	g_pSettings->addFeature(3, "Saved 3", feat_teleport, "pos2", tp_saved);
-	g_pSettings->addFeature(3, "Saved 4", feat_teleport, "pos3", tp_saved);
-	g_pSettings->addFeature(3, "Saved 5", feat_teleport, "pos4", tp_saved);
-	g_pSettings->addFeature(3, "Saved 6", feat_teleport, "pos5", tp_saved);
-	g_pSettings->addFeature(3, "LS Customs", feat_teleport, tp_static, -365.425f, -131.809f, 38.9f);
-	g_pSettings->addFeature(3, "LSIA Runway", feat_teleport, tp_static, -1336.f, -3044.f, 14.15f);
-	g_pSettings->addFeature(3, "Sandy Shores Airfield", feat_teleport, tp_static, 1747.f, 3273.f, 41.35f);
-	g_pSettings->addFeature(3, "Mount Chiliad", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
-	g_pSettings->addFeature(3, "[Interior] FIB Building", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
-	g_pSettings->addFeature(3, "[Interior] Garment Factory", feat_teleport, tp_static, 712.716f, -962.906f, 30.6f);
-	g_pSettings->addFeature(3, "[Interior] Franklin's House", feat_teleport, tp_static, 7.119f, 536.615f, 176.2f);
-	g_pSettings->addFeature(3, "[Interior] Michael's House", feat_teleport, tp_static, -813.603f, 179.474f, 72.5f);
-	g_pSettings->addFeature(3, "[Interior] Trevor's House", feat_teleport, tp_static, 1972.610f, 3817.040f, 33.65f);
-	g_pSettings->addFeature(3, "[Interior] Aunt Denise's House", feat_teleport, tp_static, -14.380f, -1438.510f, 31.3f);
-	g_pSettings->addFeature(3, "[Interior] Floyd's House", feat_teleport, tp_static, -1151.770f, -1518.138f, 10.85f);
-	g_pSettings->addFeature(3, "[Interior] Lester's House", feat_teleport, tp_static, 1273.898f, -1719.304f, 54.8f);
-	g_pSettings->addFeature(3, "[Interior] Vanilla Unicorn Office", feat_teleport, tp_static, 97.271f, -1290.994f, 29.45f);
-	g_pSettings->addFeature(3, "[Interior] Comedy Club", feat_teleport, tp_static, 378.100f, -999.964f, -98.6f);
-	g_pSettings->addFeature(3, "[Interior] Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
-	g_pSettings->addFeature(3, "[Interior] Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
-	g_pSettings->addFeature(3, "[Interior] Humane Labs", feat_teleport, tp_static, 3614.394f, 3744.803f, 28.9f);
+	g_iFeature[FEATURE_P_TRUEGOD]			= g_pSettings->addFeature(0, -1, "God", feat_toggle, "trueGodMode");
+	g_iFeature[FEATURE_P_GOD]				= g_pSettings->addFeature(0, -1, "Demi-God", feat_toggle, "godMode");
+	g_iFeature[FEATURE_P_WANTED]			= g_pSettings->addFeature(0, -1, "Wanted", feat_slider, "wanted", 0.f, 5.f, .2f);
+	g_iFeature[FEATURE_P_NEVERWANTED]		= g_pSettings->addFeature(0, -1, "Never Wanted", feat_toggle, "neverWanted");
+	g_iFeature[FEATURE_P_ANTINPC]			= g_pSettings->addFeature(0, -1, "Anti NPC", feat_toggle, "antiNpc");
+	g_iFeature[FEATURE_P_RUNSPD]			= g_pSettings->addFeature(0, -1, "Run Speed", feat_slider, "runSpd", 1.f, 5.f);
+	g_iFeature[FEATURE_P_SWIMSPD]			= g_pSettings->addFeature(0, -1, "Swim Speed", feat_slider, "swimSpd", 1.f, 5.f);
+	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, -1, "Super Jump", feat_toggle, "superJump");
+	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, -1, "Explosive Melee", feat_toggle, "explMelee");
+	g_iFeature[FEATURE_P_NORAGDOLL]			= g_pSettings->addFeature(0, -1, "No Ragdoll", feat_toggle, "noRagdoll");
+
+	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, -1, "No Spread", feat_toggle, "noSpread");	
+	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, "No Recoil", feat_toggle, "noRecoil");	
+	g_iFeature[FEATURE_W_NORELOAD]			= g_pSettings->addFeature(1, -1, "No Reload", feat_toggle, "noReload");
+	g_iFeature[FEATURE_W_RELOAD]			= g_pSettings->addFeature(1, -1, "Quick Reload", feat_slider, "quickReload", 1.f, 10.f);
+	g_iFeature[FEATURE_W_DAMAGE]			= g_pSettings->addFeature(1, -1, "Bullet Damage", feat_slider, "bulletDamage", 1.f, 10.f);
+	g_iFeature[FEATURE_W_AMMO]				= g_pSettings->addFeature(1, -1, "Infinite Ammo", feat_toggle, "infAmmo");
+	g_iFeature[FEATURE_W_RANGE]				= g_pSettings->addFeature(1, -1, "Range", feat_slider, "weapRange", 1.f, 10.f);
+	g_iFeature[FEATURE_W_SPINUP]			= g_pSettings->addFeature(1, -1, "No Spin-Up", feat_toggle, "weapSpin");
+	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, -1, "Explosive Ammo", feat_toggle, "explAmmo");
+	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, -1, "Fire Ammo", feat_toggle, "fireAmmo");
+	g_iFeature[FEATURE_W_BULLET_BATCH]		= g_pSettings->addFeature(1, -1, "Bullet Batch", feat_slider, "bulletBatch", 1.f, 10.f, (float) 1.f / 9.f);
+	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, -1, "Batch Spread", feat_slider, "batchSpread", 0.f, 0.2f);
+	g_iFeature[FEATURE_W_MUZZLE_VELOCITY]	= g_pSettings->addFeature(1, -1, "Muzzle Velocity", feat_slider, "muzzleVelo", 1.f, 10.f);
+
+	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, -1, "God", feat_toggle, "vehTrueGodMode");
+	g_iFeature[FEATURE_V_GOD]				= g_pSettings->addFeature(2, -1, "Demi-God", feat_toggle, "vehGodMode");
+	g_iFeature[FEATURE_V_BULLETPROOFTIRES]	= g_pSettings->addFeature(2, -1, "Bulletproof Tires", feat_toggle, "vehBulletproofTires");
+	g_iFeature[FEATURE_V_SEATBELT]			= g_pSettings->addFeature(2, -1, "Seatbelt", feat_toggle, "seatbelt");
+	g_iFeature[FEATURE_V_DEFORMATION]		= g_pSettings->addFeature(2, -1, "Deformation", feat_slider, "vehDeform", 0.f, 1.f);
+	g_iFeature[FEATURE_V_ACCELERATION]		= g_pSettings->addFeature(2, -1, "Acceleration", feat_slider, "vehAccel", 1.f, 10.f);
+	g_iFeature[FEATURE_V_UPSHIFT]			= g_pSettings->addFeature(2, -1, "Up-Shift Rate", feat_slider, "vehUpShift", 1.f, 25.f);
+	g_iFeature[FEATURE_V_BRAKEFORCE]		= g_pSettings->addFeature(2, -1, "Brake force", feat_slider, "vehBrakeForce", 1.f, 10.f);
+	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, -1, "Traction", feat_slider, "vehTraction", 1.f, 2.f);
+	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, -1, "Gravity", feat_slider, "vehGravity", 0.f, 25.f);
+	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(2, -1, "Suspension Force", feat_slider, "vehSuspensionForce", 0.f, 2.f);
+
+	g_pSettings->addFeature(3, -1, "Waypoint", feat_teleport, tp_waypoint);
+	g_pSettings->addFeature(3, -1, "Saved 1", feat_teleport, "pos0", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 2", feat_teleport, "pos1", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 3", feat_teleport, "pos2", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 4", feat_teleport, "pos3", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 5", feat_teleport, "pos4", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 6", feat_teleport, "pos5", tp_saved);
+
+	int interior = g_pSettings->addFeature(3, -1, "Interiors >>", feat_parent);
+	g_pSettings->addFeature(-1, interior, "FIB Building", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
+	g_pSettings->addFeature(-1, interior, "Garment Factory", feat_teleport, tp_static, 712.716f, -962.906f, 30.6f);
+	g_pSettings->addFeature(-1, interior, "Franklin's House", feat_teleport, tp_static, 7.119f, 536.615f, 176.2f);
+	g_pSettings->addFeature(-1, interior, "Michael's House", feat_teleport, tp_static, -813.603f, 179.474f, 72.5f);
+	g_pSettings->addFeature(-1, interior, "Trevor's House", feat_teleport, tp_static, 1972.610f, 3817.040f, 33.65f);
+	g_pSettings->addFeature(-1, interior, "Aunt Denise's House", feat_teleport, tp_static, -14.380f, -1438.510f, 31.3f);
+	g_pSettings->addFeature(-1, interior, "Floyd's House", feat_teleport, tp_static, -1151.770f, -1518.138f, 10.85f);
+	g_pSettings->addFeature(-1, interior, "Lester's House", feat_teleport, tp_static, 1273.898f, -1719.304f, 54.8f);
+	g_pSettings->addFeature(-1, interior, "Vanilla Unicorn Office", feat_teleport, tp_static, 97.271f, -1290.994f, 29.45f);
+	g_pSettings->addFeature(-1, interior, "Comedy Club", feat_teleport, tp_static, 378.100f, -999.964f, -98.6f);
+	g_pSettings->addFeature(-1, interior, "Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
+	g_pSettings->addFeature(-1, interior, "Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
+	g_pSettings->addFeature(-1, interior, "Humane Labs", feat_teleport, tp_static, 3614.394f, 3744.803f, 28.9f);
+
+	g_pSettings->addFeature(3, -1, "LS Customs", feat_teleport, tp_static, -365.425f, -131.809f, 38.9f);
+	g_pSettings->addFeature(3, -1, "LSIA Runway", feat_teleport, tp_static, -1336.f, -3044.f, 14.15f);
+	g_pSettings->addFeature(3, -1, "Sandy Shores Airfield", feat_teleport, tp_static, 1747.f, 3273.f, 41.35f);
+	g_pSettings->addFeature(3, -1, "Mount Chiliad", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
 

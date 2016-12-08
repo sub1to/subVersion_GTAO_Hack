@@ -30,6 +30,9 @@
 #define MENU_FEATURE_SCROLL_PADDING		0x02
 #define NAME_BUFFER_SIZE				0x20
 
+#define FFB_CATEGORY	1 << 0
+#define FFB_PARENT		1 << 1
+
 //Required keys, loaded in settings::settings
 #define keyExit			0x0
 #define keyMenu			0x1
@@ -45,6 +48,7 @@
 #define keyHotWanted	0xB
 #define keyHotHealth	0xC
 #define keyHotAmmo		0xD
+#define keyMenuBack		0xE
 
 class featCat
 {
@@ -53,13 +57,14 @@ class featCat
 		char	name[NAME_BUFFER_SIZE];
 };
 
-enum featType	{ feat_toggle, feat_slider, feat_teleport };
+enum featType	{ feat_toggle, feat_slider, feat_teleport, feat_parent };
 enum teleType	{ tp_saved, tp_waypoint, tp_static };
 
 class feat
 {
 	public:
 		int			m_iId,
+					m_iCat,
 					m_iParent;
 		featType	m_type;
 		std::string	m_szName;
@@ -96,6 +101,17 @@ class featTeleport : public feat
 
 				featTeleport();
 				~featTeleport();
+		void	toggle();
+};
+
+class featParent : public feat
+{
+	public:
+		int		m_iActiveFeatureRet = 0,
+				m_iDisplayOffsetRet = 0;
+
+				featParent();
+				~featParent();
 		void	toggle();
 };
 
@@ -159,6 +175,7 @@ class settings
 		void		menuLeft();		//float value down
 		void		menuRight();	//float value up
 		void		menuSelect();	//toggle feature/teleport or w/e
+		void		menuBack();
 		void		menuTabLeft();	//prev tab
 		void		menuTabRight();	//next tab
 
@@ -167,14 +184,15 @@ class settings
 		featCat*	getFeatureCategory(int id);
 		int			setActiveCat(int);
 		int			getActiveCat();
+		bool		fillFeatureCurBuffer(int i, BYTE flags);
 
-		int			addFeature(int parent, std::string name, featType type);
-		int			addFeature(int parent, std::string name, featType type, std::string iniKey);
-		int			addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max);
-		int			addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod);
-		int			addFeature(int parent, std::string name, featType type, std::string iniKey, teleType tpType);
-		int			addFeature(int parent, std::string name, featType type, teleType tpType);
-		int			addFeature(int parent, std::string name, featType type, teleType tpType, float x, float y, float z);
+		int			addFeature(int cat, int parent, std::string name, featType type);
+		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey);
+		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max);
+		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod);
+		int			addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, teleType tpType);
+		int			addFeature(int cat, int parent, std::string name, featType type, teleType tpType);
+		int			addFeature(int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z);
 		int			getFeatureCurCount();
 		feat*		getFeatureCur(int i);
 		int			getFeatureCount();
@@ -187,13 +205,13 @@ class settings
 		bool		unlockFeatureCur();
 
 	protected:
-		featCat*	m_featureParent[MAX_MENU_TABS];
-		int			m_nFeatureParent = 0;
+		featCat*	m_pFeatureCat[MAX_MENU_TABS];
+		int			m_nFeatureCat = 0;
 		int			m_iActiveCat = 0;			//index for featureParent [should be the same as id]
-		feat*		m_feature[MAX_MENU_FEATURES];
+		feat*		m_pFeature[MAX_MENU_FEATURES];
 		int			m_nFeature = 0;						//total amount of features
 		int			m_iActiveFeature = 0;				//index for featureCur [DOES NOT HOLD ID!]
-		feat*		m_featureCur[MAX_MENU_FEATURES];	//list of features from current category
+		feat*		m_pFeatureCur[MAX_MENU_FEATURES];	//list of features from current category
 		bool		m_bFeatureCurLock = false;
 		int			m_nFeatureCur	= 0;			//amount of features in current tab
 		bool		m_bMenuActive = false;

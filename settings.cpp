@@ -36,6 +36,7 @@ settings::settings()
 	m_iKeys[keyMenuLeft]		= m_iniParser.getValue<int>("keyMenuLeft");
 	m_iKeys[keyMenuRight]		= m_iniParser.getValue<int>("keyMenuRight");
 	m_iKeys[keyMenuSelect]		= m_iniParser.getValue<int>("keyMenuSelect");
+	m_iKeys[keyMenuBack]		= m_iniParser.getValue<int>("keyMenuBack");
 	m_iKeys[keyMenuTabNext]		= m_iniParser.getValue<int>("keyMenuTabNext");
 	m_iKeys[keyMenuTabPrev]		= m_iniParser.getValue<int>("keyMenuTabPrev");
 	m_iKeys[keyMenuSave]		= m_iniParser.getValue<int>("keyMenuSave");
@@ -48,14 +49,14 @@ settings::~settings()
 {
 	for(int i = 0; i < MAX_MENU_FEATURES; i++)
 	{
-		if(m_feature[i])
-			delete m_feature[i];
+		if(m_pFeature[i])
+			delete m_pFeature[i];
 	}
 
 	for(int i = 0; i < MAX_MENU_TABS; i++)
 	{
-		if(m_featureParent[i])
-			delete m_featureParent[i];
+		if(m_pFeatureCat[i])
+			delete m_pFeatureCat[i];
 	}
 }
 
@@ -128,8 +129,7 @@ void settings::menuLeft()
 
 void settings::menuTabRight()
 {
-	m_iFeatureCurDisplayOffset = 0;
-	if(m_iActiveCat + 1 < m_nFeatureParent)
+	if(m_iActiveCat + 1 < m_nFeatureCat)
 		this->setActiveCat(m_iActiveCat + 1);
 	else
 		this->setActiveCat(0);
@@ -138,11 +138,10 @@ void settings::menuTabRight()
 
 void settings::menuTabLeft()
 {
-	m_iFeatureCurDisplayOffset = 0;
 	if(m_iActiveCat - 1 >= 0)
 		this->setActiveCat(m_iActiveCat - 1);
 	else
-		this->setActiveCat(m_nFeatureParent - 1);
+		this->setActiveCat(m_nFeatureCat - 1);
 	return;
 }
 
@@ -153,130 +152,153 @@ void settings::menuSelect()
 	return;
 }
 
+void settings::menuBack()
+{
+	if(m_pFeatureCur[0]->m_iParent >= 0)	//if the buffer is filled with features that have a parent, not a category
+	{
+		featParent* parent = dynamic_cast<featParent*>(m_pFeature[m_pFeatureCur[0]->m_iParent]);
+		if(parent->m_iCat < 0)
+			this->fillFeatureCurBuffer(parent->m_iParent, FFB_PARENT);
+		else
+			this->fillFeatureCurBuffer(parent->m_iCat, FFB_CATEGORY);
+
+		m_iFeatureCurDisplayOffset	= parent->m_iDisplayOffsetRet;
+		m_iActiveFeature			= parent->m_iActiveFeatureRet;
+	}
+	return;
+}
+
 
 
 int	settings::addFeatureCategory(std::string name)
 {
-	if(m_nFeatureParent >= MAX_MENU_TABS)		//prevent buffer overflow
+	if(m_nFeatureCat >= MAX_MENU_TABS)		//prevent buffer overflow
 		return -1;
-	m_featureParent[m_nFeatureParent]		= new featCat;
-	m_featureParent[m_nFeatureParent]->id	= m_nFeatureParent;
-	strcpy_s(m_featureParent[m_nFeatureParent]->name, NAME_BUFFER_SIZE, name.c_str());
-	m_nFeatureParent++;
-	return m_nFeatureParent - 1;
+	m_pFeatureCat[m_nFeatureCat]		= new featCat;
+	m_pFeatureCat[m_nFeatureCat]->id	= m_nFeatureCat;
+	strcpy_s(m_pFeatureCat[m_nFeatureCat]->name, NAME_BUFFER_SIZE, name.c_str());
+	m_nFeatureCat++;
+	return m_nFeatureCat - 1;
 }
 
-int		settings::addFeature(int parent, std::string name, featType type)
+int		settings::addFeature(int cat, int parent, std::string name, featType type)
 {
-	if(m_nFeature >= MAX_MENU_FEATURES || m_featureParent[parent] == nullptr)		//prevent buffer overflow & invalid parent
+	if(	m_nFeature >= MAX_MENU_FEATURES ||																//buffer overflow
+		(parent < 0 && m_pFeatureCat[cat] == nullptr) ||												//invalid cat
+		(cat < 0 && (m_pFeature[parent] == nullptr || m_pFeature[parent]->m_type != feat_parent)) ||	//invalid parent
+		(cat < 0 && parent < 0) || (cat > 0 && parent > 0))												//both cat and parent were provided
 		return -1;
 	switch(type)
 	{
 		case feat_toggle:
-			m_feature[m_nFeature]			= new feat;
+			m_pFeature[m_nFeature]		= new feat;
 		break;
 		case feat_slider:
-			m_feature[m_nFeature]			= new featSlider;
+			m_pFeature[m_nFeature]		= new featSlider;
 		break;
 		case feat_teleport:
-			m_feature[m_nFeature]			= new featTeleport;
+			m_pFeature[m_nFeature]		= new featTeleport;
+		break;
+		case feat_parent:
+			m_pFeature[m_nFeature]		= new featParent;
 		break;
 	}
-	m_feature[m_nFeature]->m_iId		= m_nFeature;
-	m_feature[m_nFeature]->m_iParent	= parent;
-	m_feature[m_nFeature]->m_type		= type;
-	m_feature[m_nFeature]->m_szName		= name;
+	m_pFeature[m_nFeature]->m_iId		= m_nFeature;
+	m_pFeature[m_nFeature]->m_iCat		= cat;
+	m_pFeature[m_nFeature]->m_iParent	= parent;
+	m_pFeature[m_nFeature]->m_type		= type;
+	m_pFeature[m_nFeature]->m_szName	= name;
 	m_nFeature++;
 	return m_nFeature - 1;
 }
 
-int		settings::addFeature(int parent, std::string name, featType type, std::string iniKey)
+int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey)
 {
-	int id = this->addFeature(parent, name, type);
+	int id = this->addFeature(cat, parent, name, type);
 	if(id < 0)
 		return id;
-	m_feature[id]->m_szIniKey	= iniKey;
-	m_feature[id]->m_bOn		= (bool) m_iniParser.getValue<bool>(iniKey + "_on");
-	m_feature[id]->m_bRestored	= (m_feature[id]->m_bOn) ? false : true;
+	m_pFeature[id]->m_szIniKey	= iniKey;
+	m_pFeature[id]->m_bOn		= (bool) m_iniParser.getValue<bool>(iniKey + "_on");
+	m_pFeature[id]->m_bRestored	= (m_pFeature[id]->m_bOn) ? false : true;
 	return id;
 }
 
-int		settings::addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max)
+int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max)
 {
-	int id = this->addFeature(parent, name, type, iniKey);
+	int id = this->addFeature(cat, parent, name, type, iniKey);
 	if(id < 0)
 		return id;
-	dynamic_cast<featSlider*>(m_feature[id])->m_fMin		= min;
-	dynamic_cast<featSlider*>(m_feature[id])->m_fMax		= max;
+	dynamic_cast<featSlider*>(m_pFeature[id])->m_fMin		= min;
+	dynamic_cast<featSlider*>(m_pFeature[id])->m_fMax		= max;
 	float v	= m_iniParser.getValue<float>(iniKey + "_value");
 	if(v <= max && v >= min)
-		dynamic_cast<featSlider*>(m_feature[id])->m_fValue	= v;
+		dynamic_cast<featSlider*>(m_pFeature[id])->m_fValue	= v;
 	else
 	{
-		dynamic_cast<featSlider*>(m_feature[id])->m_fValue	= min;
+		dynamic_cast<featSlider*>(m_pFeature[id])->m_fValue	= min;
 		m_iniParser.setValue<float>(iniKey + "_value", min);
 	}
 	return id;
 }
 
-int		settings::addFeature(int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod)
+int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, float min, float max, float mod)
 {
-	int id = this->addFeature(parent, name, type, iniKey, min, max);
+	int id = this->addFeature(cat, parent, name, type, iniKey, min, max);
 	if(id < 0)
 		return id;
-	dynamic_cast<featSlider*>(m_feature[id])->m_fMod		= mod;
+	dynamic_cast<featSlider*>(m_pFeature[id])->m_fMod		= mod;
 	return id;
 }
 
-int		settings::addFeature(int parent, std::string name, featType type, std::string iniKey, teleType tpType)
+int		settings::addFeature(int cat, int parent, std::string name, featType type, std::string iniKey, teleType tpType)
 {
 	if(tpType != tp_saved)
 		return -1;
-	int id = this->addFeature(parent, name, type, iniKey);
+	int id = this->addFeature(cat, parent, name, type, iniKey);
 	if(id < 0)
 		return id;
-	dynamic_cast<featTeleport*>(m_feature[id])->m_tpType		= tpType;
-	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.x		= m_iniParser.getValue<float>(iniKey + "_x");
-	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.y		= m_iniParser.getValue<float>(iniKey + "_y");
-	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.z		= -225.f;
-	dynamic_cast<featTeleport*>(m_feature[id])->m_szName		+= " | " + m_iniParser.getValue<std::string>(iniKey + "_name");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_tpType		= tpType;
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.x		= m_iniParser.getValue<float>(iniKey + "_x");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.y		= m_iniParser.getValue<float>(iniKey + "_y");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.z		= -225.f;
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_szName		+= " | " + m_iniParser.getValue<std::string>(iniKey + "_name");
 	return id;
 }
 
-int		settings::addFeature(int parent, std::string name, featType type, teleType tpType)
+int		settings::addFeature(int cat, int parent, std::string name, featType type, teleType tpType)
 {
 	if(tpType == tp_saved)
 		return -1;
-	int id = this->addFeature(parent, name, type);
+	int id = this->addFeature(cat, parent, name, type);
 	if(id < 0)
 		return id;
-	dynamic_cast<featTeleport*>(m_feature[id])->m_tpType	= tpType;
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_tpType	= tpType;
 	return id;
 }
 
-int		settings::addFeature(int parent, std::string name, featType type, teleType tpType, float x, float y, float z)
+int		settings::addFeature(int cat, int parent, std::string name, featType type, teleType tpType, float x, float y, float z)
 {
 	if(tpType == tp_saved)
 		return -1;
-	int id = this->addFeature(parent, name, type, tpType);
+	int id = this->addFeature(cat, parent, name, type, tpType);
 	if(id < 0)
 		return id;
-	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.x	= x;
-	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.y	= y;
-	dynamic_cast<featTeleport*>(m_feature[id])->m_v3Pos.z	= z;
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.x	= x;
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.y	= y;
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.z	= z;
 	return id;
 }
 
 int		settings::getFeatureCategoryCount()
 {
-	return m_nFeatureParent;
+	return m_nFeatureCat;
 }
 
 featCat*	settings::getFeatureCategory(int id)
 {
-	if(id > m_nFeatureParent)
+	if(id > m_nFeatureCat)
 		return 0;
-	return m_featureParent[id];
+	return m_pFeatureCat[id];
 }
 
 int			settings::getActiveCat()
@@ -286,32 +308,37 @@ int			settings::getActiveCat()
 
 int			settings::setActiveCat(int cat)
 {
-	if(cat > m_nFeatureParent)
+	if(cat > m_nFeatureCat)
 		return 0;
 
-	//prevent race conditions
-	while(!this->lockFeatureCur())
-	{
-		Sleep(1);
-	}
-
 	m_iActiveCat		= cat;
-	m_nFeatureCur		= 0;
-	m_iActiveFeature	= 0;
-	ZeroMemory(&m_featureCur, sizeof(feat*) * MAX_MENU_FEATURES);		//clear all the pointers
+	this->fillFeatureCurBuffer(cat, FFB_CATEGORY);
 
-	//create a list of features from current category
-	for(int i = 0; i < m_nFeature; i++)
+	return 1;
+}
+
+bool		settings::fillFeatureCurBuffer(int id, BYTE flag)
+{
+	//prevent race conditions
+	while(!g_pSettings->lockFeatureCur())
+		Sleep(1);
+
+	ZeroMemory(&m_pFeatureCur, sizeof(feat*) * MAX_MENU_FEATURES); //clear buffer
+	m_nFeatureCur				= 0;
+	m_iActiveFeature			= 0;
+	m_iFeatureCurDisplayOffset	= 0;
+
+	for(int i = 0; i < m_nFeature; i++)		//create a list of features from current category
 	{
-		if(m_feature[i]->m_iParent == m_iActiveCat)
+		if(	(m_pFeature[i]->m_iCat		== id && flag & FFB_CATEGORY) ||
+			(m_pFeature[i]->m_iParent	== id && flag & FFB_PARENT))
 		{
-			m_featureCur[m_nFeatureCur]	= m_feature[i];
+			m_pFeatureCur[m_nFeatureCur]	= m_pFeature[i];
 			m_nFeatureCur++;
 		}
 	}
 
 	this->unlockFeatureCur();
-
 	return 1;
 }
 
@@ -324,7 +351,7 @@ feat*	settings::getFeatureCur(int i)
 {
 	if(i > m_nFeatureCur)
 		return 0;
-	return m_featureCur[i];
+	return m_pFeatureCur[i];
 }
 
 int		settings::getFeatureCount()
@@ -336,7 +363,7 @@ feat*	settings::getFeature(int id)
 {
 	if(id > m_nFeature)
 		return 0;
-	return m_feature[id];
+	return m_pFeature[id];
 }
 
 int		settings::getActiveFeature()
@@ -432,6 +459,18 @@ void	featTeleport::toggle()
 			g_pHack->teleport(m_v3Pos);
 		break;
 	}
+}
+
+featParent::featParent() {}
+featParent::~featParent() {}
+
+void	featParent::toggle()
+{
+	m_iActiveFeatureRet = g_pSettings->getActiveFeature();
+	m_iDisplayOffsetRet	= g_pSettings->getDisplayOffset();
+	g_pSettings->fillFeatureCurBuffer(this->m_iId, FFB_PARENT);
+
+	return;
 }
 
 

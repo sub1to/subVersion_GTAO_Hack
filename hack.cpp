@@ -142,6 +142,11 @@ void hack::checkKeys()
 		g_pSettings->menuSelect();
 		return;
 	}
+	if(checkKeyState(g_pSettings->m_iKeys[keyMenuBack]))
+	{
+		g_pSettings->menuBack();
+		return;
+	}
 }
 
 bool	hack::initPointers()
