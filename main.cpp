@@ -111,7 +111,8 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(3, -1, "Saved 6", feat_teleport, "pos5", tp_saved);
 
 	int interior = g_pSettings->addFeature(3, -1, "Interiors >>", feat_parent);
-	g_pSettings->addFeature(-1, interior, "FIB Building", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
+	g_pSettings->addFeature(-1, interior, "FIB Building Top", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
+	g_pSettings->addFeature(-1, interior, "FIB Building Janitor", feat_teleport, tp_static, 134.548f, -765.343f, 242.35f);
 	g_pSettings->addFeature(-1, interior, "Garment Factory", feat_teleport, tp_static, 712.716f, -962.906f, 30.6f);
 	g_pSettings->addFeature(-1, interior, "Franklin's House", feat_teleport, tp_static, 7.119f, 536.615f, 176.2f);
 	g_pSettings->addFeature(-1, interior, "Michael's House", feat_teleport, tp_static, -813.603f, 179.474f, 72.5f);
@@ -120,10 +121,14 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(-1, interior, "Floyd's House", feat_teleport, tp_static, -1151.770f, -1518.138f, 10.85f);
 	g_pSettings->addFeature(-1, interior, "Lester's House", feat_teleport, tp_static, 1273.898f, -1719.304f, 54.8f);
 	g_pSettings->addFeature(-1, interior, "Vanilla Unicorn Office", feat_teleport, tp_static, 97.271f, -1290.994f, 29.45f);
+	g_pSettings->addFeature(-1, interior, "Bank Vault (Pacific Standard)", feat_teleport, tp_static, 255.85f, 217.f, 101.9f);
 	g_pSettings->addFeature(-1, interior, "Comedy Club", feat_teleport, tp_static, 378.100f, -999.964f, -98.6f);
-	g_pSettings->addFeature(-1, interior, "Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
-	g_pSettings->addFeature(-1, interior, "Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
 	g_pSettings->addFeature(-1, interior, "Humane Labs", feat_teleport, tp_static, 3614.394f, 3744.803f, 28.9f);
+	g_pSettings->addFeature(-1, interior, "Humane Labs Tunnel", feat_teleport, tp_static, 3525.201f, 3709.625f, 21.2f);
+	g_pSettings->addFeature(-1, interior, "IAA Office", feat_teleport, tp_static, 113.568f, -619.001f, 206.25f);
+	g_pSettings->addFeature(-1, interior, "Torture Room", feat_teleport, tp_static, 142.746f, -2201.189f, 4.9f);
+	g_pSettings->addFeature(-1, interior, "Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
+	g_pSettings->addFeature(-1, interior, "Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
 
 	g_pSettings->addFeature(3, -1, "LS Customs", feat_teleport, tp_static, -365.425f, -131.809f, 38.9f);
 	g_pSettings->addFeature(3, -1, "LSIA Runway", feat_teleport, tp_static, -1336.f, -3044.f, 14.15f);

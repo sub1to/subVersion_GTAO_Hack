@@ -379,17 +379,18 @@ void	hack::weaponSpin(feat* feature)
 
 void	hack::runSpeed(feat* feature)
 {
-	m_player.getRunSpeed();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_player.getRunSpeed();
 			if(m_player.m_flRunSpd > 1.f)
 				m_player.setRunSpeed(1.f);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_player.getRunSpeed();
 	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
 	if(m_player.m_flRunSpd != fValue)
 		m_player.setRunSpeed(fValue);
@@ -398,17 +399,18 @@ void	hack::runSpeed(feat* feature)
 
 void	hack::swimSpeed(feat* feature)
 {
-	m_player.getSwimSpeed();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_player.getSwimSpeed();
 			if(m_player.m_flSwimSpd > 1.f)
 				m_player.setSwimSpeed(1.f);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_player.getSwimSpeed();
 	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
 	if(m_player.m_flSwimSpd != fValue)
 		m_player.setSwimSpeed(fValue);
@@ -417,17 +419,18 @@ void	hack::swimSpeed(feat* feature)
 
 void	hack::godMode(feat* feature)
 {
-	m_player.getGod();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_player.getGod();
 			if(m_player.m_btGod > 0)
 				m_player.setGod(0);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_player.getGod();
 	if(m_player.m_btGod < 1)
 		m_player.setGod(1);
 	return;
@@ -454,17 +457,18 @@ void	hack::vehicleGod(feat* feature)
 {
 	if(m_dwpVehicleBase == 0)
 		return;
-	m_vehicle.getGod();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_vehicle.getGod();
 			if(m_vehicle.m_btGod > 0)
 				m_vehicle.setGod(0);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_vehicle.getGod();
 	if(m_vehicle.m_btGod < 1)
 		m_vehicle.setGod(1);
 	return;
@@ -473,11 +477,11 @@ void	hack::vehicleGod(feat* feature)
 void	hack::infAmmo(feat* feature)
 {
 	BYTE	cur[4]		= {};
-	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
 			BYTE	value[4]	= {0x41, 0x2B, 0xD1, 0xE8};
 			if(cur[0] != value[0])
 				g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
@@ -485,6 +489,7 @@ void	hack::infAmmo(feat* feature)
 		}
 		return;
 	}
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
 	BYTE	value[4]	= {0x90, 0x90, 0x90, 0xE8};
 	if(cur[0] != value[0])
 		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
@@ -494,11 +499,11 @@ void	hack::infAmmo(feat* feature)
 void	hack::noReload(feat* feature)
 {
 	BYTE	cur[6]		= {};
-	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
 			BYTE	value[6]	= {0x41, 0x2B, 0xC9, 0x3B, 0xC8, 0x0F};
 			if(cur[0] != value[0])
 				g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
@@ -506,6 +511,7 @@ void	hack::noReload(feat* feature)
 		}
 		return;
 	}
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
 	BYTE	value[6]	= {0x90, 0x90, 0x90, 0x3B, 0xC8, 0x0F};
 	if(cur[0] != value[0])
 		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
@@ -514,17 +520,18 @@ void	hack::noReload(feat* feature)
 
 void	hack::seatbelt(feat* feature)
 {
-	m_player.getSeatbelt();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_player.getSeatbelt();
 			if(m_player.m_btSeatbelt & 0x01)
 				m_player.setSeatbelt(m_player.m_btSeatbelt ^ 0x01);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_player.getSeatbelt();
 	if(!(m_player.m_btSeatbelt & 0x01))
 			m_player.setSeatbelt(m_player.m_btSeatbelt | 0x01);
 	return;
@@ -532,17 +539,18 @@ void	hack::seatbelt(feat* feature)
 
 void hack::noRagdoll(feat* feature)
 {
-	m_player.getRagdoll();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_player.getRagdoll();
 			if(!(m_player.m_btRagdoll & 0x20))
 				m_player.setRagdoll(m_player.m_btRagdoll | 0x20);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_player.getRagdoll();
 	if(m_player.m_btRagdoll & 0x20)
 		m_player.setRagdoll(m_player.m_btRagdoll ^ 0x20);
 	return;
@@ -586,17 +594,18 @@ void hack::vehicleBrake(feat* feature)
 
 void hack::neverWanted(feat* feature)
 {
-	m_player.getWantedCanChange();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_player.getWantedCanChange();
 			if(m_player.m_flWantedCanChange != 1.f)
 				m_player.setWantedCanChange(1.f);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_player.getWantedCanChange();
 	if(m_player.m_flWantedCanChange != 0.f)
 		m_player.setWantedCanChange(0.f);
 	return;
@@ -622,17 +631,18 @@ void hack::vehicleTraction(feat* feature)
 
 void hack::vehicleGravity(feat* feature)
 {
-	m_vehicle.getGravity();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_vehicle.getGravity();
 			if(m_vehicle.m_fGravity != 9.8f)
 				m_vehicle.setGravity(9.8f);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_vehicle.getGravity();
 	float fValue	= static_cast<featSlider*>(feature)->m_fValue;
 	if(m_vehicle.m_fGravity != fValue)
 		m_vehicle.setGravity(fValue);
@@ -642,17 +652,18 @@ void hack::vehicleGravity(feat* feature)
 //btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
 void hack::vehicleBulletproofTires(feat* feature)
 {
-	m_vehicle.getBulletproofTires();
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
+			m_vehicle.getBulletproofTires();
 			if(m_vehicle.m_btBulletproofTires & 0x20)
 				m_vehicle.setBulletproofTires(m_vehicle.m_btBulletproofTires ^ 0x20);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
+	m_vehicle.getBulletproofTires();
 	if(!(m_vehicle.m_btBulletproofTires & 0x20))
 		m_vehicle.setBulletproofTires(m_vehicle.m_btBulletproofTires | 0x20);
 	return;
