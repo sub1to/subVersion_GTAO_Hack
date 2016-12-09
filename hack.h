@@ -50,6 +50,7 @@ class hack : public trainer
 		bool	teleportWaypoint();
 		void	restoreHealth();
 		void	restoreVehicleHealth();
+		void	restoreStamina();
 		void	notWanted();
 		void	killNpc();
 		void	fillAmmo();

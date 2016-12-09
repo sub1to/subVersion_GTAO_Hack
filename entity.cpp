@@ -30,7 +30,7 @@ entity::~entity()
 
 void entity::getPos()
 {
-	g_pMemMan->readMem<v3>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_POS, &m_pos);
+	g_pMemMan->readMem<v3>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_POS, &m_v3Pos);
 	return;
 }
 
@@ -55,8 +55,8 @@ void entity::setGod(BYTE value)
 
 void entity::getHealth()
 {
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &m_hp.cur);
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &m_hp.max);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH, &m_cmHp.cur);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_ENTITY_HEALTH_MAX, &m_cmHp.max);
 	return;
 }
 void entity::setHealth(float hp)
@@ -184,14 +184,26 @@ void player::setSeatbelt(BYTE value)
 	return;
 }
 
+void player::getStamina()
+{
+	g_pMemMan->readMem<curmax>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_STAMINA, &m_cmStamina);
+	return;
+}
+
+void player::setStamina(float value)
+{
+	g_pMemMan->writeMem<float>((DWORD_PTR) m_dwpPlayerInfo + OFFSET_PLAYER_INFO_STAMINA, &value);
+	return;
+}
+
 /*
 	VEHICLE
 */
 
 vehicle::vehicle()
 {
-	m_hp.max = 1000.f;
-	m_hpVehicle.max = 1000.f;
+	m_cmHp.max = 1000.f;
+	m_cmHpVehicle.max = 1000.f;
 }
 vehicle::~vehicle()
 {
@@ -202,7 +214,7 @@ vehicle::~vehicle()
 void vehicle::getHealth()
 {
 	entity::getHealth();
-	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &m_hpVehicle.cur);
+	g_pMemMan->readMem<float>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_HEALTH, &m_cmHpVehicle.cur);
 	return;
 }
 

@@ -75,6 +75,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_P_SUPERJUMP]			= g_pSettings->addFeature(0, -1, "Super Jump", feat_toggle, "superJump");
 	g_iFeature[FEATURE_P_EXPLOSIVEMELEE]	= g_pSettings->addFeature(0, -1, "Explosive Melee", feat_toggle, "explMelee");
 	g_iFeature[FEATURE_P_NORAGDOLL]			= g_pSettings->addFeature(0, -1, "No Ragdoll", feat_toggle, "noRagdoll");
+	g_iFeature[FEATURE_P_STAMINA]			= g_pSettings->addFeature(0, -1, "Infinite Stamina", feat_toggle, "infStam");
 
 	g_iFeature[FEATURE_W_SPREAD]			= g_pSettings->addFeature(1, -1, "No Spread", feat_toggle, "noSpread");	
 	g_iFeature[FEATURE_W_RECOIL]			= g_pSettings->addFeature(1, -1, "No Recoil", feat_toggle, "noRecoil");	
@@ -286,6 +287,8 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 			g_pHack->killNpc();
 		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED])->m_bOn)
 			g_pHack->notWanted();
+		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_STAMINA])->m_bOn)
+			g_pHack->restoreStamina();
 		g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED]));
 		g_pHack->wanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]));
 		g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]));

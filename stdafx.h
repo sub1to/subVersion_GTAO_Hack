@@ -83,6 +83,7 @@
 #define	OFFSET_PLAYER_INFO_RUN_SPD				0xE8			//run speed; def 1; float
 #define OFFSET_PLAYER_INFO_SWIM_SPD				0xE4			//swim speed; def 1; float
 #define OFFSET_PLAYER_INFO_FRAMEFLAGS			0x190			//frame flags; DWORD
+#define OFFSET_PLAYER_INFO_STAMINA				0xC00			//fStamina, fStaminaMax
 #define OFFSET_PLAYER_VEHICLE					0x14E0			//ptr to last used vehicle
 #define OFFSET_PLAYER_NAME						0x7C
 #define OFFSET_PLAYER_RAGDOLL					0x1098			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
@@ -163,10 +164,10 @@
 #define FEATURE_V_UPSHIFT			0x1F
 #define FEATURE_W_BATCH_SPREAD		0x20
 #define FEATURE_V_SUSPENSION_FORCE	0x21
+#define FEATURE_P_STAMINA			0x22
 
 
-void		killProgram	();
-std::string	vkToStr	(int vk);
+void	killProgram	();
 
 extern HWND		g_hWnd;
 extern int		g_iFeature[MAX_MENU_FEATURES];

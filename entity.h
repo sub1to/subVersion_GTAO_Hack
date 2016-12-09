@@ -21,16 +21,16 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-struct health
+typedef struct
 {
 	float cur, max;
-};
+} curmax;
 
 class entity
 {
 	public:
-		health	m_hp;
-		v3		m_pos;
+		curmax	m_cmHp;
+		v3		m_v3Pos;
 		BYTE	m_btGod;
 
 						entity();
@@ -58,6 +58,7 @@ class player : public entity
 		BYTE	m_btRagdoll,
 				m_btSeatbelt;
 		bool	m_bIsInVehicle;
+		curmax	m_cmStamina;
 
 						player();
 						~player();
@@ -78,6 +79,8 @@ class player : public entity
 				void	setRagdoll(BYTE value);
 				void	getSeatbelt();
 				void	setSeatbelt(BYTE value);
+				void	getStamina();
+				void	setStamina(float value);
 
 		DWORD_PTR	m_dwpPlayerInfo;
 };
@@ -85,7 +88,7 @@ class player : public entity
 class vehicle : public entity
 {
 	public:
-		health	m_hpVehicle;
+		curmax	m_cmHpVehicle;
 		float	m_fGravity;
 		BYTE	m_btBulletproofTires;
 

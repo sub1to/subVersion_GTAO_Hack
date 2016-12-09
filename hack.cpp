@@ -131,10 +131,10 @@ void hack::checkKeys()
 		if(tp == nullptr || tp->m_tpType != tp_saved)
 			return;
 		m_player.getPos();
-		tp->m_v3Pos.x = m_player.m_pos.x;
-		tp->m_v3Pos.y = m_player.m_pos.y;
-		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_x", m_player.m_pos.x);
-		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_pos.y);
+		tp->m_v3Pos.x = m_player.m_v3Pos.x;
+		tp->m_v3Pos.y = m_player.m_v3Pos.y;
+		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_x", m_player.m_v3Pos.x);
+		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_v3Pos.y);
 		return;
 	}
 	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSelect]))
@@ -206,8 +206,8 @@ bool	hack::teleportWaypoint()
 void	hack::restoreHealth()
 {
 	m_player.getHealth();
-	if(m_player.m_flArmor < 50.f || m_player.m_hp.cur < m_player.m_hp.max)
-		m_player.setHealth(m_player.m_hp.max, 50.f);
+	if(m_player.m_flArmor < 50.f || m_player.m_cmHp.cur < m_player.m_cmHp.max)
+		m_player.setHealth(m_player.m_cmHp.max, 50.f);
 	return;
 }
 
@@ -216,9 +216,17 @@ void	hack::restoreVehicleHealth()
 	if(m_dwpVehicleBase == 0)
 		return;
 	m_vehicle.getHealth();
-	if((m_vehicle.m_hp.cur < m_vehicle.m_hp.max && m_vehicle.m_hp.cur > 0.f) ||
-		(m_vehicle.m_hpVehicle.cur < m_vehicle.m_hpVehicle.max && m_vehicle.m_hpVehicle.cur > 0.f))
-		m_vehicle.setHealth(m_vehicle.m_hp.max);
+	if((m_vehicle.m_cmHp.cur < m_vehicle.m_cmHp.max && m_vehicle.m_cmHp.cur > 0.f) ||
+		(m_vehicle.m_cmHpVehicle.cur < m_vehicle.m_cmHpVehicle.max && m_vehicle.m_cmHpVehicle.cur > 0.f))
+		m_vehicle.setHealth(m_vehicle.m_cmHp.max);
+	return;
+}
+
+void	hack::restoreStamina()
+{
+	m_player.getStamina();
+	if(m_player.m_cmStamina.cur < m_player.m_cmStamina.max)
+		m_player.setStamina(m_player.m_cmStamina.max);
 	return;
 }
 
