@@ -29,21 +29,21 @@ settings::settings()
 	m_iniParser.read();
 
 	//keys
-	m_iKeys[keyExit]			= m_iniParser.getValue<int>("keyExit");
-	m_iKeys[keyMenu]			= m_iniParser.getValue<int>("keyMenu");
-	m_iKeys[keyMenuUp]			= m_iniParser.getValue<int>("keyMenuUp");
-	m_iKeys[keyMenuDown]		= m_iniParser.getValue<int>("keyMenuDown");
-	m_iKeys[keyMenuLeft]		= m_iniParser.getValue<int>("keyMenuLeft");
-	m_iKeys[keyMenuRight]		= m_iniParser.getValue<int>("keyMenuRight");
-	m_iKeys[keyMenuSelect]		= m_iniParser.getValue<int>("keyMenuSelect");
-	m_iKeys[keyMenuBack]		= m_iniParser.getValue<int>("keyMenuBack");
-	m_iKeys[keyMenuTabNext]		= m_iniParser.getValue<int>("keyMenuTabNext");
-	m_iKeys[keyMenuTabPrev]		= m_iniParser.getValue<int>("keyMenuTabPrev");
-	m_iKeys[keyMenuSave]		= m_iniParser.getValue<int>("keyMenuSave");
-	m_iKeys[keyHotTeleport]		= m_iniParser.getValue<int>("keyHotTeleport");
-	m_iKeys[keyHotWanted]		= m_iniParser.getValue<int>("keyHotWanted");
-	m_iKeys[keyHotHealth]		= m_iniParser.getValue<int>("keyHotHealth");
-	m_iKeys[keyHotAmmo]			= m_iniParser.getValue<int>("keyHotAmmo");
+	m_iKeys[keyExit]			= strToVk(m_iniParser.getValue<std::string>("keyExit"));
+	m_iKeys[keyMenu]			= strToVk(m_iniParser.getValue<std::string>("keyMenu"));
+	m_iKeys[keyMenuUp]			= strToVk(m_iniParser.getValue<std::string>("keyMenuUp"));
+	m_iKeys[keyMenuDown]		= strToVk(m_iniParser.getValue<std::string>("keyMenuDown"));
+	m_iKeys[keyMenuLeft]		= strToVk(m_iniParser.getValue<std::string>("keyMenuLeft"));
+	m_iKeys[keyMenuRight]		= strToVk(m_iniParser.getValue<std::string>("keyMenuRight"));
+	m_iKeys[keyMenuSelect]		= strToVk(m_iniParser.getValue<std::string>("keyMenuSelect"));
+	m_iKeys[keyMenuBack]		= strToVk(m_iniParser.getValue<std::string>("keyMenuBack"));
+	m_iKeys[keyMenuTabNext]		= strToVk(m_iniParser.getValue<std::string>("keyMenuTabNext"));
+	m_iKeys[keyMenuTabPrev]		= strToVk(m_iniParser.getValue<std::string>("keyMenuTabPrev"));
+	m_iKeys[keyMenuSave]		= strToVk(m_iniParser.getValue<std::string>("keyMenuSave"));
+	m_iKeys[keyHotTeleport]		= strToVk(m_iniParser.getValue<std::string>("keyHotTeleport"));
+	m_iKeys[keyHotWanted]		= strToVk(m_iniParser.getValue<std::string>("keyHotWanted"));
+	m_iKeys[keyHotHealth]		= strToVk(m_iniParser.getValue<std::string>("keyHotHealth"));
+	m_iKeys[keyHotAmmo]			= strToVk(m_iniParser.getValue<std::string>("keyHotAmmo"));
 }
 settings::~settings()
 {

@@ -168,6 +168,7 @@
 
 
 void	killProgram	();
+DWORD	strToVk(std::string str);
 
 extern HWND		g_hWnd;
 extern int		g_iFeature[MAX_MENU_FEATURES];

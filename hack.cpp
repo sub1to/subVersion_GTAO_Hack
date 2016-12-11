@@ -149,29 +149,44 @@ void hack::checkKeys()
 	}
 }
 
-bool	hack::initPointers()
+BYTE	hack::initPointers()
 {
+	BYTE r	= 0;
+
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_hModule + ADDRESS_WORLD, &m_dwpWorldBase);
+	if(m_dwpWorldBase == 0)
+		return INITPTR_INVALID_WORLD;
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWorldBase + OFFSET_PLAYER, &m_dwpPlayerBase);
+	if(m_dwpPlayerBase == 0)
+		return INITPTR_INVALID_PLAYER;
 	m_player.m_dwpBase		= m_dwpPlayerBase;
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_POSBASE, &m_player.m_dwpPosBase);
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_INFO, &m_player.m_dwpPlayerInfo);
+	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_ATTACKER, &m_dwpAttackerBase);
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_PLAYER_VEHICLE, &m_dwpVehicleBase);
-	m_vehicle.m_dwpBase		= m_dwpVehicleBase;
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_ENTITY_POSBASE, &m_vehicle.m_dwpPosBase);
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_VEHICLE_HANDLING, &m_vehicle.m_handlingCur.m_dwpHandling);
-
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_ENTITY_ATTACKER, &m_dwpAttackerBase);
+	if(m_dwpVehicleBase == 0)
+		r |=	INITPTR_INVALID_VEHICLE;
+	else
+	{
+		m_vehicle.m_dwpBase		= m_dwpVehicleBase;
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_ENTITY_POSBASE, &m_vehicle.m_dwpPosBase);
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpVehicleBase + OFFSET_VEHICLE_HANDLING, &m_vehicle.m_handlingCur.m_dwpHandling);
+	}
 
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpPlayerBase + OFFSET_WEAPON_MANAGER, &m_dwpWeaponManager);
 	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWeaponManager + OFFSET_WEAPON_CURRENT, &m_dwpWeaponCur);
-	m_weapon.m_weapDataCur.m_dwpWeapon = m_dwpWeaponCur;
-	g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWeaponCur + OFFSET_WEAPON_AMMOINFO, &m_dwpAmmoInfo);
-	m_weapon.m_dwpAmmoInfo			= m_dwpAmmoInfo;
+	if(m_dwpWeaponManager == 0 || m_dwpWeaponCur == 0)
+		r |=	INITPTR_INVALID_WEAPON;
+	else
+	{
+		m_weapon.m_weapDataCur.m_dwpWeapon = m_dwpWeaponCur;
+		g_pMemMan->readMem<DWORD_PTR>((DWORD_PTR) m_dwpWeaponCur + OFFSET_WEAPON_AMMOINFO, &m_dwpAmmoInfo);
+		m_weapon.m_dwpAmmoInfo			= m_dwpAmmoInfo;
+	}
 
-	return 1;
+	return r;
 }
 
 void	hack::getWaypoint()
@@ -213,8 +228,6 @@ void	hack::restoreHealth()
 
 void	hack::restoreVehicleHealth()
 {
-	if(m_dwpVehicleBase == 0)
-		return;
 	m_vehicle.getHealth();
 	if((m_vehicle.m_cmHp.cur < m_vehicle.m_cmHp.max && m_vehicle.m_cmHp.cur > 0.f) ||
 		(m_vehicle.m_cmHpVehicle.cur < m_vehicle.m_cmHpVehicle.max && m_vehicle.m_cmHpVehicle.cur > 0.f))
@@ -463,8 +476,6 @@ void	hack::frameFlags(feat* featSuperJump, feat* featExplosiveMelee, feat* featF
 
 void	hack::vehicleGod(feat* feature)
 {
-	if(m_dwpVehicleBase == 0)
-		return;
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)

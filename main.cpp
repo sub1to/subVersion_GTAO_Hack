@@ -131,9 +131,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(-1, interior, "Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
 	g_pSettings->addFeature(-1, interior, "Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
 
-	g_pSettings->addFeature(3, -1, "LS Customs", feat_teleport, tp_static, -365.425f, -131.809f, 38.9f);
-	g_pSettings->addFeature(3, -1, "LSIA Runway", feat_teleport, tp_static, -1336.f, -3044.f, 14.15f);
-	g_pSettings->addFeature(3, -1, "Sandy Shores Airfield", feat_teleport, tp_static, 1747.f, 3273.f, 41.35f);
+	g_pSettings->addFeature(3, -1, "LS Customs", feat_teleport, tp_static, -365.425f, -131.809f, -225.f);//38.9f);
+	g_pSettings->addFeature(3, -1, "LSIA Runway", feat_teleport, tp_static, -1336.f, -3044.f, -225.f);//14.15f);
+	g_pSettings->addFeature(3, -1, "Sandy Shores Airfield", feat_teleport, tp_static, 1747.f, 3273.f, -225.f);//41.35f);
 	g_pSettings->addFeature(3, -1, "Mount Chiliad", feat_teleport, tp_static, 489.979f, 5587.527f, 794.3f);
 
 	g_pSettings->setActiveCat(0);			//this needs to be called so we can fill the current feature buffer
@@ -253,7 +253,7 @@ DWORD __stdcall threadAttach(LPVOID lpParam)
 		else
 			MessageBox(nullptr, "Make sure the game is running!", "subVersion failed to attach", MB_OK | MB_ICONERROR);
 
-		Sleep(0x60);
+		Sleep(0x30);
 	}
 	g_bKillAttach	= true;
 	return 1;
@@ -276,61 +276,69 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 	g_pHack->m_hModule = g_pMemMan->getModuleAddress("GTA5.exe");
 	while(!g_bKillSwitch)
 	{
-		g_pHack->initPointers();
+		BYTE btInit	= g_pHack->initPointers();
 		g_pHack->checkKeys();
 
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_GOD])->m_bOn)
-			g_pHack->restoreHealth();
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_V_GOD])->m_bOn)
-			g_pHack->restoreVehicleHealth();
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_ANTINPC])->m_bOn)
-			g_pHack->killNpc();
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED])->m_bOn)
-			g_pHack->notWanted();
-		if(g_pSettings->getFeature(g_iFeature[FEATURE_P_STAMINA])->m_bOn)
-			g_pHack->restoreStamina();
-		g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED]));
-		g_pHack->wanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]));
-		g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]));
-		g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD]));
-		g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));
-		g_pHack->vehicleGod(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD]));
-		g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD]));
-		g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
-		g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));
-		g_pHack->vehicleGravity(g_pSettings->getFeature(g_iFeature[FEATURE_V_GRAVITY]));
-		g_pHack->vehicleBulletproofTires(g_pSettings->getFeature(g_iFeature[FEATURE_V_BULLETPROOFTIRES]));
-
-		g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP]),
-								g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE]),
-								g_pSettings->getFeature(g_iFeature[FEATURE_W_FIREAMMO]),
-								g_pSettings->getFeature(g_iFeature[FEATURE_W_EXPLOSIVEAMMO]));
-
-		if(g_pHack->m_vehicle.loadHandling())
+		if(!(btInit & INITPTR_INVALID_WORLD) && !(btInit & INITPTR_INVALID_PLAYER))
 		{
-			g_pHack->vehicleAccel(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION]));
-			g_pHack->vehicleBrake(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]));
-			g_pHack->vehicleTraction(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRACTION]));
-			g_pHack->vehicleDeformation(g_pSettings->getFeature(g_iFeature[FEATURE_V_DEFORMATION]));
-			g_pHack->vehicleUpShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_UPSHIFT]));
-			g_pHack->vehicleSuspensionForce(g_pSettings->getFeature(g_iFeature[FEATURE_V_SUSPENSION_FORCE]));
+			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_GOD])->m_bOn)
+				g_pHack->restoreHealth();
+			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_ANTINPC])->m_bOn)
+				g_pHack->killNpc();
+			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED])->m_bOn)
+				g_pHack->notWanted();
+			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_STAMINA])->m_bOn)
+				g_pHack->restoreStamina();
+
+			g_pHack->neverWanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_NEVERWANTED]));
+			g_pHack->wanted(g_pSettings->getFeature(g_iFeature[FEATURE_P_WANTED]));
+			g_pHack->runSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_RUNSPD]));
+			g_pHack->swimSpeed(g_pSettings->getFeature(g_iFeature[FEATURE_P_SWIMSPD]));
+			g_pHack->godMode(g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD]));
+			g_pHack->noRagdoll(g_pSettings->getFeature(g_iFeature[FEATURE_P_NORAGDOLL]));
+			g_pHack->seatbelt(g_pSettings->getFeature(g_iFeature[FEATURE_V_SEATBELT]));
+
+			g_pHack->frameFlags(	g_pSettings->getFeature(g_iFeature[FEATURE_P_SUPERJUMP]),
+									g_pSettings->getFeature(g_iFeature[FEATURE_P_EXPLOSIVEMELEE]),
+									g_pSettings->getFeature(g_iFeature[FEATURE_W_FIREAMMO]),
+									g_pSettings->getFeature(g_iFeature[FEATURE_W_EXPLOSIVEAMMO]));
+
+
+			if(!(btInit & INITPTR_INVALID_VEHICLE))
+			{
+				if(g_pSettings->getFeature(g_iFeature[FEATURE_V_GOD])->m_bOn)
+					g_pHack->restoreVehicleHealth();
+
+				g_pHack->vehicleGod(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD]));
+				g_pHack->vehicleGravity(g_pSettings->getFeature(g_iFeature[FEATURE_V_GRAVITY]));
+				g_pHack->vehicleBulletproofTires(g_pSettings->getFeature(g_iFeature[FEATURE_V_BULLETPROOFTIRES]));
+
+				if(g_pHack->m_vehicle.loadHandling())
+				{
+					g_pHack->vehicleAccel(g_pSettings->getFeature(g_iFeature[FEATURE_V_ACCELERATION]));
+					g_pHack->vehicleBrake(g_pSettings->getFeature(g_iFeature[FEATURE_V_BRAKEFORCE]));
+					g_pHack->vehicleTraction(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRACTION]));
+					g_pHack->vehicleDeformation(g_pSettings->getFeature(g_iFeature[FEATURE_V_DEFORMATION]));
+					g_pHack->vehicleUpShift(g_pSettings->getFeature(g_iFeature[FEATURE_V_UPSHIFT]));
+					g_pHack->vehicleSuspensionForce(g_pSettings->getFeature(g_iFeature[FEATURE_V_SUSPENSION_FORCE]));
+				}
+			}
+
+			if(!(btInit & INITPTR_INVALID_WEAPON) && g_pHack->m_weapon.loadWeapon())
+			{
+				g_pHack->noSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD]));
+				g_pHack->noRecoil(g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL]));
+				g_pHack->quickReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD]));
+				g_pHack->bulletDamage(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE]));
+				g_pHack->weaponRange(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE]));
+				g_pHack->weaponSpin(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP]));
+				g_pHack->bulletBatch(g_pSettings->getFeature(g_iFeature[FEATURE_W_BULLET_BATCH]));
+				g_pHack->batchSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_BATCH_SPREAD]));
+				g_pHack->muzzleVelocity(g_pSettings->getFeature(g_iFeature[FEATURE_W_MUZZLE_VELOCITY]));
+				g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO]));
+				g_pHack->noReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_NORELOAD]));
+			}
 		}
-
-		if(g_pHack->m_weapon.loadWeapon())
-		{
-			g_pHack->noSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPREAD]));
-			g_pHack->noRecoil(g_pSettings->getFeature(g_iFeature[FEATURE_W_RECOIL]));
-			g_pHack->quickReload(g_pSettings->getFeature(g_iFeature[FEATURE_W_RELOAD]));
-			g_pHack->bulletDamage(g_pSettings->getFeature(g_iFeature[FEATURE_W_DAMAGE]));
-			g_pHack->weaponRange(g_pSettings->getFeature(g_iFeature[FEATURE_W_RANGE]));
-			g_pHack->weaponSpin(g_pSettings->getFeature(g_iFeature[FEATURE_W_SPINUP]));
-			g_pHack->bulletBatch(g_pSettings->getFeature(g_iFeature[FEATURE_W_BULLET_BATCH]));
-			g_pHack->batchSpread(g_pSettings->getFeature(g_iFeature[FEATURE_W_BATCH_SPREAD]));
-			g_pHack->muzzleVelocity(g_pSettings->getFeature(g_iFeature[FEATURE_W_MUZZLE_VELOCITY]));
-
-			g_pHack->infAmmo(g_pSettings->getFeature(g_iFeature[FEATURE_W_AMMO]));
-		}
-
 		Sleep(1);
 	}
 	return 0;

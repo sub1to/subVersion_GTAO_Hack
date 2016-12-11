@@ -21,6 +21,11 @@
 #ifndef HACK_H
 #define HACK_H
 
+#define INITPTR_INVALID_WORLD	1 << 0
+#define INITPTR_INVALID_PLAYER	1 << 1
+#define INITPTR_INVALID_VEHICLE	1 << 2
+#define INITPTR_INVALID_WEAPON	1 << 3
+
 class trainer
 {
 	public:
@@ -45,7 +50,8 @@ class hack : public trainer
 				hack();
 				~hack();
 		void	checkKeys();
-		bool	initPointers();
+		BYTE	initPointers();
+
 		void	teleport(v3 v);
 		bool	teleportWaypoint();
 		void	restoreHealth();
