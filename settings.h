@@ -60,7 +60,7 @@ class featCat
 };
 
 enum featType	{ feat_toggle, feat_slider, feat_teleport, feat_parent };
-enum teleType	{ tp_saved, tp_waypoint, tp_static };
+enum teleType	{ tp_saved, tp_waypoint, tp_static, tp_objective };
 
 class feat
 {

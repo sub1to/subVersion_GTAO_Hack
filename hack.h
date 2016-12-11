@@ -41,6 +41,7 @@ class hack : public trainer
 {
 	public:
 		v2		m_v2Waypoint;
+		v3		m_v3Objective;
 		player	m_player;
 		vehicle m_vehicle;
 		weapon	m_weapon;
@@ -54,6 +55,7 @@ class hack : public trainer
 
 		void	teleport(v3 v);
 		bool	teleportWaypoint();
+		bool	teleportObjective();
 		void	restoreHealth();
 		void	restoreVehicleHealth();
 		void	restoreStamina();
@@ -99,6 +101,7 @@ class hack : public trainer
 					m_dwpAmmoInfo;
 
 		void	getWaypoint();
+		void	getObjective();
 };
 
 extern hack*		g_pHack;

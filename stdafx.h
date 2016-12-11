@@ -53,12 +53,14 @@
 #ifdef __SC_VERSION__
 #define ADDRESS_WORLD					0x2303788		//42
 #define ADDRESS_WAYPOINT				0x1F59BB0		//wtb a (mini)map struct
+#define ADDRESS_OBJECTIVE				0x1F59C60
 #define ADDRESS_AMMO					0x0F5BC65		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 #define ADDRESS_MAGAZINE				0x0F5BC20		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 #endif
 #ifdef __STEAM_VERSION__
 #define ADDRESS_WORLD					0x2307738		//42
 #define ADDRESS_WAYPOINT				0x1F5DE50		//wtb a (mini)map struct
+#define ADDRESS_OBJECTIVE				0x0
 #define ADDRESS_AMMO					0x0F5C9E1		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
 #define ADDRESS_MAGAZINE				0x0F5C99C		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 #endif

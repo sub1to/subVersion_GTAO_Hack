@@ -104,6 +104,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(2, -1, "Suspension Force", feat_slider, "vehSuspensionForce", 0.f, 2.f);
 
 	g_pSettings->addFeature(3, -1, "Waypoint", feat_teleport, tp_waypoint);
+	g_pSettings->addFeature(3, -1, "Objective", feat_teleport, tp_objective);
 	g_pSettings->addFeature(3, -1, "Saved 1", feat_teleport, "pos0", tp_saved);
 	g_pSettings->addFeature(3, -1, "Saved 2", feat_teleport, "pos1", tp_saved);
 	g_pSettings->addFeature(3, -1, "Saved 3", feat_teleport, "pos2", tp_saved);

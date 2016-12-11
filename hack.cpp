@@ -195,6 +195,12 @@ void	hack::getWaypoint()
 	return;
 }
 
+void	hack::getObjective()
+{
+	g_pMemMan->readMem<v3>((DWORD_PTR) m_hModule + ADDRESS_OBJECTIVE, &m_v3Objective);
+	return;
+}
+
 void	hack::teleport(v3 v)
 {
 	m_player.getInVehicle();
@@ -214,6 +220,17 @@ bool	hack::teleportWaypoint()
 		return false;
 
 	v3 dest(m_v2Waypoint.x, m_v2Waypoint.y, -225.f);
+	teleport(dest);
+	return true;
+}
+
+bool	hack::teleportObjective()
+{
+	getObjective();
+	if(m_v3Objective.x == 64000.f && m_v3Objective.y == 64000.f && m_v3Objective.z == 64000.f)
+		return false;
+
+	v3 dest(m_v3Objective.x, m_v3Objective.y, m_v3Objective.z + 1.f);
 	teleport(dest);
 	return true;
 }

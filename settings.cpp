@@ -469,6 +469,9 @@ void	featTeleport::toggle()
 		case tp_waypoint:
 			g_pHack->teleportWaypoint();
 		break;
+		case tp_objective:
+			g_pHack->teleportObjective();
+		break;
 		case tp_saved:
 		case tp_static:
 			g_pHack->teleport(m_v3Pos);
