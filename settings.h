@@ -117,6 +117,14 @@ class featParent : public feat
 		void	toggle();
 };
 
+
+typedef struct
+{
+    std::string    key,
+                   value;
+    int            section;
+} iniProperty;
+
 class iniParser
 {
 	public:
@@ -129,36 +137,44 @@ class iniParser
 		void		read();
 		void		write();
 
-		int			findKey(std::string szKey);
-		int			createKey(std::string szKey);
+		int			findKey(std::string szKey, std::string szSection = "");
+		int			createKey(std::string szKey, std::string szSection = "");
 
 
 		template	<typename rT>
-		rT			getValue(std::string szKey)
+		rT			getValue(std::string szKey, std::string szSection = "")
 		{
 			rT		r{};
 			int		i	= this->findKey(szKey);
-			if(i == -1)
+			if(i == -1 || (szSection != "" && (m_key[i].section < 0 || m_section[m_key[i].section] != szSection)))
 				return r;
-			std::stringstream	ssBuf(m_aszBuffer[i][1]);
-			ssBuf	>> r;
+			std::stringstream	ss(m_key[i].value);
+			ss	>> r;
 			return r;
 		}
 
-		template	<typename wT>
-		bool		setValue(std::string szKey, wT value)
+		template	<>
+		std::string	getValue(std::string szKey, std::string szSection)
 		{
-			int i	= findKey(szKey);
-			if(i == -1)
-				i	= createKey(szKey);
-			if(i == -1)
-				return false;
-			m_aszBuffer[i][1] = std::to_string(value);
+			std::string		r{};
+			int				i	= this->findKey(szKey);
+			if(i == -1 || (szSection != "" && (m_key[i].section < 0 || m_section[m_key[i].section] != szSection)))
+				return r;
+			return m_key[i].value;
+		}
+
+		template	<typename wT>
+		bool		setValue(std::string szKey, wT value, std::string szSection = "")
+		{
+			int i	= findKey(szKey, szSection);
+			if(i == -1 || (szSection != "" && (m_key[i].section < 0 || m_section[m_key[i].section] != szSection)))
+				i	= createKey(szKey, szSection);
+			m_key[i].value = std::to_string(value);
 			return true;
 		}
 	protected:
-		std::string	m_aszBuffer[MAX_PROPERTIES][2];
-		int			m_iBuffer = 0;
+		std::vector<std::string>	m_section;
+		std::vector<iniProperty>	m_key;
 };
 
 class settings

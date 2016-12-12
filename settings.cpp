@@ -29,21 +29,21 @@ settings::settings()
 	m_iniParser.read();
 
 	//keys
-	m_iKeys[keyExit]			= strToVk(m_iniParser.getValue<std::string>("keyExit"));
-	m_iKeys[keyMenu]			= strToVk(m_iniParser.getValue<std::string>("keyMenu"));
-	m_iKeys[keyMenuUp]			= strToVk(m_iniParser.getValue<std::string>("keyMenuUp"));
-	m_iKeys[keyMenuDown]		= strToVk(m_iniParser.getValue<std::string>("keyMenuDown"));
-	m_iKeys[keyMenuLeft]		= strToVk(m_iniParser.getValue<std::string>("keyMenuLeft"));
-	m_iKeys[keyMenuRight]		= strToVk(m_iniParser.getValue<std::string>("keyMenuRight"));
-	m_iKeys[keyMenuSelect]		= strToVk(m_iniParser.getValue<std::string>("keyMenuSelect"));
-	m_iKeys[keyMenuBack]		= strToVk(m_iniParser.getValue<std::string>("keyMenuBack"));
-	m_iKeys[keyMenuTabNext]		= strToVk(m_iniParser.getValue<std::string>("keyMenuTabNext"));
-	m_iKeys[keyMenuTabPrev]		= strToVk(m_iniParser.getValue<std::string>("keyMenuTabPrev"));
-	m_iKeys[keyMenuSave]		= strToVk(m_iniParser.getValue<std::string>("keyMenuSave"));
-	m_iKeys[keyHotTeleport]		= strToVk(m_iniParser.getValue<std::string>("keyHotTeleport"));
-	m_iKeys[keyHotWanted]		= strToVk(m_iniParser.getValue<std::string>("keyHotWanted"));
-	m_iKeys[keyHotHealth]		= strToVk(m_iniParser.getValue<std::string>("keyHotHealth"));
-	m_iKeys[keyHotAmmo]			= strToVk(m_iniParser.getValue<std::string>("keyHotAmmo"));
+	m_iKeys[keyExit]			= strToVk(m_iniParser.getValue<std::string>("Exit", "Keys"));
+	m_iKeys[keyMenu]			= strToVk(m_iniParser.getValue<std::string>("Menu", "Keys"));
+	m_iKeys[keyMenuUp]			= strToVk(m_iniParser.getValue<std::string>("MenuUp", "Keys"));
+	m_iKeys[keyMenuDown]		= strToVk(m_iniParser.getValue<std::string>("MenuDown", "Keys"));
+	m_iKeys[keyMenuLeft]		= strToVk(m_iniParser.getValue<std::string>("MenuLeft", "Keys"));
+	m_iKeys[keyMenuRight]		= strToVk(m_iniParser.getValue<std::string>("MenuRight", "Keys"));
+	m_iKeys[keyMenuSelect]		= strToVk(m_iniParser.getValue<std::string>("MenuSelect", "Keys"));
+	m_iKeys[keyMenuBack]		= strToVk(m_iniParser.getValue<std::string>("MenuBack", "Keys"));
+	m_iKeys[keyMenuTabNext]		= strToVk(m_iniParser.getValue<std::string>("MenuTabNext", "Keys"));
+	m_iKeys[keyMenuTabPrev]		= strToVk(m_iniParser.getValue<std::string>("MenuTabPrev", "Keys"));
+	m_iKeys[keyMenuSave]		= strToVk(m_iniParser.getValue<std::string>("MenuSave", "Keys"));
+	m_iKeys[keyHotTeleport]		= strToVk(m_iniParser.getValue<std::string>("HotTeleport", "Keys"));
+	m_iKeys[keyHotWanted]		= strToVk(m_iniParser.getValue<std::string>("HotWanted", "Keys"));
+	m_iKeys[keyHotHealth]		= strToVk(m_iniParser.getValue<std::string>("HotHealth", "Keys"));
+	m_iKeys[keyHotAmmo]			= strToVk(m_iniParser.getValue<std::string>("HotAmmo", "Keys"));
 }
 settings::~settings()
 {
@@ -233,7 +233,7 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	if(id < 0)
 		return id;
 	m_pFeature[id]->m_szIniKey	= iniKey;
-	m_pFeature[id]->m_bOn		= (bool) m_iniParser.getValue<bool>(iniKey + "_on");
+	m_pFeature[id]->m_bOn		= (bool) m_iniParser.getValue<bool>(iniKey, "FeatureToggle");
 	m_pFeature[id]->m_bRestored	= (m_pFeature[id]->m_bOn) ? false : true;
 	return id;
 }
@@ -245,13 +245,13 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 		return id;
 	dynamic_cast<featSlider*>(m_pFeature[id])->m_fMin		= min;
 	dynamic_cast<featSlider*>(m_pFeature[id])->m_fMax		= max;
-	float v	= m_iniParser.getValue<float>(iniKey + "_value");
+	float v	= m_iniParser.getValue<float>(iniKey, "FeatureValue");
 	if(v <= max && v >= min)
 		dynamic_cast<featSlider*>(m_pFeature[id])->m_fValue	= v;
 	else
 	{
 		dynamic_cast<featSlider*>(m_pFeature[id])->m_fValue	= min;
-		m_iniParser.setValue<float>(iniKey + "_value", min);
+		m_iniParser.setValue<float>(iniKey, min, "FeatureValue");
 	}
 	return id;
 }
@@ -273,10 +273,10 @@ int		settings::addFeature(int cat, int parent, std::string name, featType type, 
 	if(id < 0)
 		return id;
 	dynamic_cast<featTeleport*>(m_pFeature[id])->m_tpType		= tpType;
-	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.x		= m_iniParser.getValue<float>(iniKey + "_x");
-	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.y		= m_iniParser.getValue<float>(iniKey + "_y");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.x		= m_iniParser.getValue<float>(iniKey + "_x", "Teleport");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.y		= m_iniParser.getValue<float>(iniKey + "_y", "Teleport");
 	dynamic_cast<featTeleport*>(m_pFeature[id])->m_v3Pos.z		= -225.f;
-	dynamic_cast<featTeleport*>(m_pFeature[id])->m_szName		+= " | " + m_iniParser.getValue<std::string>(iniKey + "_name");
+	dynamic_cast<featTeleport*>(m_pFeature[id])->m_szName		+= " | " + m_iniParser.getValue<std::string>(iniKey + "_name", "Teleport");
 	return id;
 }
 
@@ -425,7 +425,7 @@ void	feat::toggle()
 	if(m_bOn)
 		m_bRestored = false;
 	if(m_szIniKey != "")
-		g_pSettings->m_iniParser.setValue<bool>((std::string) m_szIniKey + "_on", (int) m_bOn);
+		g_pSettings->m_iniParser.setValue<bool>((std::string) m_szIniKey, (int) m_bOn, "FeatureToggle");
 	return;
 }
 
@@ -443,7 +443,7 @@ void	featSlider::inc()
 		m_fValue = v;
 	else
 		m_fValue = m_fMax;
-	g_pSettings->m_iniParser.setValue<float>((std::string) m_szIniKey + "_value", m_fValue);
+	g_pSettings->m_iniParser.setValue<float>((std::string) m_szIniKey, m_fValue, "FeatureValue");
 	return;
 }
 
@@ -454,7 +454,7 @@ void	featSlider::dec()
 		m_fValue = v;
 	else
 		m_fValue = m_fMin;
-	g_pSettings->m_iniParser.setValue<float>((std::string) m_szIniKey + "_value", m_fValue);
+	g_pSettings->m_iniParser.setValue<float>((std::string) m_szIniKey, m_fValue, "FeatureValue");
 	return;
 }
 
@@ -513,26 +513,29 @@ void iniParser::read()
 		return;
 
 	std::string szLine;
-	int	i = 0;
+	int			iSection = -1;
+	std::regex	regexSection("^\\[([A-Za-z0-9_]+)\\]$"),
+				regexKey	("^([A-Za-z0-9_]+)=([A-Za-z0-9_\\-*/+.\\s]+)$"),
+				regexComment("^(;|#)(.*)$");
 
-	while(std::getline(file, szLine))
+	while(std::getline(file, szLine, '\n'))
 	{
-		if(m_iBuffer >= MAX_PROPERTIES)		//prevent buffer overflow
-			return;
-		if(szLine[0] == ';' || szLine == "")
+		std::smatch    regexMatch;    //std::string match object
+
+		if(szLine == "")
 			continue;
-
-		std::stringstream	ssBuf(szLine);
-		std::string			szToken;
-
-		std::getline(ssBuf, szToken, '=');		//read the key
-		m_aszBuffer[i][0] = szToken;
-
-		std::getline(ssBuf, szToken, '=');		//read the value
-		m_aszBuffer[i][1] = szToken;
-
-		i++;
-		m_iBuffer = i;
+        
+		else if(std::regex_search(szLine, regexMatch, regexComment) && regexMatch.size() > 1)
+			m_key.push_back({"__COMMENT__", regexMatch[2], iSection});
+             
+		else if(std::regex_search(szLine, regexMatch, regexSection) && regexMatch.size() > 1)
+		{
+			iSection    = (int) m_section.size();
+			m_section.push_back(regexMatch[1]);
+		}
+            
+		else if(std::regex_search(szLine, regexMatch, regexKey) && regexMatch.size() > 1)
+			m_key.push_back({regexMatch.str(1), regexMatch[2], iSection});
 	}
 	return;
 }
@@ -543,34 +546,44 @@ void iniParser::write()
 	file.open(m_szFile, std::ios::out | std::ios::trunc);
 	if(!file.is_open())
 		return;
-	for(auto &v : m_aszBuffer)
+	for(int j = 0; j <= m_section.size(); j++)
 	{
-		if(v[0] == "" && v[1] == "")
-			continue;
-		file << v[0] << "=" << v[1] << "\n";
+		if(j > 0)
+			file << "[" << m_section[j - 1] << "]\n";
+		for(int i = 0; i < m_key.size(); i++)
+		{
+			if(m_key[i].section != j - 1)
+				continue;
+			if(m_key[i].key == "__COMMENT__")
+				file << ";" ;
+			else
+				file << m_key[i].key << "=";
+			file << m_key[i].value << "\n";
+		}
 	}
 	return;
 }
 
-int iniParser::findKey(std::string szKey)
+int iniParser::findKey(std::string szKey, std::string szSection)
 {
-	int iR = 0;
-	for(iR = 0; iR < m_iBuffer; iR++)
-	{
-		if(m_aszBuffer[iR][0] == szKey)
-			break;
-	}
-	if(m_aszBuffer[iR][0] != szKey)
-		iR = -1;
-	return iR;
+	for(int i = 0; i < m_key.size(); i++)
+		if(m_key[i].key == szKey && (szSection == "" || szSection == m_section[m_key[i].section]))
+			return i;
+	return -1;
 }
 
-int iniParser::createKey(std::string szKey)
+int iniParser::createKey(std::string szKey, std::string szSection)
 {
-	if(m_iBuffer >= MAX_PROPERTIES)		//prevent buffer overflow
-		return -1;
-	int iR	= m_iBuffer;
-	m_iBuffer++;
-	m_aszBuffer[iR][0] = szKey;
-	return iR;
+	int iSection = -1;
+	if(szSection != "")
+	{
+		for(int i = 0; i < m_section.size(); i++)
+			if(m_section[i] == szSection)
+			{
+				iSection = i;
+				break;
+			}
+	}
+	m_key.push_back({szKey, "", iSection});
+	return (int) m_key.size() - 1;
 }

@@ -30,6 +30,8 @@
 #include <fstream>
 #include <ctime>
 #include <psapi.h>
+#include <vector>
+#include <regex>
 
 #include <Dwmapi.h>
 #pragma comment(lib,"Dwmapi.lib")

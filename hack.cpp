@@ -133,8 +133,8 @@ void hack::checkKeys()
 		m_player.getPos();
 		tp->m_v3Pos.x = m_player.m_v3Pos.x;
 		tp->m_v3Pos.y = m_player.m_v3Pos.y;
-		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_x", m_player.m_v3Pos.x);
-		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_v3Pos.y);
+		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_x", m_player.m_v3Pos.x, "coords");
+		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_v3Pos.y, "coords");
 		return;
 	}
 	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSelect]))
