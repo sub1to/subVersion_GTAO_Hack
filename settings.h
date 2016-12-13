@@ -145,7 +145,7 @@ class iniParser
 		rT			getValue(std::string szKey, std::string szSection = "")
 		{
 			rT		r{};
-			int		i	= this->findKey(szKey);
+			int		i	= this->findKey(szKey, szSection);
 			if(i == -1 || (szSection != "" && (m_key[i].section < 0 || m_section[m_key[i].section] != szSection)))
 				return r;
 			std::stringstream	ss(m_key[i].value);
@@ -157,7 +157,7 @@ class iniParser
 		std::string	getValue(std::string szKey, std::string szSection)
 		{
 			std::string		r{};
-			int				i	= this->findKey(szKey);
+			int				i	= this->findKey(szKey, szSection);
 			if(i == -1 || (szSection != "" && (m_key[i].section < 0 || m_section[m_key[i].section] != szSection)))
 				return r;
 			return m_key[i].value;

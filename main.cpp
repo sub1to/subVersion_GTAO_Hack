@@ -30,6 +30,7 @@ int			g_iFeature[MAX_MENU_FEATURES]	= {};
 bool		g_bKillSwitch	= false;
 bool		g_bKillRender	= false;
 bool		g_bKillAttach	= false;
+bool		g_bKillHack		= false;
 
 //fuction prototypes
 LRESULT	__stdcall	WindowProc(	HWND	hWnd,
@@ -88,7 +89,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_W_EXPLOSIVEAMMO]		= g_pSettings->addFeature(1, -1, "Explosive Ammo", feat_toggle, "explAmmo");
 	g_iFeature[FEATURE_W_FIREAMMO]			= g_pSettings->addFeature(1, -1, "Fire Ammo", feat_toggle, "fireAmmo");
 	g_iFeature[FEATURE_W_BULLET_BATCH]		= g_pSettings->addFeature(1, -1, "Bullet Batch", feat_slider, "bulletBatch", 1.f, 10.f, (float) 1.f / 9.f);
-	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, -1, "Batch Spread", feat_slider, "batchSpread", 0.f, 0.2f);
+	g_iFeature[FEATURE_W_BATCH_SPREAD]		= g_pSettings->addFeature(1, -1, "Batch Spread", feat_slider, "batchSpread", 0.f, 0.12f);
 	g_iFeature[FEATURE_W_MUZZLE_VELOCITY]	= g_pSettings->addFeature(1, -1, "Muzzle Velocity", feat_slider, "muzzleVelo", 1.f, 10.f);
 
 	g_iFeature[FEATURE_V_TRUEGOD]			= g_pSettings->addFeature(2, -1, "God", feat_toggle, "vehTrueGodMode");
@@ -105,16 +106,9 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	g_pSettings->addFeature(3, -1, "Waypoint", feat_teleport, tp_waypoint);
 	g_pSettings->addFeature(3, -1, "Objective", feat_teleport, tp_objective);
-	g_pSettings->addFeature(3, -1, "Saved 1", feat_teleport, "pos0", tp_saved);
-	g_pSettings->addFeature(3, -1, "Saved 2", feat_teleport, "pos1", tp_saved);
-	g_pSettings->addFeature(3, -1, "Saved 3", feat_teleport, "pos2", tp_saved);
-	g_pSettings->addFeature(3, -1, "Saved 4", feat_teleport, "pos3", tp_saved);
-	g_pSettings->addFeature(3, -1, "Saved 5", feat_teleport, "pos4", tp_saved);
-	g_pSettings->addFeature(3, -1, "Saved 6", feat_teleport, "pos5", tp_saved);
 
 	int interior = g_pSettings->addFeature(3, -1, "Interiors >>", feat_parent);
 	g_pSettings->addFeature(-1, interior, "FIB Building Top", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
-	g_pSettings->addFeature(-1, interior, "FIB Building Janitor", feat_teleport, tp_static, 134.548f, -765.343f, 242.35f);
 	g_pSettings->addFeature(-1, interior, "Garment Factory", feat_teleport, tp_static, 712.716f, -962.906f, 30.6f);
 	g_pSettings->addFeature(-1, interior, "Franklin's House", feat_teleport, tp_static, 7.119f, 536.615f, 176.2f);
 	g_pSettings->addFeature(-1, interior, "Michael's House", feat_teleport, tp_static, -813.603f, 179.474f, 72.5f);
@@ -132,6 +126,12 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_pSettings->addFeature(-1, interior, "Fort Zancudo Tower", feat_teleport, tp_static, -2358.132f, 3249.754f, 101.65f);
 	g_pSettings->addFeature(-1, interior, "Mine Shaft", feat_teleport, tp_static, -595.342f, 2086.008f, 131.6f);
 
+	g_pSettings->addFeature(3, -1, "Saved 1", feat_teleport, "pos0", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 2", feat_teleport, "pos1", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 3", feat_teleport, "pos2", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 4", feat_teleport, "pos3", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 5", feat_teleport, "pos4", tp_saved);
+	g_pSettings->addFeature(3, -1, "Saved 6", feat_teleport, "pos5", tp_saved);
 	g_pSettings->addFeature(3, -1, "LS Customs", feat_teleport, tp_static, -365.425f, -131.809f, -225.f);//38.9f);
 	g_pSettings->addFeature(3, -1, "LSIA Runway", feat_teleport, tp_static, -1336.f, -3044.f, -225.f);//14.15f);
 	g_pSettings->addFeature(3, -1, "Sandy Shores Airfield", feat_teleport, tp_static, 1747.f, 3273.f, -225.f);//41.35f);
@@ -252,7 +252,11 @@ DWORD __stdcall threadAttach(LPVOID lpParam)
 			}
 		}
 		else
+		{
 			MessageBox(nullptr, "Make sure the game is running!", "subVersion failed to attach", MB_OK | MB_ICONERROR);
+			g_bKillAttach = true;
+			killProgram();
+		}
 
 		Sleep(0x30);
 	}
@@ -342,6 +346,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 		}
 		Sleep(1);
 	}
+	g_bKillHack = true;
 	return 0;
 }
 
@@ -352,7 +357,7 @@ void	killProgram()
 	g_pSettings->m_iniParser.write();	//save options
 
 	//make sure we shut down all threads before deleting the objects
-	while(!g_bKillAttach || !g_bKillRender)
+	while(!g_bKillAttach || !g_bKillRender || !g_bKillHack)
 		Sleep(1);
 
 	//restore patched code

@@ -59,6 +59,7 @@ void hack::checkKeys()
 {
 	if(checkKeyState(g_pSettings->m_iKeys[keyExit]))
 	{
+		g_bKillHack = true;
 		killProgram();
 		return;
 	}
@@ -133,8 +134,8 @@ void hack::checkKeys()
 		m_player.getPos();
 		tp->m_v3Pos.x = m_player.m_v3Pos.x;
 		tp->m_v3Pos.y = m_player.m_v3Pos.y;
-		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_x", m_player.m_v3Pos.x, "coords");
-		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_v3Pos.y, "coords");
+		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_x", m_player.m_v3Pos.x, "Teleport");
+		g_pSettings->m_iniParser.setValue<float>(tp->m_szIniKey + "_y", m_player.m_v3Pos.y, "Teleport");
 		return;
 	}
 	if(checkKeyState(g_pSettings->m_iKeys[keyMenuSelect]))
@@ -685,7 +686,6 @@ void hack::vehicleGravity(feat* feature)
 	return;
 }
 
-//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
 void hack::vehicleBulletproofTires(feat* feature)
 {
 	if(!feature->m_bOn)

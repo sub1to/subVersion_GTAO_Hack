@@ -53,18 +53,18 @@
 
 //Addresses from GTAV.exe module
 #ifdef __SC_VERSION__
-#define ADDRESS_WORLD					0x2303788		//42
-#define ADDRESS_WAYPOINT				0x1F59BB0		//wtb a (mini)map struct
-#define ADDRESS_OBJECTIVE				0x1F59C60
-#define ADDRESS_AMMO					0x0F5BC65		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
-#define ADDRESS_MAGAZINE				0x0F5BC20		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
+#define ADDRESS_WORLD					0x2328EC8		//42
+#define ADDRESS_WAYPOINT				0x1F7F400		//wtb a (mini)map struct
+#define ADDRESS_OBJECTIVE				0x1F7F4B0
+#define ADDRESS_AMMO					0x0F706C5		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
+#define ADDRESS_MAGAZINE				0x0F70680		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 #endif
 #ifdef __STEAM_VERSION__
-#define ADDRESS_WORLD					0x2307738		//42
-#define ADDRESS_WAYPOINT				0x1F5DE50		//wtb a (mini)map struct
-#define ADDRESS_OBJECTIVE				0x0
-#define ADDRESS_AMMO					0x0F5C9E1		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
-#define ADDRESS_MAGAZINE				0x0F5C99C		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
+#define ADDRESS_WORLD					0x232BC00
+#define ADDRESS_WAYPOINT				0x1F82460
+#define ADDRESS_OBJECTIVE				0x1F82510
+#define ADDRESS_AMMO					0x0F71C38
+#define ADDRESS_MAGAZINE				0x0F71C7D
 #endif
 
 //offset from WORLD
@@ -80,25 +80,25 @@
 #define OFFSET_ENTITY_GOD				0x189			//godmode; on = 1, off = 0; byte
 
 //player (entity) offsets
-#define OFFSET_PLAYER_ARMOR						0x14A0			//armour
-#define OFFSET_PLAYER_INFO						0x10A8			//playerInfo struct
+#define OFFSET_PLAYER_ARMOR						0x14B0			//armour
+#define OFFSET_PLAYER_INFO						0x10B8			//playerInfo struct
 #define OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE	0x71C			//fWantedCanChange
 #define OFFSET_PLAYER_INFO_WANTED				0x798			//wanted level; DWORD
 #define	OFFSET_PLAYER_INFO_RUN_SPD				0xE8			//run speed; def 1; float
 #define OFFSET_PLAYER_INFO_SWIM_SPD				0xE4			//swim speed; def 1; float
 #define OFFSET_PLAYER_INFO_FRAMEFLAGS			0x190			//frame flags; DWORD
 #define OFFSET_PLAYER_INFO_STAMINA				0xC00			//fStamina, fStaminaMax
-#define OFFSET_PLAYER_VEHICLE					0x14E0			//ptr to last used vehicle
+#define OFFSET_PLAYER_VEHICLE					0xD28			//ptr to last used vehicle
 #define OFFSET_PLAYER_NAME						0x7C
-#define OFFSET_PLAYER_RAGDOLL					0x1098			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
-#define OFFSET_PLAYER_SEATBELT					0x13DC			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
-#define OFFSET_PLAYER_INVEHICLE					0x145B
+#define OFFSET_PLAYER_RAGDOLL					0x10A8			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
+#define OFFSET_PLAYER_SEATBELT					0x13EC			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
+#define OFFSET_PLAYER_INVEHICLE					0x146B
 
 //vehicle offsets
-#define OFFSET_VEHICLE_HEALTH						0x82C			//vehicle health; 0.f-1000.f
-#define OFFSET_VEHICLE_GRAVITY						0xB4C			//fGravity
-#define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x85B			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
-#define OFFSET_VEHICLE_HANDLING						0x850
+#define OFFSET_VEHICLE_HEALTH						0x84C			//vehicle health; 0.f-1000.f
+#define OFFSET_VEHICLE_GRAVITY						0xB7C			//fGravity
+#define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x883			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
+#define OFFSET_VEHICLE_HANDLING						0x878
 #define OFFSET_VEHICLE_HANDLING_ACCELERATION		0x4C
 #define OFFSET_VEHICLE_HANDLING_BRAKEFORCE			0x6C
 #define OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN	0x90			//fTractionCurveMin
@@ -107,7 +107,7 @@
 #define OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE	0xBC			//fSuspensionForce 
 
 //weapon offsets
-#define OFFSET_WEAPON_MANAGER			0x10B8			//from playerbase
+#define OFFSET_WEAPON_MANAGER			0x10C8			//from playerbase
 #define OFFSET_WEAPON_CURRENT			0x20			//from weapon manager
 #define OFFSET_WEAPON_AMMOINFO			0x48			//from weaponbase
 #define OFFSET_WEAPON_AMMOINFO_MAX		0x28			//ammoinfo
@@ -176,5 +176,10 @@ DWORD	strToVk(std::string str);
 
 extern HWND		g_hWnd;
 extern int		g_iFeature[MAX_MENU_FEATURES];
+
+extern bool		g_bKillSwitch;
+extern bool		g_bKillRender;
+extern bool		g_bKillAttach;
+extern bool		g_bKillHack;
 
 #endif
