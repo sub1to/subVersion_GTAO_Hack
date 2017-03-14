@@ -1,5 +1,5 @@
 /*
-	Copyright 2016 sub1to
+	Copyright 2016-2017 sub1to
 
 	This file is part of subVersion GTA:O SC External Hack.
 
@@ -90,7 +90,9 @@ class vehicle : public entity
 	public:
 		curmax	m_cmHpVehicle;
 		float	m_fGravity;
-		BYTE	m_btBulletproofTires;
+		BYTE	m_btBulletproofTires,
+				m_btOpenableDoors[2];
+		DWORD	m_dwAlarmLength;
 
 		struct vehicleHandling
 		{
@@ -128,6 +130,10 @@ class vehicle : public entity
 		void	setUpShift(float value);
 		void	getSuspensionForce();
 		void	setSuspensionForce(float value);
+		void	getOpenableDoors();
+		void	setOpenableDoors(BYTE value);
+		void	getAlarmLength();
+		void	setAlarmLength(DWORD value);
 };
 
 class weapon

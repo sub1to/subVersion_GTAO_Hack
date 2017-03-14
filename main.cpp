@@ -1,5 +1,5 @@
 /*
-	Copyright 2016 sub1to
+	Copyright 2016-2017 sub1to
 
 	This file is part of subVersion GTA:O SC External Hack.
 
@@ -56,7 +56,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	//LPCSTR	szWindowTitleTarget	= "Untitled - Notepad";
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCSTR	szWindowTitle		= "subVersion 1.1.0 [unknowncheats]";
+	LPCSTR	szWindowTitle		= "subVersion 1.1.1 [unknowncheats]";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -103,9 +103,11 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_TRACTION]			= g_pSettings->addFeature(2, -1, "Traction", feat_slider, "vehTraction", 1.f, 2.f);
 	g_iFeature[FEATURE_V_GRAVITY]			= g_pSettings->addFeature(2, -1, "Gravity", feat_slider, "vehGravity", 0.f, 25.f);
 	g_iFeature[FEATURE_V_SUSPENSION_FORCE]	= g_pSettings->addFeature(2, -1, "Suspension Force", feat_slider, "vehSuspensionForce", 0.f, 2.f);
+	//g_iFeature[FEATURE_V_DISABLE_DOORS]		= g_pSettings->addFeature(2, -1, "Disable Doors", feat_toggle, "vehDisableDoors");
+	g_iFeature[FEATURE_V_INF_CAR_ALARM]		= g_pSettings->addFeature(2, -1, "Infinite Alarm", feat_toggle, "vehInfAlarm");
 
 	g_pSettings->addFeature(3, -1, "Waypoint", feat_teleport, tp_waypoint);
-	g_pSettings->addFeature(3, -1, "Objective", feat_teleport, tp_objective);
+	//g_pSettings->addFeature(3, -1, "Objective", feat_teleport, tp_objective);
 
 	int interior = g_pSettings->addFeature(3, -1, "Interiors >>", feat_parent);
 	g_pSettings->addFeature(-1, interior, "FIB Building Top", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
@@ -169,7 +171,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	SetLayeredWindowAttributes(g_hWnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 
 	MARGINS margins {1, 1, 1, 1};
-	DwmExtendFrameIntoClientArea(g_hWnd, &margins);			//aero fix
+	DwmExtendFrameIntoClientArea(g_hWnd, &margins);
 
 	ShowWindow(g_hWnd, SW_SHOWNORMAL);
 
@@ -286,7 +288,7 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 
 		if(!(btInit & INITPTR_INVALID_WORLD) && !(btInit & INITPTR_INVALID_PLAYER))
 		{
-			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_GOD])->m_bOn)
+			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_GOD])->m_bOn || g_pSettings->getFeature(g_iFeature[FEATURE_P_TRUEGOD])->m_bOn)
 				g_pHack->restoreHealth();
 			if(g_pSettings->getFeature(g_iFeature[FEATURE_P_ANTINPC])->m_bOn)
 				g_pHack->killNpc();
@@ -317,6 +319,8 @@ DWORD __stdcall threadHack(LPVOID lpParam)
 				g_pHack->vehicleGod(g_pSettings->getFeature(g_iFeature[FEATURE_V_TRUEGOD]));
 				g_pHack->vehicleGravity(g_pSettings->getFeature(g_iFeature[FEATURE_V_GRAVITY]));
 				g_pHack->vehicleBulletproofTires(g_pSettings->getFeature(g_iFeature[FEATURE_V_BULLETPROOFTIRES]));
+				//g_pHack->vehicleDisableDoors(g_pSettings->getFeature(g_iFeature[FEATURE_V_DISABLE_DOORS]));			THIS ONLY WORKS CLIENT SIDE
+				g_pHack->vehicleInfAlarm(g_pSettings->getFeature(g_iFeature[FEATURE_V_INF_CAR_ALARM]));
 
 				if(g_pHack->m_vehicle.loadHandling())
 				{

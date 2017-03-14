@@ -1,5 +1,5 @@
 /*
-	Copyright 2016 sub1to
+	Copyright 2016-2017 sub1to
 
 	This file is part of subVersion GTA:O SC External Hack.
 
@@ -205,7 +205,7 @@ bool	D3D9Render::getViewport()
 
 void	D3D9Render::drawBox(int x, int y, int w, int h, D3DCOLOR color)
 {
-	Vertex vertex[] =
+	/*Vertex vertex[] =
 	{
 		{(float) x,		(float) y + h,	1.0f, 1.0f, color},
 		{(float) x,		(float) y,		1.0f, 1.0f, color},
@@ -221,7 +221,10 @@ void	D3D9Render::drawBox(int x, int y, int w, int h, D3DCOLOR color)
 	m_pD3dDev->SetStreamSource(0, m_pVertexBuffer, 0, sizeof(Vertex));
 
 	// copy the vertex buffer to the back buffer
-	m_pD3dDev->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	m_pD3dDev->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);*/
+
+	D3DRECT rect {x, y, x + w, y + h};
+	m_pD3dDev->Clear(1, &rect, D3DCLEAR_TARGET, color, 1.f, 0);
 
 	return;
 }

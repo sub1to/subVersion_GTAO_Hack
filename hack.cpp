@@ -1,5 +1,5 @@
 /*
-	Copyright 2016 sub1to
+	Copyright 2016-2017 sub1to
 
 	This file is part of subVersion GTA:O SC External Hack.
 
@@ -196,11 +196,11 @@ void	hack::getWaypoint()
 	return;
 }
 
-void	hack::getObjective()
+/*void	hack::getObjective()
 {
 	g_pMemMan->readMem<v3>((DWORD_PTR) m_hModule + ADDRESS_OBJECTIVE, &m_v3Objective);
 	return;
-}
+}*/
 
 void	hack::teleport(v3 v)
 {
@@ -225,6 +225,7 @@ bool	hack::teleportWaypoint()
 	return true;
 }
 
+/*
 bool	hack::teleportObjective()
 {
 	getObjective();
@@ -234,7 +235,7 @@ bool	hack::teleportObjective()
 	v3 dest(m_v3Objective.x, m_v3Objective.y, m_v3Objective.z + 1.f);
 	teleport(dest);
 	return true;
-}
+}*/
 
 void	hack::restoreHealth()
 {
@@ -822,5 +823,47 @@ void	hack::vehicleSuspensionForce(feat* feature)
 	float fValue	= m_vehicle.m_handlingRestore.m_fSuspensionForce * static_cast<featSlider*>(feature)->m_fValue;
 	if(m_vehicle.m_handlingCur.m_fSuspensionForce != fValue)
 		m_vehicle.setSuspensionForce(fValue);
+	return;
+}
+/*
+void hack::vehicleDisableDoors(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			m_vehicle.getOpenableDoors();
+			if(m_vehicle.m_btOpenableDoors[0] != m_vehicle.m_btOpenableDoors[1])
+				m_vehicle.setOpenableDoors(m_vehicle.m_btOpenableDoors[1]);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_vehicle.getOpenableDoors();
+	if(m_vehicle.m_btOpenableDoors[0] != 0)
+	{
+		m_vehicle.m_btOpenableDoors[1]	= m_vehicle.m_btOpenableDoors[0];
+		if(m_vehicle.m_btOpenableDoors[0] > 1)		//crash protection
+			m_vehicle.setOpenableDoors(0);
+	}
+	return;
+}*/
+
+void hack::vehicleInfAlarm(feat* feature)
+{
+	if(!feature->m_bOn)
+	{
+		if(!feature->m_bRestored)
+		{
+			m_vehicle.getAlarmLength();
+			if(m_vehicle.m_dwAlarmLength != 0)
+				m_vehicle.setAlarmLength(0);
+			feature->m_bRestored = true;
+		}
+		return;
+	}
+	m_vehicle.getAlarmLength();
+	if(m_vehicle.m_dwAlarmLength != 0xFF)
+		m_vehicle.setAlarmLength(0xFF);
 	return;
 }

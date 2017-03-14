@@ -1,5 +1,5 @@
 /*
-	Copyright 2016 sub1to
+	Copyright 2016-2017 sub1to
 
 	This file is part of subVersion GTA:O SC External Hack.
 
@@ -209,6 +209,8 @@ vehicle::~vehicle()
 {
 	this->restoreHandling();
 	this->setGravity(9.8f);
+	//if(m_btOpenableDoors[0] != m_btOpenableDoors[1])
+	//	this->setOpenableDoors(m_btOpenableDoors[1]);
 }
 
 void vehicle::getHealth()
@@ -348,6 +350,30 @@ void vehicle::getSuspensionForce()
 void vehicle::setSuspensionForce(float value)
 {
 	g_pMemMan->writeMem<float>((DWORD_PTR) m_handlingCur.m_dwpHandling + OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE, &value);
+	return;
+}
+
+/*void vehicle::getOpenableDoors()
+{
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_OPENABLE_DOORS, m_btOpenableDoors);
+	return;
+}
+
+void vehicle::setOpenableDoors(BYTE value)
+{
+	g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_OPENABLE_DOORS, &value);
+	return;
+}*/
+
+void vehicle::getAlarmLength()
+{
+	g_pMemMan->readMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &m_dwAlarmLength);
+	return;
+}
+
+void vehicle::setAlarmLength(DWORD value)
+{
+	g_pMemMan->writeMem<DWORD>((DWORD_PTR) m_dwpBase + OFFSET_VEHICLE_ALARM_LENGTH, &value);
 	return;
 }
 

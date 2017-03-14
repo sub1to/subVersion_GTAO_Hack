@@ -1,5 +1,5 @@
 /*
-	Copyright 2016 sub1to
+	Copyright 2016-2017 sub1to
 
 	This file is part of subVersion GTA:O SC External Hack.
 
@@ -55,7 +55,7 @@ class hack : public trainer
 
 		void	teleport(v3 v);
 		bool	teleportWaypoint();
-		bool	teleportObjective();
+		//bool	teleportObjective();
 		void	restoreHealth();
 		void	restoreVehicleHealth();
 		void	restoreStamina();
@@ -90,6 +90,8 @@ class hack : public trainer
 		void	vehicleUpShift(feat* feature);
 		void	batchSpread(feat* feature);
 		void	vehicleSuspensionForce(feat* feature);
+		//void	vehicleDisableDoors(feat* feature);
+		void	vehicleInfAlarm(feat* feature);
 
 	private:
 		DWORD_PTR	m_dwpWorldBase,
