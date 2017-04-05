@@ -17,8 +17,8 @@
     with subVersion GTA:O SC External Hack.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//#define __SC_VERSION__
-#define __STEAM_VERSION__
+#define __SC_VERSION__
+//#define __STEAM_VERSION__
 
 #ifndef STDAFX_H
 #define STDAFX_H
@@ -55,15 +55,16 @@
 #ifdef __SC_VERSION__
 #define ADDRESS_WORLD					0x2333980		//42
 #define ADDRESS_WAYPOINT				0x1F89FE0
-//#define ADDRESS_OBJECTIVE				0x0
-#define ADDRESS_AMMO					0x0F78DAD		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
-#define ADDRESS_MAGAZINE				0x0F78D68		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
+#define ADDRESS_OBJECTIVE				0x1F8A090
+#define ADDRESS_AMMO					0x0F78C15		//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
+#define ADDRESS_MAGAZINE				0x0F78BD0		//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
 #endif
 #ifdef __STEAM_VERSION__
 #define ADDRESS_WORLD					0x23378A8
 #define ADDRESS_WAYPOINT				0x1F8E150
-#define ADDRESS_AMMO					0x0F794C9
-#define ADDRESS_MAGAZINE				0x0F79484
+#define ADDRESS_OBJECTIVE				0x1F8E200
+#define ADDRESS_AMMO					0x0F79881
+#define ADDRESS_MAGAZINE				0x0F7983C
 #endif
 
 //offset from WORLD

@@ -55,7 +55,7 @@ class hack : public trainer
 
 		void	teleport(v3 v);
 		bool	teleportWaypoint();
-		//bool	teleportObjective();
+		bool	teleportObjective();
 		void	restoreHealth();
 		void	restoreVehicleHealth();
 		void	restoreStamina();

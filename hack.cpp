@@ -196,11 +196,11 @@ void	hack::getWaypoint()
 	return;
 }
 
-/*void	hack::getObjective()
+void	hack::getObjective()
 {
 	g_pMemMan->readMem<v3>((DWORD_PTR) m_hModule + ADDRESS_OBJECTIVE, &m_v3Objective);
 	return;
-}*/
+}
 
 void	hack::teleport(v3 v)
 {
@@ -225,7 +225,7 @@ bool	hack::teleportWaypoint()
 	return true;
 }
 
-/*
+
 bool	hack::teleportObjective()
 {
 	getObjective();
@@ -235,7 +235,7 @@ bool	hack::teleportObjective()
 	v3 dest(m_v3Objective.x, m_v3Objective.y, m_v3Objective.z + 1.f);
 	teleport(dest);
 	return true;
-}*/
+}
 
 void	hack::restoreHealth()
 {
@@ -514,21 +514,21 @@ void	hack::vehicleGod(feat* feature)
 
 void	hack::infAmmo(feat* feature)
 {
-	BYTE	cur[4]		= {};
+	BYTE	cur[3]		= {};
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
-			g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
-			BYTE	value[4]	= {0x41, 0x2B, 0xD1, 0xE8};
+			g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+			BYTE	value[3]	= {0x41, 0x2B, 0xD1};
 			if(cur[0] != value[0])
 				g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
-	BYTE	value[4]	= {0x90, 0x90, 0x90, 0xE8};
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, cur, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+	BYTE	value[3]	= {0x90, 0x90, 0x90};
 	if(cur[0] != value[0])
 		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_AMMO, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 	return;
@@ -536,21 +536,21 @@ void	hack::infAmmo(feat* feature)
 
 void	hack::noReload(feat* feature)
 {
-	BYTE	cur[6]		= {};
+	BYTE	cur[3]		= {};
 	if(!feature->m_bOn)
 	{
 		if(!feature->m_bRestored)
 		{
-			g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
-			BYTE	value[6]	= {0x41, 0x2B, 0xC9, 0x3B, 0xC8, 0x0F};
+			g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+			BYTE	value[3]	= {0x41, 0x2B, 0xC9};
 			if(cur[0] != value[0])
 				g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 			feature->m_bRestored = true;
 		}
 		return;
 	}
-	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 4, PAGE_EXECUTE_READWRITE);
-	BYTE	value[6]	= {0x90, 0x90, 0x90, 0x3B, 0xC8, 0x0F};
+	g_pMemMan->readMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, cur, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
+	BYTE	value[3]	= {0x90, 0x90, 0x90};
 	if(cur[0] != value[0])
 		g_pMemMan->writeMem<BYTE>((DWORD_PTR) m_hModule + ADDRESS_MAGAZINE, value, sizeof(BYTE) * 3, PAGE_EXECUTE_READWRITE);
 	return;

@@ -56,7 +56,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 
 	//LPCSTR	szWindowTitleTarget	= "Untitled - Notepad";
 	LPCSTR	szWindowTitleTarget	= "Grand Theft Auto V";
-	LPCSTR	szWindowTitle		= "subVersion 1.1.1 [unknowncheats]";
+	LPCSTR	szWindowTitle		= "subVersion 1.1.2 [unknowncheats]";
 	g_pMemMan->setWindowName(szWindowTitleTarget);
 	g_pD3D9Render->m_szWindowTitle = szWindowTitle;
 
@@ -107,7 +107,7 @@ int __stdcall WinMain(	HINSTANCE	hInstance,
 	g_iFeature[FEATURE_V_INF_CAR_ALARM]		= g_pSettings->addFeature(2, -1, "Infinite Alarm", feat_toggle, "vehInfAlarm");
 
 	g_pSettings->addFeature(3, -1, "Waypoint", feat_teleport, tp_waypoint);
-	//g_pSettings->addFeature(3, -1, "Objective", feat_teleport, tp_objective);
+	g_pSettings->addFeature(3, -1, "Objective", feat_teleport, tp_objective);
 
 	int interior = g_pSettings->addFeature(3, -1, "Interiors >>", feat_parent);
 	g_pSettings->addFeature(-1, interior, "FIB Building Top", feat_teleport, tp_static, 136.0f, -750.f, 262.f);
